@@ -732,8 +732,8 @@ function triggerEmergencySOS() {
   const waUrl = `https://wa.me/91${rawPhone.slice(-10)}?text=${msg}`;
   window.open(waUrl, "_blank");
 
-  speakMarathi("सावध व्हा! आपत्कालीन इशारा कुटुंबियांना व्हॉट्सॲपवर पाठवला गेला आहे.");
-  alert("🚨 तातडीची मदत (SOS)! कुटुंबियांच्या व्हॉट्सॲपवर संदेश पाठवला गेला आहे.");
+  speakMarathi("सावध व्हा! आपत्कालीन इशारा कुटुंबियांच्या व्हॉट्सॲपवर पाठवला जात आहे.");
+  alert("🚨 [डेमो / चाचणी आणीबाणी इशारा]\nहा एक चाचणी मेसेज असून तो कुटुंबियांच्या व्हॉट्सॲपवर उघडला जात आहे.\n\n⚠️ गंभीर किंवा प्रत्यक्ष आणीबाणीच्या वेळी कृपया थेट राष्ट्रीय आपत्कालीन क्रमांक ११२ किंवा डॉक्टरांना कॉल करा.");
 }
 
 // Marathi Voice & Speech Assistant Logic
@@ -1143,8 +1143,20 @@ function sendMannText() {
   appendMannUser(text);
   input.value = "";
 
-  // Empathetic, CBT-grounded AI Response
+  // Crisis Safeguard Detection (Harm / Severe Distress Escalation)
   const query = text.toLowerCase();
+  const crisisTriggers = ["आत्महत्या", "मरावसं", "संपवाव", "जीव द्यावा", " suicide", "kill myself", "die", "end life"];
+  const isCrisis = crisisTriggers.some(trigger => query.includes(trigger));
+
+  if (isCrisis) {
+    const crisisReply = "स्नेहा, तुझे विचार आणि भावना अत्यंत महत्त्वाच्या आहेत. तू या कठीण क्षणात अजिबात एकटी नाहीस! कृपया तात्काळ मोफत मानसिक आरोग्य हेल्पलाइन Tele-MANAS (14416) वर २४ तास मोफत बोलू शकतेस किंवा घरातील विश्वासू व्यक्तीशी लगेच संपर्क कर. मदत उपलब्ध आहे, कृपया 14416 वर कॉल कर.";
+    setTimeout(() => {
+      appendMannReply(crisisReply);
+      alert("🚨 तातडीची सूचना (Mental Health Safeguard):\nकृपया त्वरित २४ तास मोफत Tele-MANAS हेल्पलाइन १४४१६ वर संपर्क साधा. आम्ही तुमच्या पाठीशी आहोत.");
+    }, 200);
+    return;
+  }
+
   let reply = "मी तुझं म्हणणं नीट ऐकलं स्नेहा. तू या परिस्थितीत एकटी नाहीस, स्वतःवर विश्वास ठेव.";
 
   if (query.includes("अभ्यास") || query.includes("परीक्षा") || query.includes("ताण")) {
@@ -1158,6 +1170,27 @@ function sendMannText() {
   setTimeout(() => {
     appendMannReply(reply);
   }, 400);
+}
+
+// ------------------------------------------
+// Sneha's Mann Module PIN Authentication
+// ------------------------------------------
+function unlockMannWithPin() {
+  const pin = document.getElementById("mannPinInput").value;
+  if (pin === "1234") {
+    document.getElementById("mannLockGate").classList.add("hidden");
+    document.getElementById("mannContentArea").classList.remove("hidden");
+    document.getElementById("mannPinInput").value = "";
+    lucide.createIcons();
+  } else {
+    alert("❌ चुकीचा PIN! हा मानसिक आरोग्य भाग फक्त स्नेहासाठी संरक्षित आहे (चाचणी पिन: 1234).");
+  }
+}
+
+function lockMannArea() {
+  document.getElementById("mannLockGate").classList.remove("hidden");
+  document.getElementById("mannContentArea").classList.add("hidden");
+  lucide.createIcons();
 }
 
 function appendMannUser(text) {
