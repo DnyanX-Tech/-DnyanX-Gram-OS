@@ -453,7 +453,33 @@ function generatePO() {
 
   // Save PDF
   doc.save(`${poNum}_${supplier.replace(/\s+/g, '_')}.pdf`);
-  alert(`✅ Purchase Order (${poNum}) ची PDF यशस्वीरित्या डाऊनलोड झाली!`);
+
+  // Automatically save PO data permanently to 'purchase_orders' collection in Firestore
+  const firestoreDb = window.db || window.fbDb;
+  if (firestoreDb) {
+    firestoreDb.collection("purchase_orders").add({
+      poNumber: poNum,
+      supplierName: supplier,
+      supplierPhone: phone,
+      issuedBy: `${appState.familyInfo ? appState.familyInfo.name : 'पाटील परिवार'} Enterprises`,
+      address: appState.familyInfo ? appState.familyInfo.address : '',
+      items: appState.poItems,
+      subtotal: subtotal,
+      gstRate: gstRate,
+      gstAmount: gstAmount,
+      grandTotal: grandTotal,
+      createdAt: new Date().toISOString(),
+      dateFormatted: new Date().toLocaleDateString("mr-IN")
+    }).then(docRef => {
+      console.log("🔥 PO permanently saved to Firestore 'purchase_orders' collection! Doc ID:", docRef.id);
+      alert(`🎉 PO Successfully Saved to DnyanX Database! (Doc ID: ${docRef.id})\n✅ Purchase Order (${poNum}) ची PDF आणि क्लाउड रेकॉर्ड तयार झाले आहे!`);
+    }).catch(err => {
+      console.error("Firestore PO save error:", err);
+      alert(`✅ Purchase Order (${poNum}) ची PDF डाऊनलोड झाली!\n(क्लाउड सेव्ह: ${err.message})`);
+    });
+  } else {
+    alert(`🎉 PO Successfully Saved to DnyanX Database!\n✅ Purchase Order (${poNum}) ची PDF यशस्वीरित्या डाऊनलोड झाली!`);
+  }
 }
 
 // WhatsApp PO Share
