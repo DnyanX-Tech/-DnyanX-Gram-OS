@@ -1044,6 +1044,9 @@ function recordMood(type, label) {
   const display = document.getElementById("currentMoodDisplay");
   if (display) display.textContent = `आजचा मूड: ${label}`;
 
+  const ovMood = document.getElementById("ovMoodStat");
+  if (ovMood) ovMood.textContent = label;
+
   const row = document.getElementById("moodHistoryRow");
   if (row) {
     const emojis = { happy: '😊', calm: '😌', anxious: '😟', sad: '😔', stressed: '😤' };
@@ -1178,6 +1181,59 @@ function renderOverviewStats() {
   const headName = document.getElementById("overviewFamilyHeadName");
   if (headName && appState.familyInfo) {
     headName.textContent = `${appState.familyInfo.name}!`;
+  }
+
+  // 1. Trader stock stats
+  const stockEl = document.getElementById("ovStockStat");
+  if (stockEl && appState.stock) {
+    const lowCount = appState.stock.filter(s => s.qty <= s.min).length;
+    if (lowCount > 0) {
+      stockEl.innerHTML = `<span class="text-rose-400 font-bold">${appState.stock.length} वस्तू (${lowCount} कमी)</span>`;
+    } else {
+      stockEl.textContent = `${appState.stock.length} वस्तू उपलब्ध`;
+    }
+  }
+
+  // 2. Elder medicine & water stats
+  const morningMedEl = document.getElementById("ovMorningMed");
+  const nextMedEl = document.getElementById("ovNextMed");
+  const waterEl = document.getElementById("ovWaterStat");
+
+  if (morningMedEl && appState.medicines) {
+    const morning = appState.medicines[0];
+    if (morning) {
+      morningMedEl.innerHTML = morning.status === "taken" ? "घेतली आहे ✅" : `<span class="text-rose-400">${morning.time} बाकी ⚠️</span>`;
+    }
+  }
+
+  if (nextMedEl && appState.medicines) {
+    const pendingMed = appState.medicines.find(m => m.status === "pending");
+    if (pendingMed) {
+      nextMedEl.textContent = `${pendingMed.time} बाकी (${pendingMed.name.split(" ")[0]})`;
+    } else {
+      nextMedEl.textContent = "सर्व गोळ्या पूर्ण ✅";
+    }
+  }
+
+  if (waterEl) {
+    waterEl.textContent = `${appState.waterGlasses || 4} ग्लास पिऊन झाले`;
+  }
+
+  // 3. Farmer scheme stats
+  const schemeEl = document.getElementById("ovSchemeCount");
+  if (schemeEl && appState.schemes) {
+    schemeEl.textContent = `${appState.schemes.length} पात्र योजना`;
+  }
+
+  // 4. Pending family todos summary
+  const tasksText = document.getElementById("overviewPendingTasksText");
+  if (tasksText && appState.familyTodos) {
+    const pendingList = appState.familyTodos.filter(t => !t.done);
+    if (pendingList.length > 0) {
+      tasksText.textContent = `एकूण ${pendingList.length} कामे बाकी आहेत: "${pendingList[0].title}" व इतर.`;
+    } else {
+      tasksText.textContent = "🎉 आजची सर्व घरातील कामे पूर्ण झाली आहेत!";
+    }
   }
 }
 

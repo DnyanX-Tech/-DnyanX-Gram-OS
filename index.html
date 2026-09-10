@@ -150,7 +150,50 @@
         </div>
       </div>
 
-      <!-- 4 Pillars Live Status Grid (One Glancetop-level view) -->
+      <!-- Quick Global Family Actions Bar -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <button onclick="switchTab('business'); addPoItemRow();" class="p-3 bg-slate-900/90 border border-slate-800 hover:border-amber-500/50 rounded-2xl flex items-center gap-2.5 transition active:scale-95 group">
+          <div class="w-8 h-8 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover:scale-110 transition">
+            <i data-lucide="file-plus" class="w-4 h-4"></i>
+          </div>
+          <div class="text-left">
+            <div class="text-xs font-bold text-white">नवीन PO ऑर्डर</div>
+            <div class="text-[10px] text-slate-400">दुकान सप्लायर बिल</div>
+          </div>
+        </button>
+
+        <button onclick="switchTab('aathvan'); openAddMedicineModal();" class="p-3 bg-slate-900/90 border border-slate-800 hover:border-emerald-500/50 rounded-2xl flex items-center gap-2.5 transition active:scale-95 group">
+          <div class="w-8 h-8 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i>
+          </div>
+          <div class="text-left">
+            <div class="text-xs font-bold text-white">औषध नोंदवा</div>
+            <div class="text-[10px] text-slate-400">आजोबांची गोळी वेळ</div>
+          </div>
+        </button>
+
+        <button onclick="switchTab('shared'); openAddTodoModal();" class="p-3 bg-slate-900/90 border border-slate-800 hover:border-cyan-500/50 rounded-2xl flex items-center gap-2.5 transition active:scale-95 group">
+          <div class="w-8 h-8 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition">
+            <i data-lucide="check-square" class="w-4 h-4"></i>
+          </div>
+          <div class="text-left">
+            <div class="text-xs font-bold text-white">घरातील काम</div>
+            <div class="text-[10px] text-slate-400">लाईट बिल / कामे</div>
+          </div>
+        </button>
+
+        <button onclick="triggerEmergencySOS()" class="p-3 bg-rose-950/40 border border-rose-600/40 hover:border-rose-500 rounded-2xl flex items-center gap-2.5 transition active:scale-95 group">
+          <div class="w-8 h-8 rounded-xl bg-rose-500/20 flex items-center justify-center text-rose-400 group-hover:scale-110 transition">
+            <i data-lucide="phone-call" class="w-4 h-4"></i>
+          </div>
+          <div class="text-left">
+            <div class="text-xs font-black text-rose-300">आणीबाणी SOS</div>
+            <div class="text-[10px] text-rose-400">तात्काळ मदत सायरन</div>
+          </div>
+        </button>
+      </div>
+
+      <!-- 4 Pillars Live Status Grid (One Glance top-level view) -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
 
         <!-- 1. Father (Trader) Pillar Card -->
@@ -165,7 +208,7 @@
 
             <div class="mt-4 space-y-2 text-xs bg-slate-950 p-3 rounded-2xl border border-slate-800">
               <div class="flex justify-between"><span class="text-slate-400">आजची विक्री:</span> <strong class="text-white">₹ १८,४५०</strong></div>
-              <div class="flex justify-between"><span class="text-slate-400">नवीन ऑर्डर्स:</span> <strong class="text-indigo-400">१ PO तयार</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">स्टॉक स्थिती:</span> <strong id="ovStockStat" class="text-amber-400">४ वस्तू साठा</strong></div>
               <div class="flex justify-between"><span class="text-slate-400">कर्मचारी हजेरी:</span> <strong class="text-emerald-400">२ हजर ✅</strong></div>
             </div>
           </div>
@@ -186,9 +229,9 @@
             <p class="text-xs text-slate-400">वय ७८ — आरोग्य व औषध सोबती</p>
 
             <div class="mt-4 space-y-2 text-xs bg-slate-950 p-3 rounded-2xl border border-slate-800">
-              <div class="flex justify-between"><span class="text-slate-400">सकाळची गोळी:</span> <strong class="text-emerald-400">घेतली आहे ✅</strong></div>
-              <div class="flex justify-between"><span class="text-slate-400">दुपारची गोळी:</span> <strong class="text-amber-400">01:30 PM बाकी</strong></div>
-              <div class="flex justify-between"><span class="text-slate-400">पाणी पिणे:</span> <strong class="text-cyan-400">४ ग्लास पिऊन झाले</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">सकाळची गोळी:</span> <strong id="ovMorningMed" class="text-emerald-400">घेतली आहे ✅</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">पुढील औषध:</span> <strong id="ovNextMed" class="text-amber-400">01:30 PM बाकी</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">पाणी पिणे:</span> <strong id="ovWaterStat" class="text-cyan-400">४ ग्लास पिऊन झाले</strong></div>
             </div>
           </div>
 
@@ -208,7 +251,7 @@
             <p class="text-xs text-slate-400">३.५ एकर शेती — शासकीय योजना</p>
 
             <div class="mt-4 space-y-2 text-xs bg-slate-950 p-3 rounded-2xl border border-slate-800">
-              <div class="flex justify-between"><span class="text-slate-400">उपलब्ध योजना:</span> <strong class="text-lime-400">५ पात्र योजना</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">उपलब्ध योजना:</span> <strong id="ovSchemeCount" class="text-lime-400">५ पात्र योजना</strong></div>
               <div class="flex justify-between"><span class="text-slate-400">पीक विमा:</span> <strong class="text-emerald-400">१ रुपयात उपलब्ध</strong></div>
               <div class="flex justify-between"><span class="text-slate-400">अनुदान मर्यादा:</span> <strong class="text-white">₹ १.८२ लाख</strong></div>
             </div>
@@ -230,9 +273,9 @@
             <p class="text-xs text-slate-400">कॉलेज विद्यार्थिनी — मानसिक स्वास्थ्य</p>
 
             <div class="mt-4 space-y-2 text-xs bg-slate-950 p-3 rounded-2xl border border-slate-800">
-              <div class="flex justify-between"><span class="text-slate-400">आजचा मूड:</span> <strong class="text-pink-400">शांत 😌</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">आजचा मूड:</span> <strong id="ovMoodStat" class="text-pink-400">शांत 😌</strong></div>
               <div class="flex justify-between"><span class="text-slate-400">श्वास व्यायाम:</span> <strong class="text-cyan-400">४-७-८ तंत्र सक्रिय</strong></div>
-              <div class="flex justify-between"><span class="text-slate-400">गोपनीयता:</span> <strong class="text-emerald-400">१००% एन्क्रिप्टेड</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">गोपनीयता:</span> <strong class="text-emerald-400">१००% कूटबद्ध (AES)</strong></div>
             </div>
           </div>
 
@@ -241,6 +284,22 @@
           </button>
         </div>
 
+      </div>
+
+      <!-- Quick Pending Tasks Strip in Overview -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3 w-full sm:w-auto">
+          <div class="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+            <i data-lucide="list-todo" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-white">कुटुंबातील आजची प्रलंबित कामे</h4>
+            <p class="text-xs text-slate-400" id="overviewPendingTasksText">लोड होत आहे...</p>
+          </div>
+        </div>
+        <button onclick="switchTab('shared')" class="w-full sm:w-auto px-4 py-2 bg-slate-800 hover:bg-slate-700 text-cyan-300 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition">
+          <span>सर्व कामे पहा</span> <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </button>
       </div>
 
     </section>
@@ -992,6 +1051,37 @@
     </section>
 
   </div>
+  
+  <!-- Footer -->
+  <footer class="bg-slate-900 border-t border-slate-800 mt-12 py-8 text-slate-400 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold">
+          <i data-lucide="home" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <div class="font-bold text-white text-sm">DnyanX परिवार — भारताचा पहिला Family Operating System</div>
+          <p class="text-slate-400 text-[11px]">कुटुंबाची प्रगती, आरोग्य, शेती आणि मनःशांती एकाच ठिकाणी.</p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-4 text-[11px]">
+        <span class="flex items-center gap-1 text-emerald-400 bg-emerald-950/40 px-2.5 py-1 rounded-full border border-emerald-500/30">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> AES-256 सुरक्षित Vault
+        </span>
+        <span class="flex items-center gap-1 text-purple-300 bg-purple-950/40 px-2.5 py-1 rounded-full border border-purple-500/30">
+          <i data-lucide="phone" class="w-3.5 h-3.5"></i> Tele-MANAS: 14416
+        </span>
+        <span class="flex items-center gap-1 text-rose-400 bg-rose-950/40 px-2.5 py-1 rounded-full border border-rose-500/30">
+          <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> आपत्कालीन: 112
+        </span>
+      </div>
+
+      <div class="text-slate-500 text-[11px] text-center md:text-right">
+        © 2026 DnyanX Tech. All Rights Reserved.<br>Made with ❤️ for Indian Families.
+      </div>
+    </div>
+  </footer>
 
   <!-- Modals -->
   <div id="addStockModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
