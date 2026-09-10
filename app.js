@@ -122,6 +122,7 @@ function switchTab(tabId) {
   const sharedView = document.getElementById("view-shared");
   const secretView = document.getElementById("view-secret");
   const financeView = document.getElementById("view-finance");
+  const citizenView = document.getElementById("view-citizen");
   const familyView = document.getElementById("view-family");
 
   const tabOverview = document.getElementById("tab-overview");
@@ -132,6 +133,7 @@ function switchTab(tabId) {
   const tabShared = document.getElementById("tab-shared");
   const tabSecret = document.getElementById("tab-secret");
   const tabFinance = document.getElementById("tab-finance");
+  const tabCitizen = document.getElementById("tab-citizen");
   const tabFamily = document.getElementById("tab-family");
 
   // Hide all views safely
@@ -143,6 +145,7 @@ function switchTab(tabId) {
   if (sharedView) sharedView.classList.add("hidden");
   if (secretView) secretView.classList.add("hidden");
   if (financeView) financeView.classList.add("hidden");
+  if (citizenView) citizenView.classList.add("hidden");
   if (familyView) familyView.classList.add("hidden");
 
   // Reset tab classes to default inactive style
@@ -154,6 +157,7 @@ function switchTab(tabId) {
   if (tabShared) tabShared.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-cyan-400 border border-slate-800 transition";
   if (tabSecret) tabSecret.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-900/40 transition";
   if (tabFinance) tabFinance.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-teal-300 border border-teal-900/40 transition";
+  if (tabCitizen) tabCitizen.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-orange-400 border border-orange-900/40 transition";
   if (tabFamily) tabFamily.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition";
 
   if (tabId === "overview") {
@@ -186,6 +190,10 @@ function switchTab(tabId) {
     if (financeView) financeView.classList.remove("hidden");
     if (tabFinance) tabFinance.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-teal-600 text-white font-black shadow-lg shadow-teal-600/30 transition";
     renderFinanceLedger();
+  } else if (tabId === "citizen") {
+    if (citizenView) citizenView.classList.remove("hidden");
+    if (tabCitizen) tabCitizen.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-orange-600 text-white font-black shadow-lg shadow-orange-600/30 transition";
+    renderCitizenApplications();
   } else if (tabId === "family") {
     if (familyView) familyView.classList.remove("hidden");
     if (tabFamily) tabFamily.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 transition";
@@ -1612,6 +1620,139 @@ function saveNewFinanceItem() {
 }
 
 // ==========================================
+// MODULE 9: ई-ग्राम नागरिक सेवा व व्हॉट्सॲप डिस्पॅच
+// ==========================================
+const DEFAULT_CITIZEN_APPLICATIONS = [
+  {
+    id: "GP-2026-081",
+    applicant: "रामदास आनंदा पाटील",
+    phone: "9822012345",
+    service: "रहिवासी दाखला (Residence Certificate)",
+    details: "मुलीच्या कॉलेज प्रवेशासाठी त्वरित रहिवासी प्रमाणपत्र हवे आहे.",
+    date: "१० सप्टें २०२६",
+    status: "प्रक्रिया सुरू (Pending)"
+  },
+  {
+    id: "GP-2026-079",
+    applicant: "बाळासाहेब पाटील",
+    phone: "9822088888",
+    service: "नळ जोडणी / पाणी पुरवठा अर्ज",
+    details: "नवीन घरासाठी ग्रामपंचायत पाणी पुरवठा योजनेतून नळ कनेक्शन मागणी.",
+    date: "०५ सप्टें २०२६",
+    status: "मंजूर ✅ (Approved)"
+  }
+];
+
+if (!appState.citizenApplications) {
+  appState.citizenApplications = DEFAULT_CITIZEN_APPLICATIONS;
+}
+
+function renderCitizenApplications() {
+  const tbody = document.getElementById("citizenApplicationsBody");
+  const badge = document.getElementById("citizenAppCountBadge");
+  if (!tbody) return;
+
+  const list = appState.citizenApplications || DEFAULT_CITIZEN_APPLICATIONS;
+  if (badge) badge.textContent = `${list.length} अर्ज दाखल`;
+  tbody.innerHTML = "";
+
+  list.forEach(app => {
+    const isDone = app.status.includes("मंजूर");
+    const tr = document.createElement("tr");
+    tr.className = "hover:bg-slate-950/60 transition";
+    tr.innerHTML = `
+      <td class="p-3 font-mono font-bold text-orange-400 text-xs">${app.id}</td>
+      <td class="p-3 font-semibold text-white">
+        ${app.applicant}
+        <div class="text-[10px] text-slate-400 font-mono">📞 ${app.phone}</div>
+      </td>
+      <td class="p-3 text-slate-200 font-medium">${app.service}</td>
+      <td class="p-3 text-slate-400 font-mono text-[11px]">${app.date}</td>
+      <td class="p-3">
+        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${isDone ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'}">
+          ${app.status}
+        </span>
+      </td>
+      <td class="p-3 text-right">
+        <button onclick="sendCitizenAppWhatsApp('${app.id}')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 ml-auto transition active:scale-95 shadow-sm">
+          <span>📲 WhatsApp पावती</span>
+        </button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+  lucide.createIcons();
+}
+
+function openApplyCitizenModal() {
+  const modal = document.getElementById("applyCitizenModal");
+  if (modal) modal.classList.remove("hidden");
+}
+
+function closeApplyCitizenModal() {
+  const modal = document.getElementById("applyCitizenModal");
+  if (modal) modal.classList.add("hidden");
+}
+
+function prefillCitizenService(serviceName) {
+  openApplyCitizenModal();
+  const select = document.getElementById("citizenServiceSelect");
+  if (select) select.value = serviceName;
+}
+
+function saveNewCitizenApplication() {
+  const name = document.getElementById("citizenApplicantName").value;
+  const phone = document.getElementById("citizenApplicantPhone").value;
+  const service = document.getElementById("citizenServiceSelect").value;
+  const details = document.getElementById("citizenAppDetails").value || "कोणताही विशेष तपशील नाही";
+  const appId = `GP-2026-${Math.floor(100 + Math.random() * 900)}`;
+  const dateStr = new Date().toLocaleDateString("mr-IN", { day: '2-digit', month: 'short', year: 'numeric' });
+
+  const newApp = {
+    id: appId,
+    applicant: name,
+    phone: phone,
+    service: service,
+    details: details,
+    date: dateStr,
+    status: "प्रक्रिया सुरू (Pending)"
+  };
+
+  appState.citizenApplications.unshift(newApp);
+  saveState();
+  renderCitizenApplications();
+  closeApplyCitizenModal();
+
+  // Prompt user to immediately dispatch WhatsApp receipt
+  const wantWhatsApp = confirm(`✅ अर्ज क्र. ${appId} यशस्वीरित्या ग्रामपंचायत पोर्टलवर दाखल झाला आहे!\n\nग्रामसेवक किंवा स्वतःच्या व्हॉट्सॲपवर अधिकृत पावती पाठवायची आहे का?`);
+  if (wantWhatsApp) {
+    sendCitizenAppWhatsApp(appId);
+  }
+}
+
+function sendCitizenAppWhatsApp(appId) {
+  const app = (appState.citizenApplications || []).find(a => a.id === appId);
+  if (!app) return;
+
+  const rawPhone = (app.phone || "").replace(/\D/g, "");
+  const targetPhone = rawPhone.length >= 10 ? rawPhone.slice(-10) : "9822012345";
+
+  const message = `*🏛️ ग्रामपंचायत ई-नागरिक सेवा अर्ज पावती*%0A%0A` +
+    `*अर्जाचा क्रमांक:* ${app.id}%0A` +
+    `*अर्जदार:* ${app.applicant}%0A` +
+    `*मोबाईल:* ${app.phone}%0A` +
+    `*मागणी केलेली सेवा:* ${app.service}%0A` +
+    `*अर्जाची तारीख:* ${app.date}%0A` +
+    `*अर्जाचा तपशील:* ${app.details}%0A` +
+    `*सद्यस्थिती:* ${app.status}%0A%0A` +
+    `_हा अर्ज DnyanX ग्राम-OS डिजिटल पोर्टलद्वारे अधिकृतपणे दाखल करण्यात आला आहे._%0A` +
+    `_ग्रामसेवक / सरपंच कार्यालयाकडून लवकरच पडताळणी होईल._`;
+
+  const waUrl = `https://wa.me/91${targetPhone}?text=${message}`;
+  window.open(waUrl, "_blank");
+}
+
+// ==========================================
 // PWA (PROGRESSIVE WEB APP) INSTALLATION ENGINE
 // ==========================================
 let deferredPrompt = null;
@@ -1665,6 +1806,7 @@ const TRANSLATIONS = {
     sharedTab: "📋 घरातील कामे",
     secretTab: "🔐 गुपित तिजोरी व दस्तऐवज",
     financeTab: "💰 कुटुंब हिशोब व बचत",
+    citizenTab: "🏛️ ई-ग्राम नागरिक सेवा",
     familyTab: "⚙️ परिवार प्रोफाइल",
     installBtn: "ॲप इन्स्टॉल करा (Install)"
   },
@@ -1678,6 +1820,7 @@ const TRANSLATIONS = {
     sharedTab: "📋 Shared Tasks",
     secretTab: "🔐 Secret Vault & Docs",
     financeTab: "💰 Family Finance & Ledger",
+    citizenTab: "🏛️ Citizen e-Gram Portal",
     familyTab: "⚙️ Family Setup",
     installBtn: "Install App"
   }
@@ -1714,6 +1857,9 @@ function toggleAppLanguage() {
   const tabFin = document.getElementById("tab-finance");
   if (tabFin) tabFin.querySelector("span").textContent = t.financeTab;
 
+  const tabCit = document.getElementById("tab-citizen");
+  if (tabCit) tabCit.querySelector("span").textContent = t.citizenTab;
+
   const tabFam = document.getElementById("tab-family");
   if (tabFam) tabFam.querySelector("span").textContent = t.familyTab;
 
@@ -1733,6 +1879,7 @@ window.addEventListener("DOMContentLoaded", () => {
   renderFamilyTodos();
   renderSecretVault();
   renderFinanceLedger();
+  renderCitizenApplications();
   renderOverviewStats();
   switchTab("overview"); // Default view is Unified Master Family Hub!
   lucide.createIcons();
