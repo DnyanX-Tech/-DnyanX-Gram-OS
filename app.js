@@ -117,23 +117,27 @@ function switchTab(tabId) {
   const businessView = document.getElementById("view-business");
   const aathvanView = document.getElementById("view-aathvan");
   const haqqView = document.getElementById("view-haqq");
+  const mannView = document.getElementById("view-mann");
   const familyView = document.getElementById("view-family");
 
   const tabBusiness = document.getElementById("tab-business");
   const tabAathvan = document.getElementById("tab-aathvan");
   const tabHaqq = document.getElementById("tab-haqq");
+  const tabMann = document.getElementById("tab-mann");
   const tabFamily = document.getElementById("tab-family");
 
   // Hide all
   businessView.classList.add("hidden");
   if (aathvanView) aathvanView.classList.add("hidden");
   if (haqqView) haqqView.classList.add("hidden");
+  if (mannView) mannView.classList.add("hidden");
   familyView.classList.add("hidden");
 
   // Reset tab classes
   tabBusiness.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition";
   if (tabAathvan) tabAathvan.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-emerald-900/40 transition";
   if (tabHaqq) tabHaqq.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-lime-400 border border-lime-900/40 transition";
+  if (tabMann) tabMann.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-pink-400 border border-pink-900/40 transition";
   tabFamily.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition";
 
   if (tabId === "business") {
@@ -147,6 +151,9 @@ function switchTab(tabId) {
     if (haqqView) haqqView.classList.remove("hidden");
     if (tabHaqq) tabHaqq.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-lime-600 text-slate-950 font-black shadow-lg shadow-lime-600/30 transition";
     renderHaqqSchemes();
+  } else if (tabId === "mann") {
+    if (mannView) mannView.classList.remove("hidden");
+    if (tabMann) tabMann.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-pink-600 text-white font-black shadow-lg shadow-pink-600/30 transition";
   } else if (tabId === "family") {
     familyView.classList.remove("hidden");
     tabFamily.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 transition";
@@ -1010,6 +1017,132 @@ function applyForScheme(schemeId, schemeName) {
   alert(`🎉 अर्ज नोंदणी यशस्वी!\n\nयोजना: ${schemeName}\nशेतकरी: बाळासाहेब पाटील\nमोबाईल: +91 98220 88888\n\nतुमचा संदर्भ अर्ज क्रमांक: MH-AGRI-${Date.now().toString().slice(-6)}\nसीएससी (CSC) किंवा तालुका कृषी कार्यालयाशी संपर्क साधा.`);
 }
 
+// ==========================================
+// MODULE 5: मन (Mann - Phase 4 Mental Health Engine)
+// ==========================================
+
+let breathingInterval = null;
+let isBreathingActive = false;
+
+function recordMood(type, label) {
+  const display = document.getElementById("currentMoodDisplay");
+  if (display) display.textContent = `आजचा मूड: ${label}`;
+
+  const row = document.getElementById("moodHistoryRow");
+  if (row) {
+    const emojis = { happy: '😊', calm: '😌', anxious: '😟', sad: '😔', stressed: '😤' };
+    const span = document.createElement("span");
+    span.textContent = emojis[type] || '😌';
+    row.appendChild(span);
+    if (row.children.length > 7) row.removeChild(row.firstChild);
+  }
+
+  const responses = {
+    happy: "खूप छान स्नेहा! आनंद असाच टिकवून ठेव. आजचा दिवस उत्पादक जाईल!",
+    calm: "शांत मन ही सर्वात मोठी शक्ती आहे. स्वतःला वेळ दिल्याबद्दल अभिनंदन!",
+    anxious: "चिंता वाटणे अगदी स्वाभाविक आहे. दीर्घ श्वास घे आणि २ मिनिटे डोळे मिटून शांत बस.",
+    sad: "कधी कधी उदास वाटणं ठीक आहे स्नेहा. स्वतःवर दयाळू रहा, हे दिवसही निघून जातील.",
+    stressed: "ताण खूप जास्त वाटत असल्यास खालील श्वास व्यायाम नक्की करून बघ, नक्की हलकं वाटेल."
+  };
+
+  appendMannReply(responses[type] || "माझ्याशी मनमोकळे बोलल्याबद्दल धन्यवाद!");
+  alert(`✅ तुमचा आजचा मूड '${label}' म्हणून सुरक्षितपणे नोंदवला गेला आहे.`);
+}
+
+function toggleBreathing() {
+  const circle = document.getElementById("breathCircle");
+  const actionText = document.getElementById("breathActionText");
+  const helperText = document.getElementById("breathHelperText");
+  const btn = document.getElementById("breathBtn");
+
+  if (isBreathingActive) {
+    clearInterval(breathingInterval);
+    isBreathingActive = false;
+    circle.className = "w-32 h-32 rounded-full border-4 border-cyan-400/40 flex items-center justify-center transition-all duration-1000 bg-gradient-to-tr from-cyan-950/40 to-blue-900/40";
+    actionText.textContent = "सुरू करा";
+    helperText.textContent = "तणाव जाणवतोय? खालील बटण दाबून २ मिनिटे शांत श्वास घ्या.";
+    btn.textContent = "श्वास व्यायाम सुरू करा";
+  } else {
+    isBreathingActive = true;
+    btn.textContent = "व्यायाम थांबवा";
+    let phase = 0; // 0: inhale (4s), 1: hold (7s), 2: exhale (8s)
+
+    const step = () => {
+      if (phase === 0) {
+        actionText.textContent = "श्वास घ्या (४s)";
+        helperText.textContent = "हळूवार नाकाने खोल श्वास छातीत भरा...";
+        circle.className = "w-44 h-44 rounded-full border-4 border-cyan-400 flex items-center justify-center transition-all duration-4000 bg-cyan-500/30 scale-110 shadow-2xl shadow-cyan-500/50";
+        phase = 1;
+        breathingInterval = setTimeout(step, 4000);
+      } else if (phase === 1) {
+        actionText.textContent = "श्वास रोखा (७s)";
+        helperText.textContent = "श्वास आत धरून ठेवा, शांत रहा...";
+        circle.className = "w-44 h-44 rounded-full border-4 border-purple-400 flex items-center justify-center transition-all duration-7000 bg-purple-500/30 scale-110";
+        phase = 2;
+        breathingInterval = setTimeout(step, 7000);
+      } else {
+        actionText.textContent = "श्वास सोडा (८s)";
+        helperText.textContent = "हळूवार तोंडाने सर्व हवा बाहेर सोडा...";
+        circle.className = "w-28 h-28 rounded-full border-4 border-emerald-400 flex items-center justify-center transition-all duration-8000 bg-emerald-500/20 scale-90";
+        phase = 0;
+        breathingInterval = setTimeout(step, 8000);
+      }
+    };
+    step();
+  }
+}
+
+function sendQuickPrompt(promptText) {
+  const input = document.getElementById("mannChatInput");
+  if (input) {
+    input.value = promptText;
+    sendMannText();
+  }
+}
+
+function sendMannText() {
+  const input = document.getElementById("mannChatInput");
+  const text = input.value.trim();
+  if (!text) return;
+
+  appendMannUser(text);
+  input.value = "";
+
+  // Empathetic, CBT-grounded AI Response
+  const query = text.toLowerCase();
+  let reply = "मी तुझं म्हणणं नीट ऐकलं स्नेहा. तू या परिस्थितीत एकटी नाहीस, स्वतःवर विश्वास ठेव.";
+
+  if (query.includes("अभ्यास") || query.includes("परीक्षा") || query.includes("ताण")) {
+    reply = "परीक्षेचा ताण प्रत्येकालाच येतो स्नेहा. पण लक्षात ठेव, परीक्षा हे तुझ्या क्षमतेचं अंतिम माप नाही. अभ्यासाचे छोटे छोटे तुकडे (Pomodoro 25 min) कर आणि दर तासाला ५ मिनिटे विश्रांती घे. तू नक्की यशस्वी होशील!";
+  } else if (query.includes("करिअर") || query.includes("भविष्य") || query.includes("चिंता")) {
+    reply = "करिअरची चिंता वाटणं म्हणजे तुला तुझ्या भविष्याची काळजी आहे, हे चांगलं लक्षण आहे. पण सगळ्या गोष्टी आजच ठरवायची घाई नको. दररोज १ नवीन कौशल्य शिकण्यावर भर दे. तुझे प्रयत्न फळाला येतील.";
+  } else if (query.includes("एकट") || query.includes("कोणी नाही") || query.includes("शांत")) {
+    reply = "मी तुझ्या सोबत आहे स्नेहा. स्वतःच्या भावनांना स्वीकारणं हाच मोठा धाडसीपणा आहे. तुला आवडणारं एक छान गाणं ऐक किंवा कुटुंबातील कोणाशी थोडं बोल, मन हलकं होईल.";
+  }
+
+  setTimeout(() => {
+    appendMannReply(reply);
+  }, 400);
+}
+
+function appendMannUser(text) {
+  const chatLog = document.getElementById("mannChatLog");
+  const div = document.createElement("div");
+  div.className = "bg-slate-900 border border-slate-700/60 rounded-xl p-3 text-xs text-right text-pink-300";
+  div.innerHTML = `<strong>स्नेहा:</strong> ${text}`;
+  chatLog.appendChild(div);
+  chatLog.scrollTop = chatLog.scrollHeight;
+}
+
+function appendMannReply(text) {
+  const chatLog = document.getElementById("mannChatLog");
+  const div = document.createElement("div");
+  div.className = "bg-slate-900/90 border border-pink-800/40 rounded-xl p-3 text-xs text-slate-200 animate-fadeIn";
+  div.innerHTML = `<div class="font-bold text-pink-400 mb-1 flex items-center gap-1"><span>💚 मन AI:</span></div><p>${text}</p>`;
+  chatLog.appendChild(div);
+  chatLog.scrollTop = chatLog.scrollHeight;
+}
+
 // Initial Initialization
 window.addEventListener("DOMContentLoaded", () => {
   renderFamilyMembers();
@@ -1019,5 +1152,6 @@ window.addEventListener("DOMContentLoaded", () => {
   renderHaqqSchemes();
   lucide.createIcons();
 });
+
 
 

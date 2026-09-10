@@ -104,16 +104,16 @@
         <span class="text-[10px] bg-lime-500 text-slate-950 font-black px-1.5 py-0.5 rounded-full uppercase">Live</span>
       </button>
 
+      <!-- Module 5: Mann (Phase 4 LIVE) -->
+      <button onclick="switchTab('mann')" id="tab-mann" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-pink-400 border border-pink-900/40 transition">
+        <i data-lucide="smile" class="w-4 h-4"></i>
+        <span>💚 मन (मानसिक आधार)</span>
+        <span class="text-[10px] bg-pink-500 text-slate-950 font-black px-1.5 py-0.5 rounded-full uppercase">Live</span>
+      </button>
+
       <button onclick="switchTab('family')" id="tab-family" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition">
         <i data-lucide="users-2" class="w-4 h-4"></i>
         <span>परिवार Setup (Family Profile)</span>
-      </button>
-
-      <!-- Upcoming Modules Preview (Phase 4) -->
-      <button onclick="alert('💚 मन (तरुणांसाठी मानसिक आधार) लवकरच Phase 4 मध्ये सक्रिय होईल!')" class="px-4 py-2.5 rounded-xl font-semibold text-sm flex items-center gap-2 bg-slate-900/50 hover:bg-slate-800 text-pink-400/80 border border-pink-900/30 transition">
-        <i data-lucide="smile" class="w-4 h-4"></i>
-        <span>💚 मन (तरुणांसाठी)</span>
-        <span class="text-[10px] bg-slate-800 text-slate-400 px-1 rounded">Soon</span>
       </button>
     </div>
 
@@ -531,6 +531,180 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="haqqSchemesContainer">
           <!-- Dynamic Scheme Cards will be rendered here -->
         </div>
+      </div>
+
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 5: MODULE 5 - मन (MANN - PHASE 4 LIVE) -->
+    <!-- ======================================================== -->
+    <section id="view-mann" class="hidden space-y-6">
+
+      <!-- Youth Banner / Confidential Overview -->
+      <div class="bg-gradient-to-r from-pink-950/80 via-slate-900 to-purple-950/80 border border-pink-800/40 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-pink-500/20 border-2 border-pink-400/50 flex items-center justify-center text-3xl shadow-lg shadow-pink-500/20">
+              💚
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 class="text-2xl font-black text-white tracking-wide">मन — तरुणांसाठी हक्काचा सोबती</h2>
+                <span class="bg-pink-500/20 text-pink-300 text-xs font-bold px-2.5 py-0.5 rounded-full border border-pink-500/30">Phase 4 Active</span>
+              </div>
+              <p class="text-sm text-pink-300/80 mt-1">सदस्या: <strong class="text-white">स्नेहा पाटील (विद्यार्थिनी, वय १९)</strong> — अभ्यास, करिअर, मूड आणि मनमोकळा संवाद</p>
+            </div>
+          </div>
+
+          <!-- 100% Anonymous & Confidential Pill -->
+          <div class="flex items-center gap-2 bg-slate-950/80 border border-pink-500/40 px-4 py-2 rounded-2xl">
+            <i data-lucide="lock" class="w-4 h-4 text-pink-400"></i>
+            <div class="text-left">
+              <span class="text-[11px] font-bold text-pink-300 block">१००% खाजगी व अनामिक (Anonymous)</span>
+              <span class="text-[10px] text-slate-400">हा संवाद फक्त तुमच्यापुरता मर्यादित आहे</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main 2-Column: Mood & Breathing (Left) + AI Mental Health Chat (Right) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left: Daily Mood Tracker & Breathing Widget (6 cols) -->
+        <div class="lg:col-span-6 space-y-6">
+
+          <!-- 1. Daily Mood Tracker -->
+          <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div class="flex items-center gap-2">
+                <i data-lucide="smile" class="w-5 h-5 text-pink-400"></i>
+                <h3 class="font-bold text-white text-base">आज तुमचं मन कसं आहे? (Daily Mood)</h3>
+              </div>
+              <span class="text-xs text-slate-400" id="currentMoodDisplay">आजचा मूड: शांत 😌</span>
+            </div>
+
+            <div class="grid grid-cols-5 gap-2 pt-2">
+              <button onclick="recordMood('happy', 'आनंदी 😊')" class="mood-btn flex flex-col items-center p-3 rounded-2xl bg-slate-950 hover:bg-emerald-950/40 border border-slate-800 hover:border-emerald-500/50 transition transform active:scale-90">
+                <span class="text-3xl">😊</span>
+                <span class="text-[11px] font-bold text-slate-300 mt-1">आनंदी</span>
+              </button>
+
+              <button onclick="recordMood('calm', 'शांत 😌')" class="mood-btn flex flex-col items-center p-3 rounded-2xl bg-slate-950 hover:bg-cyan-950/40 border border-slate-800 hover:border-cyan-500/50 transition transform active:scale-90">
+                <span class="text-3xl">😌</span>
+                <span class="text-[11px] font-bold text-slate-300 mt-1">शांत</span>
+              </button>
+
+              <button onclick="recordMood('anxious', 'चिंतेत 😟')" class="mood-btn flex flex-col items-center p-3 rounded-2xl bg-slate-950 hover:bg-amber-950/40 border border-slate-800 hover:border-amber-500/50 transition transform active:scale-90">
+                <span class="text-3xl">😟</span>
+                <span class="text-[11px] font-bold text-slate-300 mt-1">चिंतेत</span>
+              </button>
+
+              <button onclick="recordMood('sad', 'उदास 😔')" class="mood-btn flex flex-col items-center p-3 rounded-2xl bg-slate-950 hover:bg-blue-950/40 border border-slate-800 hover:border-blue-500/50 transition transform active:scale-90">
+                <span class="text-3xl">😔</span>
+                <span class="text-[11px] font-bold text-slate-300 mt-1">उदास</span>
+              </button>
+
+              <button onclick="recordMood('stressed', 'तणावात 😤')" class="mood-btn flex flex-col items-center p-3 rounded-2xl bg-slate-950 hover:bg-rose-950/40 border border-slate-800 hover:border-rose-500/50 transition transform active:scale-90">
+                <span class="text-3xl">😤</span>
+                <span class="text-[11px] font-bold text-slate-300 mt-1">तणावात</span>
+              </button>
+            </div>
+
+            <!-- Mood History Pills -->
+            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+              <span>मागील ७ दिवसांचा कल:</span>
+              <div class="flex gap-1 text-base" id="moodHistoryRow">
+                <span>😌</span><span>😊</span><span>😌</span><span>😟</span><span>😊</span><span>😌</span><span>😊</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Interactive Breathing Exercise (4-7-8 Technique) -->
+          <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl text-center space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div class="flex items-center gap-2">
+                <i data-lucide="wind" class="w-5 h-5 text-cyan-400"></i>
+                <h3 class="font-bold text-white text-base">शांत व्हा — श्वास व्यायाम (Breathing)</h3>
+              </div>
+              <span class="text-[11px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full font-mono">४-७-८ तंत्र</span>
+            </div>
+
+            <div class="flex flex-col items-center justify-center py-4">
+              <div id="breathCircle" class="w-32 h-32 rounded-full border-4 border-cyan-400/40 flex items-center justify-center transition-all duration-1000 bg-gradient-to-tr from-cyan-950/40 to-blue-900/40">
+                <span id="breathActionText" class="text-sm font-black text-cyan-300">सुरू करा</span>
+              </div>
+              <p class="text-xs text-slate-400 mt-3" id="breathHelperText">तणाव जाणवतोय? खालील बटण दाबून २ मिनिटे शांत श्वास घ्या.</p>
+            </div>
+
+            <button id="breathBtn" onclick="toggleBreathing()" class="w-full bg-cyan-600 hover:bg-cyan-500 active:scale-95 text-white font-bold py-2.5 px-4 rounded-xl text-xs shadow-lg shadow-cyan-600/30 transition">
+              श्वास व्यायाम सुरू करा
+            </button>
+          </div>
+
+          <!-- 3. Govt Mental Health Helpline Support -->
+          <div class="bg-gradient-to-r from-purple-950/30 to-indigo-950/30 border border-purple-800/30 rounded-2xl p-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-xl">
+                📞
+              </div>
+              <div class="text-left">
+                <h4 class="text-xs font-bold text-white">राष्ट्रीय मोफत मानसिक हेल्पलाइन</h4>
+                <p class="text-[11px] text-purple-300">Tele-MANAS: <strong class="text-white font-mono">14416</strong> (२४ तास मोफत व गोपनीय)</p>
+              </div>
+            </div>
+            <a href="tel:14416" class="bg-purple-600 hover:bg-purple-500 text-white text-xs font-black px-3.5 py-2 rounded-xl transition">
+              कॉल करा
+            </a>
+          </div>
+
+        </div>
+
+        <!-- Right: Mann AI Confidential Companion (6 cols) -->
+        <div class="lg:col-span-6 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col justify-between space-y-4">
+          
+          <div>
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+              <div class="flex items-center gap-2">
+                <i data-lucide="heart-handshake" class="w-5 h-5 text-pink-400"></i>
+                <h3 class="font-bold text-white text-base">मन AI — तुमचा हक्काचा मित्र</h3>
+              </div>
+              <span class="text-[11px] bg-pink-500/20 text-pink-300 font-semibold px-2 py-0.5 rounded-full">Non-judgmental & Caring</span>
+            </div>
+
+            <!-- Pre-defined Prompt Pills -->
+            <div class="flex flex-wrap gap-2 mb-3">
+              <button onclick="sendQuickPrompt('अभ्यासाचा आणि परीक्षेचा खूप ताण आलाय...')" class="text-[11px] bg-slate-950 hover:bg-slate-800 text-slate-300 px-3 py-1 rounded-full border border-slate-700 transition">
+                📚 अभ्यासाचा ताण
+              </button>
+              <button onclick="sendQuickPrompt('करिअरचं पुढे काय होईल याची चिंता वाटतेय...')" class="text-[11px] bg-slate-950 hover:bg-slate-800 text-slate-300 px-3 py-1 rounded-full border border-slate-700 transition">
+                🎯 करिअरची चिंता
+              </button>
+              <button onclick="sendQuickPrompt('मला एकटेपणा वाटतोय, काहीतरी सकारात्मक सांगा.')" class="text-[11px] bg-slate-950 hover:bg-slate-800 text-slate-300 px-3 py-1 rounded-full border border-slate-700 transition">
+                💭 एकटेपणा
+              </button>
+            </div>
+
+            <!-- Chat Message Stream -->
+            <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 h-72 overflow-y-auto custom-scroll space-y-3" id="mannChatLog">
+              <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-slate-300">
+                <div class="flex items-center gap-1.5 font-bold text-pink-400 mb-1">
+                  <span>💚 मन AI:</span>
+                </div>
+                <p>नमस्कार स्नेहा! मी तुझा मित्र 'मन'. मनात काहीही विचार, अभ्यास किंवा करिअरची चिंता असेल, तर बिंधास्त बोल. मी तुला कधीही जज करणार नाही. आज तुझं मन कसं आहे?</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Input Bar -->
+          <form onsubmit="event.preventDefault(); sendMannText();" class="flex gap-2">
+            <input type="text" id="mannChatInput" placeholder="मनात जे काही आहे ते येथे मनमोकळे लिहा..." class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-pink-500">
+            <button type="submit" class="bg-pink-600 hover:bg-pink-500 text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center transition">
+              <i data-lucide="send" class="w-3.5 h-3.5"></i>
+            </button>
+          </form>
+
+        </div>
+
       </div>
 
     </section>
