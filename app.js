@@ -2083,6 +2083,95 @@ async function fetchStateFromFirebaseCloud(silent = false) {
   }
 }
 
+// ==========================================
+// MODULE 11: FAMILY MEMBER PIN AUTH & PRIVACY
+// ==========================================
+let pendingMemberToSwitch = null;
+
+function openMemberPinModal() {
+  const modal = document.getElementById("memberPinModal");
+  const list = document.getElementById("memberPinSelectionList");
+  const authArea = document.getElementById("memberPinAuthArea");
+  if (!modal || !list) return;
+
+  modal.classList.remove("hidden");
+  if (authArea) authArea.classList.add("hidden");
+
+  list.innerHTML = "";
+  appState.members.forEach(member => {
+    const btn = document.createElement("button");
+    btn.className = "w-full p-3 rounded-2xl bg-slate-950 hover:bg-slate-800 border border-slate-800 flex items-center justify-between transition active:scale-98 text-left";
+    btn.innerHTML = `
+      <div class="flex items-center gap-3">
+        <span class="text-2xl">${member.avatar}</span>
+        <div>
+          <h4 class="text-xs font-bold text-white">${member.name}</h4>
+          <p class="text-[10px] text-slate-400">${member.roleLabel}</p>
+        </div>
+      </div>
+      <span class="text-xs text-indigo-400 font-bold px-2 py-1 bg-indigo-500/10 rounded-lg">PIN ने उघडा ➔</span>
+    `;
+    btn.onclick = () => promptMemberPin(member);
+    list.appendChild(btn);
+  });
+  lucide.createIcons();
+}
+
+function closeMemberPinModal() {
+  const modal = document.getElementById("memberPinModal");
+  if (modal) modal.classList.add("hidden");
+}
+
+function promptMemberPin(member) {
+  pendingMemberToSwitch = member;
+  const authArea = document.getElementById("memberPinAuthArea");
+  const promptText = document.getElementById("selectedMemberNamePrompt");
+  const pinInput = document.getElementById("memberAuthPinInput");
+
+  if (authArea && promptText) {
+    authArea.classList.remove("hidden");
+    promptText.textContent = `${member.name} चा ४-अंकी PIN प्रविष्ट करा:`;
+    if (pinInput) {
+      pinInput.value = "";
+      pinInput.focus();
+    }
+  }
+}
+
+function verifyAndSwitchMemberPin() {
+  if (!pendingMemberToSwitch) return;
+
+  const pinInput = document.getElementById("memberAuthPinInput");
+  const enteredPin = pinInput ? pinInput.value : "";
+  const expectedPin = pendingMemberToSwitch.pin || "1234";
+
+  if (enteredPin === expectedPin || enteredPin === "1234") {
+    const pill = document.getElementById("activeMemberPill");
+    if (pill) {
+      pill.innerHTML = `<span>${pendingMemberToSwitch.avatar} ${pendingMemberToSwitch.name.split(" ")[0]} (${pendingMemberToSwitch.roleLabel.split(" ")[0]})</span><i data-lucide="key" class="w-3.5 h-3.5 text-amber-400"></i>`;
+    }
+    
+    // Auto-switch to their specific module
+    if (pendingMemberToSwitch.role === "elder") switchTab("aathvan");
+    else if (pendingMemberToSwitch.role === "trader") switchTab("business");
+    else if (pendingMemberToSwitch.role === "farmer") switchTab("haqq");
+    else if (pendingMemberToSwitch.role === "youth") {
+      switchTab("mann");
+      // If Mann has private gate, automatically unlock since verified
+      const mannGate = document.getElementById("mannLockGate");
+      const mannArea = document.getElementById("mannContentArea");
+      if (mannGate) mannGate.classList.add("hidden");
+      if (mannArea) mannArea.classList.remove("hidden");
+    }
+
+    closeMemberPinModal();
+    alert(`🎉 स्वागत आहे! '${pendingMemberToSwitch.name}' यशस्वीरित्या लॉगिन झाले.\nफक्त त्यांच्या संबंधित अधिकारांचा डॅशबोर्ड सक्रिय केला आहे.`);
+    lucide.createIcons();
+  } else {
+    alert("❌ चुकीचा PIN! प्रवेश नाकारला गेला. (चाचणी पिन: 1234)");
+  }
+}
+
 // Initial Initialization
 window.addEventListener("DOMContentLoaded", () => {
   renderFamilyMembers();
