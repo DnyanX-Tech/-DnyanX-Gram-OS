@@ -2084,6 +2084,146 @@ async function fetchStateFromFirebaseCloud(silent = false) {
 }
 
 // ==========================================
+// User Requested Modular Firebase Functions
+// ==========================================
+
+// १. PO Firestore मध्ये सेव्ह कर (savePOToCloud)
+async function savePOToCloud(poData) {
+  try {
+    if (window.fb && window.firebaseDB) {
+      const docRef = await window.fb.addDoc(
+        window.fb.collection(window.firebaseDB, "purchase_orders"),
+        {
+          ...poData,
+          createdAt: window.fb.serverTimestamp(),
+          userId: window.firebaseAuth?.currentUser?.uid || "guest"
+        }
+      );
+      console.log("✅ PO क्लाउडमध्ये सेव्ह झाला:", docRef.id);
+      return docRef.id;
+    } else if (fbDb) {
+      const docRef = await fbDb.collection("purchase_orders").add({
+        ...poData,
+        createdAt: new Date().toISOString(),
+        userId: fbAuth?.currentUser?.uid || "guest"
+      });
+      console.log("✅ PO क्लाउडमध्ये सेव्ह झाला:", docRef.id);
+      return docRef.id;
+    }
+  } catch (error) {
+    console.error("❌ PO सेव्ह करताना एरर:", error);
+    alert("डेटा सेव्ह झाला नाही. इंटरनेट तपासा.");
+  }
+}
+
+// २. सगळे PO क्लाउडमधून वाच (loadPOsFromCloud)
+async function loadPOsFromCloud() {
+  try {
+    if (window.fb && window.firebaseDB) {
+      const querySnapshot = await window.fb.getDocs(
+        window.fb.collection(window.firebaseDB, "purchase_orders")
+      );
+      const pos = [];
+      querySnapshot.forEach((doc) => {
+        pos.push({ id: doc.id, ...doc.data() });
+      });
+      console.log("✅ क्लाउडमधून PO मिळाले:", pos.length);
+      return pos;
+    } else if (fbDb) {
+      const querySnapshot = await fbDb.collection("purchase_orders").get();
+      const pos = [];
+      querySnapshot.forEach((doc) => {
+        pos.push({ id: doc.id, ...doc.data() });
+      });
+      console.log("✅ क्लाउडमधून PO मिळाले:", pos.length);
+      return pos;
+    }
+    return [];
+  } catch (error) {
+    console.error("❌ PO वाचताना एरर:", error);
+    return [];
+  }
+}
+
+// ३. रिअल-टाइम अपडेट (watchPOsRealtime)
+function watchPOsRealtime(callback) {
+  if (window.fb && window.firebaseDB) {
+    return window.fb.onSnapshot(
+      window.fb.collection(window.firebaseDB, "purchase_orders"),
+      (snapshot) => {
+        const pos = [];
+        snapshot.forEach((doc) => {
+          pos.push({ id: doc.id, ...doc.data() });
+        });
+        if (typeof callback === "function") callback(pos);
+      }
+    );
+  } else if (fbDb) {
+    return fbDb.collection("purchase_orders").onSnapshot((snapshot) => {
+      const pos = [];
+      snapshot.forEach((doc) => {
+        pos.push({ id: doc.id, ...doc.data() });
+      });
+      if (typeof callback === "function") callback(pos);
+    });
+  }
+}
+
+// ४. नोंदणी (Register)
+async function registerUser(email, password) {
+  try {
+    const auth = window.firebaseAuth || fbAuth;
+    if (window.fb && window.fb.createUserWithEmailAndPassword) {
+      const userCredential = await window.fb.createUserWithEmailAndPassword(auth, email, password);
+      console.log("✅ नोंदणी झाली:", userCredential.user.email);
+      alert("✅ नवीन खाते यशस्वीरित्या तयार झाले: " + userCredential.user.email);
+      return userCredential.user;
+    } else {
+      const res = await auth.createUserWithEmailAndPassword(email, password);
+      console.log("✅ नोंदणी झाली:", res.user.email);
+      alert("✅ नवीन खाते यशस्वीरित्या तयार झाले: " + res.user.email);
+      return res.user;
+    }
+  } catch (error) {
+    console.error("❌ नोंदणी एरर:", error.message);
+    alert("नोंदणी झाली नाही: " + error.message);
+  }
+}
+
+// ५. लॉगिन (Login)
+async function loginUser(email, password) {
+  try {
+    const auth = window.firebaseAuth || fbAuth;
+    if (window.fb && window.fb.signInWithEmailAndPassword) {
+      const userCredential = await window.fb.signInWithEmailAndPassword(auth, email, password);
+      console.log("✅ लॉगिन झालं:", userCredential.user.email);
+      alert("✅ लॉगिन यशस्वी झाले: " + userCredential.user.email);
+      return userCredential.user;
+    } else {
+      const res = await auth.signInWithEmailAndPassword(email, password);
+      console.log("✅ लॉगिन झालं:", res.user.email);
+      alert("✅ लॉगिन यशस्वी झाले: " + res.user.email);
+      return res.user;
+    }
+  } catch (error) {
+    console.error("❌ लॉगिन एरर:", error.message);
+    alert("लॉगिन झालं नाही: " + error.message);
+  }
+}
+
+// ६. लॉगआउट (Logout)
+async function logoutUser() {
+  const auth = window.firebaseAuth || fbAuth;
+  if (window.fb && window.fb.signOut) {
+    await window.fb.signOut(auth);
+  } else if (auth) {
+    await auth.signOut();
+  }
+  console.log("✅ लॉगआउट झालं");
+  location.reload();
+}
+
+// ==========================================
 // MODULE 11: FAMILY MEMBER PIN AUTH & PRIVACY
 // ==========================================
 let pendingMemberToSwitch = null;
