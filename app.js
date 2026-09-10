@@ -100,6 +100,14 @@ if (!appState.medicines) {
   appState.medicines = DEFAULT_STATE.medicines;
   appState.waterGlasses = 4;
 }
+if (!appState.familyTodos || !appState.familyTodos.length) {
+  appState.familyTodos = [
+    { id: 1, title: "आजोबांचे बीपीचे औषध मेडिकलमधून आणणे", assignee: "वडील", priority: "high", done: false },
+    { id: 2, title: "शेतातील खताचे अनुदान टोकन काढणे", assignee: "काका", priority: "medium", done: false },
+    { id: 3, title: "महावितरण कृषी पंप वीज बिल ऑनलाइन भरणे", assignee: "मुलगी", priority: "high", done: false },
+    { id: 4, title: "दुकान सप्लायरला नवीन सिमेंट ऑर्डर देणे", assignee: "वडील", priority: "low", done: true }
+  ];
+}
 
 function saveState() {
   if (window.DnyanXSecurity) {
@@ -1328,8 +1336,9 @@ function renderOverviewStats() {
 
   // 4. Pending family todos summary
   const tasksText = document.getElementById("overviewPendingTasksText");
-  if (tasksText && appState.familyTodos) {
-    const pendingList = appState.familyTodos.filter(t => !t.done);
+  if (tasksText) {
+    const todos = appState.familyTodos || [];
+    const pendingList = todos.filter(t => !t.done);
     if (pendingList.length > 0) {
       tasksText.textContent = `एकूण ${pendingList.length} कामे बाकी आहेत: "${pendingList[0].title}" व इतर.`;
     } else {
