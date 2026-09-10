@@ -1869,6 +1869,7 @@ const TRANSLATIONS = {
     secretTab: "🔐 गुपित तिजोरी व दस्तऐवज",
     financeTab: "💰 कुटुंब हिशोब व बचत",
     citizenTab: "🏛️ ई-ग्राम नागरिक सेवा",
+    cropdoctorTab: "🔬 AI पीक डॉक्टर",
     familyTab: "⚙️ परिवार प्रोफाइल",
     installBtn: "ॲप इन्स्टॉल करा (Install)"
   },
@@ -1883,6 +1884,7 @@ const TRANSLATIONS = {
     secretTab: "🔐 Secret Vault & Docs",
     financeTab: "💰 Family Finance & Ledger",
     citizenTab: "🏛️ Citizen e-Gram Portal",
+    cropdoctorTab: "🔬 AI Crop Doctor",
     familyTab: "⚙️ Family Setup",
     installBtn: "Install App"
   }
@@ -1896,37 +1898,40 @@ function toggleAppLanguage() {
   if (btnText) btnText.textContent = t.toggleBtn;
 
   const tabOv = document.getElementById("tab-overview");
-  if (tabOv) tabOv.querySelector("span").textContent = t.overviewTab;
+  if (tabOv && tabOv.querySelector("span")) tabOv.querySelector("span").textContent = t.overviewTab;
 
   const tabBiz = document.getElementById("tab-business");
-  if (tabBiz) tabBiz.querySelector("span").textContent = t.businessTab;
+  if (tabBiz && tabBiz.querySelector("span")) tabBiz.querySelector("span").textContent = t.businessTab;
 
   const tabAath = document.getElementById("tab-aathvan");
-  if (tabAath) tabAath.querySelector("span").textContent = t.aathvanTab;
+  if (tabAath && tabAath.querySelector("span")) tabAath.querySelector("span").textContent = t.aathvanTab;
 
   const tabHaq = document.getElementById("tab-haqq");
-  if (tabHaq) tabHaq.querySelector("span").textContent = t.haqqTab;
+  if (tabHaq && tabHaq.querySelector("span")) tabHaq.querySelector("span").textContent = t.haqqTab;
 
   const tabMan = document.getElementById("tab-mann");
-  if (tabMan) tabMan.querySelector("span").textContent = t.mannTab;
+  if (tabMan && tabMan.querySelector("span")) tabMan.querySelector("span").textContent = t.mannTab;
 
   const tabSha = document.getElementById("tab-shared");
-  if (tabSha) tabSha.querySelector("span").textContent = t.sharedTab;
+  if (tabSha && tabSha.querySelector("span")) tabSha.querySelector("span").textContent = t.sharedTab;
 
   const tabSec = document.getElementById("tab-secret");
-  if (tabSec) tabSec.querySelector("span").textContent = t.secretTab;
+  if (tabSec && tabSec.querySelector("span")) tabSec.querySelector("span").textContent = t.secretTab;
 
   const tabFin = document.getElementById("tab-finance");
-  if (tabFin) tabFin.querySelector("span").textContent = t.financeTab;
+  if (tabFin && tabFin.querySelector("span")) tabFin.querySelector("span").textContent = t.financeTab;
 
   const tabCit = document.getElementById("tab-citizen");
-  if (tabCit) tabCit.querySelector("span").textContent = t.citizenTab;
+  if (tabCit && tabCit.querySelector("span")) tabCit.querySelector("span").textContent = t.citizenTab;
+
+  const tabCrop = document.getElementById("tab-cropdoctor");
+  if (tabCrop && tabCrop.querySelector("span")) tabCrop.querySelector("span").textContent = t.cropdoctorTab;
 
   const tabFam = document.getElementById("tab-family");
-  if (tabFam) tabFam.querySelector("span").textContent = t.familyTab;
+  if (tabFam && tabFam.querySelector("span")) tabFam.querySelector("span").textContent = t.familyTab;
 
   const pwaBtn = document.getElementById("pwaInstallBtn");
-  if (pwaBtn) pwaBtn.querySelector("span").textContent = t.installBtn;
+  if (pwaBtn && pwaBtn.querySelector("span")) pwaBtn.querySelector("span").textContent = t.installBtn;
 
   alert(currentLang === 'mr' ? "भाषा मराठी म्हणून निवडली गेली आहे. 🙏" : "Language switched to English successfully. 👍");
 }
@@ -2544,6 +2549,85 @@ window.addEventListener("DOMContentLoaded", () => {
   renderOverviewStats();
   calculateFertilizerRequirement();
   switchTab("overview"); // Default view is Unified Master Family Hub!
-  initFirebaseCloud(); // Start Firebase Cloud Connection
   lucide.createIcons();
+});
+
+// Bind all interactive onclick functions explicitly to window scope
+const GLOBAL_HANDLERS = {
+  switchTab,
+  toggleAppLanguage,
+  triggerPwaInstall,
+  triggerEmergencySOS,
+  openVaultModal,
+  closeVaultModal,
+  reEncryptVaultNow,
+  exportEncryptedBackup,
+  openFirebaseAuthModal,
+  closeFirebaseAuthModal,
+  handleFirebaseLogin,
+  handleFirebaseRegister,
+  syncStateToFirebaseCloud,
+  fetchStateFromFirebaseCloud,
+  openMemberPinModal,
+  closeMemberPinModal,
+  verifyAndSwitchMemberPin,
+  unlockMannWithPin,
+  lockMannArea,
+  recordMood,
+  toggleBreathing,
+  sendQuickPrompt,
+  sendMannText,
+  addPoItemRow,
+  removePoItemRow,
+  generatePO,
+  sendPoViaWhatsApp,
+  openAddStockModal,
+  closeAddStockModal,
+  saveNewStockItem,
+  changeStockQty,
+  toggleCamera,
+  markFaceAttendance,
+  openAddMemberModal,
+  closeAddMemberModal,
+  saveNewFamilyMember,
+  saveFamilyHeaderInfo,
+  openAddMedicineModal,
+  closeAddMedicineModal,
+  saveNewMedicine,
+  markMedicineStatus,
+  snoozeMedicine,
+  drinkWaterGlass,
+  toggleVoiceAssistant,
+  startHaqqVoiceSearch,
+  filterHaqqSchemes,
+  applyForScheme,
+  openAddTodoModal,
+  closeAddTodoModal,
+  saveNewTodoItem,
+  toggleTodoStatus,
+  deleteTodoItem,
+  openAddSecretModal,
+  closeAddSecretModal,
+  saveNewSecretDocument,
+  viewSecretDocument,
+  deleteSecretDocument,
+  openAddFinanceModal,
+  closeAddFinanceModal,
+  saveNewFinanceTransaction,
+  deleteFinanceTransaction,
+  openApplyCitizenModal,
+  closeApplyCitizenModal,
+  prefillCitizenService,
+  submitCitizenApplication,
+  dispatchCitizenWhatsApp,
+  runCropDiagnosisAI,
+  shareDiagnosisWhatsApp,
+  saveDiagnosisToCloud,
+  calculateFertilizerRequirement
+};
+
+Object.entries(GLOBAL_HANDLERS).forEach(([name, fn]) => {
+  if (typeof fn === "function") {
+    window[name] = fn;
+  }
 });
