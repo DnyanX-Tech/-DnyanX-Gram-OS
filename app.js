@@ -1869,6 +1869,163 @@ function toggleAppLanguage() {
   alert(currentLang === 'mr' ? "भाषा मराठी म्हणून निवडली गेली आहे. 🙏" : "Language switched to English successfully. 👍");
 }
 
+// ==========================================
+// MODULE 10: FIREBASE CLOUD DATABASE & AUTH ENGINE
+// ==========================================
+const firebaseConfig = {
+  apiKey: "AIzaSyDcslvgu1WSKLkmuPW5WcUEgLcFO4pjZfs",
+  authDomain: "dnyanx-gramos.firebaseapp.com",
+  projectId: "dnyanx-gramos",
+  storageBucket: "dnyanx-gramos.firebasestorage.app",
+  messagingSenderId: "473550420352",
+  appId: "1:473550420352:web:5d89d419583953109f2965",
+  measurementId: "G-C8BYRRFVM5"
+};
+
+let fbApp = null;
+let fbAuth = null;
+let fbDb = null;
+let currentFbUser = null;
+
+function initFirebaseCloud() {
+  try {
+    if (window.firebase && !firebase.apps.length) {
+      fbApp = firebase.initializeApp(firebaseConfig);
+      fbAuth = firebase.auth();
+      fbDb = firebase.firestore();
+      console.log("🔥 Firebase Cloud Database Initialized Successfully!");
+
+      // Listen for auth state changes
+      fbAuth.onAuthStateChanged(user => {
+        currentFbUser = user;
+        updateFirebaseAuthUI(user);
+        if (user) {
+          console.log("Logged in Firebase user:", user.email);
+          fetchStateFromFirebaseCloud(true); // silent sync on login
+        }
+      });
+    }
+  } catch (err) {
+    console.warn("Firebase Init Notice:", err);
+  }
+}
+
+function updateFirebaseAuthUI(user) {
+  const statusBadge = document.getElementById("firebaseStatusText");
+  const emailDisplay = document.getElementById("firebaseCurrentEmail");
+  const connectionBadge = document.getElementById("firebaseConnectionBadge");
+
+  if (user) {
+    if (statusBadge) statusBadge.textContent = `${user.email.split('@')[0]} (Cloud ✅)`;
+    if (emailDisplay) emailDisplay.textContent = user.email;
+    if (connectionBadge) {
+      connectionBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span> क्लाउडवर सिंक सुरू`;
+      connectionBadge.className = "text-emerald-400 font-bold flex items-center gap-1";
+    }
+  } else {
+    if (statusBadge) statusBadge.textContent = "Firebase Cloud ☁️";
+    if (emailDisplay) emailDisplay.textContent = "पाटील परिवार (Guest Mode)";
+  }
+}
+
+function openFirebaseAuthModal() {
+  const modal = document.getElementById("firebaseAuthModal");
+  if (modal) modal.classList.remove("hidden");
+}
+
+function closeFirebaseAuthModal() {
+  const modal = document.getElementById("firebaseAuthModal");
+  if (modal) modal.classList.add("hidden");
+}
+
+async function handleFirebaseLogin() {
+  if (!fbAuth) {
+    alert("Firebase अजून लोड होत आहे, कृपया २ सेकंद थांबा.");
+    return;
+  }
+  const email = document.getElementById("fbEmailInput").value.trim();
+  const pass = document.getElementById("fbPasswordInput").value;
+
+  try {
+    const res = await fbAuth.signInWithEmailAndPassword(email, pass);
+    alert(`🎉 स्वागत आहे! ${res.user.email} खात्यात यशस्वी लॉगिन झाले.\nडेटा आता थेट क्लाउडशी जोडला गेला आहे.`);
+    closeFirebaseAuthModal();
+  } catch (err) {
+    console.error("Firebase Login Error:", err);
+    alert(`❌ लॉगिन त्रुटी: ${err.message}\n(टीप: जर खाते नसेल तर 'नवीन खाते (Register)' बटण दाबा.)`);
+  }
+}
+
+async function handleFirebaseRegister() {
+  if (!fbAuth) {
+    alert("Firebase अजून लोड होत आहे, कृपया २ सेकंद थांबा.");
+    return;
+  }
+  const email = document.getElementById("fbEmailInput").value.trim();
+  const pass = document.getElementById("fbPasswordInput").value;
+
+  try {
+    const res = await fbAuth.createUserWithEmailAndPassword(email, pass);
+    alert(`🎉 नवीन खाते यशस्वीरित्या तयार झाले!\nकुटुंब: ${res.user.email}\nआता तुमचा सर्व डेटा कायमचा क्लाउडवर सेव्ह होईल.`);
+    await syncStateToFirebaseCloud();
+    closeFirebaseAuthModal();
+  } catch (err) {
+    console.error("Firebase Register Error:", err);
+    alert(`❌ नोंदणी त्रुटी: ${err.message}`);
+  }
+}
+
+async function syncStateToFirebaseCloud() {
+  if (!fbDb) {
+    alert("Firebase क्लाउड उपलब्ध नाही. स्थानिक मेमरीत डेटा सुरक्षित आहे.");
+    return;
+  }
+
+  try {
+    const docId = currentFbUser ? currentFbUser.uid : "patil_family_master";
+    await fbDb.collection("families").doc(docId).set({
+      state: appState,
+      updatedAt: new Date().toISOString(),
+      familyName: appState.familyInfo ? appState.familyInfo.name : "पाटील परिवार"
+    }, { merge: true });
+
+    alert("☁️ सर्व डेटा (व्यापार, औषधे, हक्क, नागरिक अर्ज, हिशोब) थेट Firebase क्लाउडवर यशस्वी सेव्ह झाला!");
+  } catch (err) {
+    console.error("Firebase Cloud Save Error:", err);
+    alert("स्थानिक मेमरीत सेव्ह झाले आहे, परंतु क्लाउड सिंकसाठी लॉगिन आवश्यक आहे.");
+  }
+}
+
+async function fetchStateFromFirebaseCloud(silent = false) {
+  if (!fbDb) return;
+
+  try {
+    const docId = currentFbUser ? currentFbUser.uid : "patil_family_master";
+    const doc = await fbDb.collection("families").doc(docId).get();
+
+    if (doc.exists && doc.data().state) {
+      appState = doc.data().state;
+      saveState(); // Update local storage too
+      renderFamilyMembers();
+      renderPoItems();
+      renderStockList();
+      renderMedicineList();
+      renderHaqqSchemes();
+      renderFamilyTodos();
+      renderSecretVault();
+      renderFinanceLedger();
+      renderCitizenApplications();
+      renderOverviewStats();
+      if (!silent) alert("☁️ Firebase क्लाउडवरून ताजी माहिती यशस्वीरित्या लोड केली गेली!");
+    } else {
+      if (!silent) alert("क्लाउडवर अजून कोणतीही जुनी माहिती सापडली नाही. सध्याची माहिती सेव्ह करण्यासाठी 'क्लाउडवर सेव्ह करा' दाबा.");
+    }
+  } catch (err) {
+    console.error("Firebase Cloud Fetch Error:", err);
+    if (!silent) alert("क्लाउडवरून डेटा लोड करता आला नाही.");
+  }
+}
+
 // Initial Initialization
 window.addEventListener("DOMContentLoaded", () => {
   renderFamilyMembers();
@@ -1882,6 +2039,7 @@ window.addEventListener("DOMContentLoaded", () => {
   renderCitizenApplications();
   renderOverviewStats();
   switchTab("overview"); // Default view is Unified Master Family Hub!
+  initFirebaseCloud(); // Start Firebase Cloud Connection
   lucide.createIcons();
 });
 
