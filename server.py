@@ -1,4 +1,4 @@
-﻿"""
+"""
 DnyanX Parivar - High Security Encrypted Backend (Python + FastAPI)
 Features:
 - Military-grade AES Encryption (Fernet / AES-256)
@@ -66,12 +66,20 @@ app = FastAPI(
     version="2.0.0"
 )
 
+# Production Allowed Origins
+ALLOWED_ORIGINS = [
+    "https://dnyan-x-gram-os.vercel.app",
+    "http://localhost:3000",
+    "http://localhost:8000",
+    "http://127.0.0.1:5500"
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type"],
 )
 
 security_bearer = HTTPBearer()
