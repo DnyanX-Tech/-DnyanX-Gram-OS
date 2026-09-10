@@ -1851,11 +1851,42 @@
     </div>
   </div>
 
-  <!-- Firebase Official Web SDKs (Compat Engine for Zero-Build Vanilla HTML) -->
+  <!-- Firebase Official Modular SDK (CDN) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, doc, setDoc, deleteDoc, query, where, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // तुझा Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcslvgu1WSKLkmuPW5WcUEgLcFO4pjZfs",
+      authDomain: "dnyanx-gramos.firebaseapp.com",
+      projectId: "dnyanx-gramos",
+      storageBucket: "dnyanx-gramos.firebasestorage.app",
+      messagingSenderId: "473550420352",
+      appId: "1:473550420352:web:5d89d419583953109f2965",
+      measurementId: "G-C8BYRRFVM5"
+    };
+
+    // Firebase सुरू कर
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // जागतिक (Global) म्हणून उपलब्ध कर
+    window.firebaseApp = app;
+    window.firebaseAuth = auth;
+    window.firebaseDB = db;
+    window.db = db;
+    window.fb = { collection, addDoc, getDocs, doc, setDoc, deleteDoc, query, where, onSnapshot, serverTimestamp, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut };
+
+    console.log("✅ Firebase जोडला गेला!");
+  </script>
+
+  <!-- Firebase Compat Layer for backward compatibility -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
   <script src="firebase-config.js"></script>
 
   <!-- Security & Encryption Engine -->
