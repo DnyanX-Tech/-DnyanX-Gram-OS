@@ -78,14 +78,35 @@ const DEFAULT_STATE = {
   waterGlasses: 4
 };
 
-// Global App State
-let appState = JSON.parse(localStorage.getItem("dnyanx_parivar_state")) || DEFAULT_STATE;
+// Global App State (Encrypted Storage Vault)
+function loadEncryptedState() {
+  try {
+    const raw = localStorage.getItem("dnyanx_parivar_vault_enc");
+    if (raw && window.DnyanXSecurity) {
+      const parsedPacket = JSON.parse(raw);
+      const decrypted = window.DnyanXSecurity.decryptPayload(parsedPacket);
+      if (decrypted && decrypted.familyInfo) return decrypted;
+    }
+  } catch (e) {
+    console.warn("Encrypted load fallback:", e);
+  }
+  // Fallback to legacy unencrypted or default
+  const legacy = localStorage.getItem("dnyanx_parivar_state");
+  return legacy ? JSON.parse(legacy) : DEFAULT_STATE;
+}
+
+let appState = loadEncryptedState();
 if (!appState.medicines) {
   appState.medicines = DEFAULT_STATE.medicines;
   appState.waterGlasses = 4;
 }
 
 function saveState() {
+  if (window.DnyanXSecurity) {
+    const encryptedPacket = window.DnyanXSecurity.encryptPayload(appState);
+    localStorage.setItem("dnyanx_parivar_vault_enc", JSON.stringify(encryptedPacket));
+  }
+  // Also keep synchronized legacy
   localStorage.setItem("dnyanx_parivar_state", JSON.stringify(appState));
 }
 

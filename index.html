@@ -65,7 +65,13 @@
         <span class="text-xs text-emerald-400 font-medium">Family Plan Active (₹499/महिना)</span>
       </div>
 
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-3">
+        <!-- Security Encryption Badge -->
+        <div class="hidden lg:flex items-center gap-1.5 bg-emerald-950/60 border border-emerald-500/40 px-3 py-1 rounded-full text-emerald-300 text-xs font-mono">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>AES-256 Encrypted</span>
+        </div>
+
         <span class="text-xs text-slate-400 hidden sm:inline">सध्याचा सदस्य:</span>
         <div id="activeMemberPill" class="flex items-center gap-2 bg-amber-500/20 border border-amber-500/30 px-3 py-1.5 rounded-xl text-amber-300 text-sm font-semibold">
           <span>👨‍💼 वडील (व्यापारी)</span>
@@ -618,6 +624,8 @@
     </div>
   </div>
 
+  <!-- Security & Encryption Engine -->
+  <script src="crypto.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
