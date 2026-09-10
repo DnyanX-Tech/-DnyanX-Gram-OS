@@ -108,6 +108,16 @@ function saveState() {
   }
   // Also keep synchronized legacy
   localStorage.setItem("dnyanx_parivar_state", JSON.stringify(appState));
+
+  // Automatic Background Cloud Sync to Firestore
+  if (window.fbDb) {
+    const docId = window.currentFbUser ? window.currentFbUser.uid : "patil_family_master";
+    window.fbDb.collection("families").doc(docId).set({
+      state: appState,
+      updatedAt: new Date().toISOString(),
+      familyName: appState.familyInfo ? appState.familyInfo.name : "पाटील परिवार"
+    }, { merge: true }).catch(e => console.log("Firestore background sync notice:", e));
+  }
 }
 
 // ------------------------------------------
@@ -1723,6 +1733,24 @@ function saveNewCitizenApplication() {
   renderCitizenApplications();
   closeApplyCitizenModal();
 
+  // Save directly to Firestore collection 'villagers' as requested
+  if (window.fbDb) {
+    window.fbDb.collection("villagers").add({
+      appId: appId,
+      name: name,
+      phone: phone,
+      service: service,
+      details: details,
+      date: new Date().toISOString(),
+      displayDate: dateStr,
+      status: "प्रक्रिया सुरू (Pending)"
+    }).then(docRef => {
+      console.log("Firestore villagers collection saved! Doc ID:", docRef.id);
+    }).catch(err => {
+      console.error("Firestore villagers collection save error:", err);
+    });
+  }
+
   // Prompt user to immediately dispatch WhatsApp receipt
   const wantWhatsApp = confirm(`✅ अर्ज क्र. ${appId} यशस्वीरित्या ग्रामपंचायत पोर्टलवर दाखल झाला आहे!\n\nग्रामसेवक किंवा स्वतःच्या व्हॉट्सॲपवर अधिकृत पावती पाठवायची आहे का?`);
   if (wantWhatsApp) {
@@ -1893,6 +1921,9 @@ function initFirebaseCloud() {
       fbApp = firebase.initializeApp(firebaseConfig);
       fbAuth = firebase.auth();
       fbDb = firebase.firestore();
+      window.fbApp = fbApp;
+      window.fbAuth = fbAuth;
+      window.fbDb = fbDb;
       console.log("🔥 Firebase Cloud Database Initialized Successfully!");
 
       // Listen for auth state changes
