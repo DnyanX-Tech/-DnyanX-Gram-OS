@@ -1,4 +1,4 @@
-﻿// ==========================================
+// ==========================================
 // DnyanX परिवार (India's First Family OS)
 // App Logic & State Manager
 // ==========================================
@@ -69,11 +69,21 @@ const DEFAULT_STATE = {
   attendanceLogs: [
     { name: "सचिन कांबळे (मॅनेजर)", time: "09:15 AM", status: "हजर ✅" },
     { name: "गणेश पवार (हेल्पर)", time: "09:40 AM", status: "हजर ✅" }
-  ]
+  ],
+  medicines: [
+    { id: 1, name: "बीपीची गोळी (Telma 40)", time: "09:00 AM", instruction: "सकाळी नाश्त्यानंतर", status: "taken" },
+    { id: 2, name: "मधुमेह गोळी (Glycomet 500)", time: "01:30 PM", instruction: "दुपारी जेवणाआधी", status: "pending" },
+    { id: 3, name: "कॅल्शियम व व्हिटॅमिन डी", time: "08:30 PM", instruction: "रात्री जेवणानंतर", status: "pending" }
+  ],
+  waterGlasses: 4
 };
 
 // Global App State
 let appState = JSON.parse(localStorage.getItem("dnyanx_parivar_state")) || DEFAULT_STATE;
+if (!appState.medicines) {
+  appState.medicines = DEFAULT_STATE.medicines;
+  appState.waterGlasses = 4;
+}
 
 function saveState() {
   localStorage.setItem("dnyanx_parivar_state", JSON.stringify(appState));
@@ -84,21 +94,34 @@ function saveState() {
 // ------------------------------------------
 function switchTab(tabId) {
   const businessView = document.getElementById("view-business");
+  const aathvanView = document.getElementById("view-aathvan");
   const familyView = document.getElementById("view-family");
   const tabBusiness = document.getElementById("tab-business");
+  const tabAathvan = document.getElementById("tab-aathvan");
   const tabFamily = document.getElementById("tab-family");
+
+  // Hide all
+  businessView.classList.add("hidden");
+  if (aathvanView) aathvanView.classList.add("hidden");
+  familyView.classList.add("hidden");
+
+  // Reset tab classes
+  tabBusiness.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition";
+  if (tabAathvan) tabAathvan.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-emerald-900/40 transition";
+  tabFamily.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition";
 
   if (tabId === "business") {
     businessView.classList.remove("hidden");
-    familyView.classList.add("hidden");
     tabBusiness.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 transition";
-    tabFamily.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition";
+  } else if (tabId === "aathvan") {
+    if (aathvanView) aathvanView.classList.remove("hidden");
+    if (tabAathvan) tabAathvan.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 transition";
+    renderMedicineList();
   } else if (tabId === "family") {
-    businessView.classList.add("hidden");
     familyView.classList.remove("hidden");
     tabFamily.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 transition";
-    tabBusiness.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition";
   }
+  lucide.createIcons();
 }
 
 // ------------------------------------------
@@ -506,10 +529,266 @@ function markFaceAttendance() {
   }, 1200);
 }
 
+// ==========================================
+// MODULE 3: आठवण (Aathvan - Phase 2 Methods)
+// ==========================================
+
+function renderMedicineList() {
+  const container = document.getElementById("medicineListContainer");
+  const waterDisplay = document.getElementById("waterGlassCount");
+  if (!container) return;
+
+  if (waterDisplay) {
+    waterDisplay.textContent = appState.waterGlasses || 4;
+  }
+
+  container.innerHTML = "";
+  appState.medicines.forEach((med, index) => {
+    const isTaken = med.status === "taken";
+    const card = document.createElement("div");
+    card.className = `p-4 rounded-2xl border transition ${
+      isTaken 
+        ? 'bg-emerald-950/20 border-emerald-800/40 text-slate-300' 
+        : 'bg-slate-950 border-slate-800 text-white'
+    } flex flex-col sm:flex-row sm:items-center justify-between gap-4`;
+
+    card.innerHTML = `
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold ${
+          isTaken ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'
+        }">
+          ${isTaken ? '✅' : '💊'}
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h4 class="text-base font-bold ${isTaken ? 'line-through text-slate-400' : 'text-white'}">${med.name}</h4>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full ${
+              isTaken ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'
+            }">${med.time}</span>
+          </div>
+          <p class="text-xs text-slate-400 mt-0.5">${med.instruction}</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="markMedicineStatus(${med.id}, 'taken')" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+          isTaken 
+            ? 'bg-slate-800 text-emerald-400 cursor-default' 
+            : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/30 active:scale-95'
+        }">
+          <i data-lucide="check" class="w-3.5 h-3.5"></i>
+          <span>${isTaken ? 'घेतली आहे ✅' : 'हो घेतली ✅'}</span>
+        </button>
+
+        ${!isTaken ? `
+          <button onclick="snoozeMedicine(${med.id})" class="px-3 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700">
+            ⏰ थोड्या वेळाने
+          </button>
+        ` : ''}
+      </div>
+    `;
+    container.appendChild(card);
+  });
+  lucide.createIcons();
+}
+
+function markMedicineStatus(id, status) {
+  const med = appState.medicines.find(m => m.id === id);
+  if (med) {
+    med.status = status;
+    saveState();
+    renderMedicineList();
+    if (status === "taken") {
+      speakMarathi(`छान आजोबा! तुम्ही ${med.name} घेतली आहे. तब्येतीची काळजी घ्या!`);
+    }
+  }
+}
+
+function snoozeMedicine(id) {
+  const med = appState.medicines.find(m => m.id === id);
+  if (med) {
+    alert(`⏰ ${med.name} साठी १५ मिनिटांचा अलार्म सेट केला आहे.`);
+    speakMarathi(`ठीक आहे आजोबा, मी १५ मिनिटांनी पुन्हा आठवण करून देईन.`);
+  }
+}
+
+function drinkWaterGlass() {
+  appState.waterGlasses = (appState.waterGlasses || 0) + 1;
+  saveState();
+  const waterDisplay = document.getElementById("waterGlassCount");
+  if (waterDisplay) waterDisplay.textContent = appState.waterGlasses;
+  speakMarathi(`अतिशय उत्तम आजोबा! पाणी प्यायल्याने ताजेतवाने वाटते.`);
+}
+
+function openAddMedicineModal() {
+  document.getElementById("addMedicineModal").classList.remove("hidden");
+}
+
+function closeAddMedicineModal() {
+  document.getElementById("addMedicineModal").classList.add("hidden");
+}
+
+function saveNewMedicine() {
+  const name = document.getElementById("newMedName").value;
+  const time = document.getElementById("newMedTime").value;
+  const instruction = document.getElementById("newMedInstruction").value;
+
+  appState.medicines.push({
+    id: Date.now(),
+    name: name,
+    time: time,
+    instruction: instruction,
+    status: "pending"
+  });
+
+  saveState();
+  renderMedicineList();
+  closeAddMedicineModal();
+  alert(`'${name}' हे नवीन औषध वेळापत्रकात जोडले गेले!`);
+}
+
+// Emergency SOS Trigger
+function triggerEmergencySOS() {
+  const contact = appState.familyInfo.phone || "+919822012345";
+  const elderName = "आनंदा पाटील (आजोबा)";
+  
+  const msg = `🚨 *तातडीचा इशारा! (DnyanX आठवण SOS)* 🚨%0A%0A` +
+    `प्रिय कुटुंबिय, *${elderName}* यांनी घरातून तातडीचे मदतीचे (Emergency SOS) बटण दाबले आहे!%0A` +
+    `पत्ता: *${appState.familyInfo.address}*%0A%0A` +
+    `कृपया तात्काळ त्यांच्याशी संपर्क साधा किंवा शेजाऱ्यांना कळवा!%0A` +
+    `_DnyanX परिवार द्वारे पाठवलेला स्वयंचलित सुरक्षा संदेश._`;
+
+  // WhatsApp Alert Link
+  const rawPhone = contact.replace(/\D/g, "");
+  const waUrl = `https://wa.me/91${rawPhone.slice(-10)}?text=${msg}`;
+  window.open(waUrl, "_blank");
+
+  speakMarathi("सावध व्हा! आपत्कालीन इशारा कुटुंबियांना व्हॉट्सॲपवर पाठवला गेला आहे.");
+  alert("🚨 तातडीची मदत (SOS)! कुटुंबियांच्या व्हॉट्सॲपवर संदेश पाठवला गेला आहे.");
+}
+
+// Marathi Voice & Speech Assistant Logic
+let isListening = false;
+
+function toggleVoiceAssistant() {
+  const btn = document.getElementById("voiceListenBtn");
+  const title = document.getElementById("voiceStatusTitle");
+  const sub = document.getElementById("voiceStatusSub");
+
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    // Fallback if browser doesn't support Web Speech
+    const prompts = [
+      "आजोबा, सकाळची बीपीची गोळी घेतली का?",
+      "आजोबा, आज हवामान खूप छान आहे, थोडे फिरून या!",
+      "आजोबा, पाणी पिण्याची वेळ झाली आहे, १ ग्लास पाणी घ्या."
+    ];
+    const reply = prompts[Math.floor(Math.random() * prompts.length)];
+    appendAathvanReply(reply);
+    speakMarathi(reply);
+    return;
+  }
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SpeechRecognition();
+  recognition.lang = 'mr-IN'; // Marathi language recognition
+  recognition.interimResults = false;
+
+  if (!isListening) {
+    recognition.start();
+    isListening = true;
+    btn.classList.add("scale-110", "ring-4", "ring-emerald-400");
+    title.textContent = "मी ऐकत आहे... (बोलत रहा)";
+    sub.textContent = "मराठीत बोला: 'माझं औषध', 'गोष्ट सांगा', 'नमस्कार' इ.";
+
+    recognition.onresult = (event) => {
+      const userSpoke = event.results[0][0].transcript;
+      appendUserQuery(userSpoke);
+      processAathvanQuery(userSpoke);
+    };
+
+    recognition.onerror = (e) => {
+      isListening = false;
+      btn.classList.remove("scale-110", "ring-4", "ring-emerald-400");
+      title.textContent = "माझ्याशी बोला (Tap to Speak)";
+      sub.textContent = "माइकवर क्लिक करा आणि बोला";
+    };
+
+    recognition.onend = () => {
+      isListening = false;
+      btn.classList.remove("scale-110", "ring-4", "ring-emerald-400");
+      title.textContent = "माझ्याशी बोला (Tap to Speak)";
+      sub.textContent = "माइकवर क्लिक करा आणि बोला";
+    };
+  }
+}
+
+function processAathvanQuery(query) {
+  let reply = "आजोबा, मी तुमच्या सोबत आहे! सांगा मी काय मदत करू?";
+  const q = query.toLowerCase();
+
+  if (q.includes("औषध") || q.includes("गोळी")) {
+    const pendingMed = appState.medicines.find(m => m.status === "pending");
+    if (pendingMed) {
+      reply = `आजोबा, तुमची ${pendingMed.name} ${pendingMed.time} वाजता घ्यायची बाकी आहे.`;
+    } else {
+      reply = "आजोबा, आजची सर्व औषधे तुम्ही वेळेवर घेतली आहेत. खूप छान!";
+    }
+  } else if (q.includes("पाणी")) {
+    reply = `आजोबा, आज तुम्ही एकूण ${appState.waterGlasses || 4} ग्लास पाणी प्यायला आहात. अजून १ ग्लास पाणी पिऊन घ्या.`;
+  } else if (q.includes("गोष्ट") || q.includes("गाणं") || q.includes("कथा")) {
+    reply = "एकदा एका सुंदर गावात एक शेतकरी राहायचा, त्याचे गावकरी त्याच्या ज्ञानाचा आदर करायचे. माणसाचे खरे धन त्याचे कुटुंब असते!";
+  } else if (q.includes("नमस्कार") || q.includes("कसा आहेस") || q.includes("कसे आहात")) {
+    reply = "नमस्कार आजोबा! मी अगदी मस्त आहे. तुम्ही कसे आहात? आज काही दुखत नाही ना?";
+  }
+
+  appendAathvanReply(reply);
+  speakMarathi(reply);
+}
+
+function sendAathvanText() {
+  const input = document.getElementById("aathvanChatInput");
+  const text = input.value.trim();
+  if (!text) return;
+
+  appendUserQuery(text);
+  input.value = "";
+  processAathvanQuery(text);
+}
+
+function appendUserQuery(text) {
+  const chatLog = document.getElementById("aathvanChatLog");
+  const div = document.createElement("div");
+  div.className = "bg-slate-900 border border-slate-700/60 rounded-xl p-3 text-xs text-right text-indigo-300";
+  div.innerHTML = `<strong>तुम्ही:</strong> ${text}`;
+  chatLog.appendChild(div);
+  chatLog.scrollTop = chatLog.scrollHeight;
+}
+
+function appendAathvanReply(text) {
+  const chatLog = document.getElementById("aathvanChatLog");
+  const div = document.createElement("div");
+  div.className = "bg-slate-900/90 border border-emerald-800/40 rounded-xl p-3 text-xs text-slate-200 animate-fadeIn";
+  div.innerHTML = `<div class="font-bold text-emerald-400 mb-1 flex items-center gap-1"><span>🌸 आठवण AI:</span></div><p>${text}</p>`;
+  chatLog.appendChild(div);
+  chatLog.scrollTop = chatLog.scrollHeight;
+}
+
+function speakMarathi(text) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'mr-IN';
+    utterance.rate = 0.9; // થોडं शांत आणि स्पष्ट
+    window.speechSynthesis.speak(utterance);
+  }
+}
+
 // Initial Initialization
 window.addEventListener("DOMContentLoaded", () => {
   renderFamilyMembers();
   renderPoItems();
   renderStockList();
+  renderMedicineList();
   lucide.createIcons();
 });
+

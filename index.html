@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="mr" class="dark">
 <head>
   <meta charset="UTF-8">
@@ -84,19 +84,20 @@
         <span>व्यापार OS (Business)</span>
       </button>
 
+      <!-- Module 3: Aathvan (Phase 2 LIVE) -->
+      <button onclick="switchTab('aathvan')" id="tab-aathvan" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-emerald-900/40 transition">
+        <i data-lucide="heart-pulse" class="w-4 h-4"></i>
+        <span>🌸 आठवण (वृद्ध सोबती)</span>
+        <span class="text-[10px] bg-emerald-500 text-slate-950 font-black px-1.5 py-0.5 rounded-full uppercase">Live</span>
+      </button>
+
       <button onclick="switchTab('family')" id="tab-family" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition">
         <i data-lucide="users-2" class="w-4 h-4"></i>
         <span>परिवार Setup (Family Profile)</span>
       </button>
 
-      <!-- Upcoming Modules Preview (Phase 2, 3, 4) -->
-      <button onclick="alert('🌸 आठवण (ज्येष्ठांची काळजी) मोड्यूल लवकरच Phase 2 मध्ये जोडले जाईल!')" class="px-4 py-2.5 rounded-xl font-semibold text-sm flex items-center gap-2 bg-slate-900/50 hover:bg-slate-800 text-emerald-400/80 border border-emerald-900/30 transition">
-        <i data-lucide="heart-pulse" class="w-4 h-4"></i>
-        <span>🌸 आठवण (वृद्ध सोबती)</span>
-        <span class="text-[10px] bg-emerald-950 text-emerald-300 px-1.5 py-0.5 rounded">Phase 2</span>
-      </button>
-
-      <button onclick="alert('🌾 हक्क (शेतकरी योजना) मोड्यूल लवकरच Phase 3 मध्ये जोडले जाईल!')" class="px-4 py-2.5 rounded-xl font-semibold text-sm flex items-center gap-2 bg-slate-900/50 hover:bg-slate-800 text-lime-400/80 border border-lime-900/30 transition">
+      <!-- Upcoming Modules Preview (Phase 3 & 4) -->
+      <button onclick="alert('🌾 हक्क (शेतकरी योजना) लवकरच Phase 3 मध्ये सक्रिय होईल!')" class="px-4 py-2.5 rounded-xl font-semibold text-sm flex items-center gap-2 bg-slate-900/50 hover:bg-slate-800 text-lime-400/80 border border-lime-900/30 transition">
         <i data-lucide="sprout" class="w-4 h-4"></i>
         <span>🌾 हक्क (शेतकरी योजना)</span>
       </button>
@@ -332,7 +333,130 @@
     </section>
 
     <!-- ======================================================== -->
-    <!-- VIEW 2: FAMILY SETUP (MODULE 1) -->
+    <!-- VIEW 2: MODULE 3 - आठवण (AATHVAN - PHASE 2 LIVE) -->
+    <!-- ======================================================== -->
+    <section id="view-aathvan" class="hidden space-y-6">
+
+      <!-- Elder Banner / Overview -->
+      <div class="bg-gradient-to-r from-emerald-950/80 via-slate-900 to-teal-950/80 border border-emerald-800/40 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-emerald-500/20 border-2 border-emerald-400/50 flex items-center justify-center text-3xl shadow-lg shadow-emerald-500/20">
+              🌸
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 class="text-2xl font-black text-white tracking-wide">आठवण — तुमचा प्रेमळ सोबती</h2>
+                <span class="bg-emerald-500/20 text-emerald-300 text-xs font-bold px-2.5 py-0.5 rounded-full border border-emerald-500/30">Phase 2 Active</span>
+              </div>
+              <p class="text-sm text-emerald-300/80 mt-1">ज्येष्ठ नागरिक: <strong class="text-white">आनंदा पाटील (वय ७८)</strong> — आरोग्य, औषध वेळ आणि मराठी संवाद</p>
+            </div>
+          </div>
+
+          <!-- Emergency SOS Button -->
+          <div class="flex items-center gap-3">
+            <button onclick="triggerEmergencySOS()" class="w-full md:w-auto bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 active:scale-95 text-white text-base font-black px-6 py-3.5 rounded-2xl shadow-xl shadow-rose-600/40 flex items-center justify-center gap-2.5 border-2 border-rose-400 transition transform">
+              <span class="text-xl">🚨</span>
+              <span>तातडीची मदत (SOS Alert)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main 2-Column Content: Medicine Schedule (Left) + Voice AI Companion (Right) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left: Medicine & Care Schedule (7 cols) -->
+        <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-6">
+          
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                <i data-lucide="pill" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h3 class="text-lg font-bold text-white">आजचे औषध व पाणी वेळापत्रक</h3>
+                <p class="text-xs text-slate-400">वेळेवर औषध घेतल्यावर खालील बटण दाबा</p>
+              </div>
+            </div>
+            <button onclick="openAddMedicineModal()" class="text-xs font-bold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> नवीन औषध जोडा
+            </button>
+          </div>
+
+          <!-- Dynamic Medicines List -->
+          <div class="space-y-3.5" id="medicineListContainer">
+            <!-- Dynamic items loaded here -->
+          </div>
+
+          <!-- Quick Water Reminder Card -->
+          <div class="bg-gradient-to-r from-cyan-950/40 to-blue-950/40 border border-cyan-800/30 rounded-2xl p-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-2xl">
+                💧
+              </div>
+              <div>
+                <h4 class="text-base font-bold text-white">पाणी पिण्याची आठवण</h4>
+                <p class="text-xs text-cyan-300">आज एकूण <span id="waterGlassCount" class="font-bold text-white text-sm">४</span> ग्लास पाणी पिऊन झाले आहे</p>
+              </div>
+            </div>
+            <button onclick="drinkWaterGlass()" class="bg-cyan-600 hover:bg-cyan-500 active:scale-95 text-white font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-1.5 shadow-lg shadow-cyan-600/30 transition">
+              <i data-lucide="plus" class="w-4 h-4"></i> १ ग्लास प्यायलो
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Right: Marathi Voice AI Companion (5 cols) -->
+        <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col justify-between space-y-6">
+          
+          <div>
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+              <div class="flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-5 h-5 text-amber-400"></i>
+                <h3 class="font-bold text-white text-base">मराठी AI सोबती (बोलणारा मित्र)</h3>
+              </div>
+              <span class="text-[11px] bg-indigo-500/20 text-indigo-300 font-semibold px-2 py-0.5 rounded-full">Voice & Chat</span>
+            </div>
+
+            <!-- Big Voice Interaction Circle -->
+            <div class="bg-slate-950 rounded-2xl p-6 border border-slate-800 flex flex-col items-center text-center">
+              <div class="relative flex items-center justify-center my-2">
+                <button id="voiceListenBtn" onclick="toggleVoiceAssistant()" class="w-28 h-28 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 flex flex-col items-center justify-center text-white shadow-xl shadow-emerald-600/30 border-4 border-emerald-400/50 active:scale-90 transition transform duration-200">
+                  <i data-lucide="mic" id="voiceMicIcon" class="w-10 h-10"></i>
+                </button>
+              </div>
+              <h4 class="text-base font-bold text-white mt-3" id="voiceStatusTitle">माझ्याशी बोला (Tap to Speak)</h4>
+              <p class="text-xs text-slate-400 max-w-xs mt-1" id="voiceStatusSub">माइकवर क्लिक करा आणि बोला: "औषध कधी घ्यायचं?" किंवा "छान गोष्ट सांगा!"</p>
+            </div>
+
+            <!-- AI Chat Stream Box -->
+            <div class="mt-4 bg-slate-950 border border-slate-800 rounded-2xl p-4 max-h-56 overflow-y-auto custom-scroll space-y-3" id="aathvanChatLog">
+              <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 text-xs text-slate-300">
+                <div class="flex items-center gap-1.5 font-bold text-emerald-400 mb-1">
+                  <span>🌸 आठवण AI:</span>
+                </div>
+                <p>नमस्कार आजोबा! मी तुमचा डिजिटल नातू 'आठवण'. आज तुम्हाला कसं वाटतंय? सकाळची बीपीची गोळी घेतली का?</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Chat Input Box -->
+          <form onsubmit="event.preventDefault(); sendAathvanText();" class="flex gap-2">
+            <input type="text" id="aathvanChatInput" placeholder="किंवा येथे मराठीत मेसेज लिहा..." class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+            <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center">
+              <i data-lucide="send" class="w-3.5 h-3.5"></i>
+            </button>
+          </form>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 3: FAMILY SETUP (MODULE 1) -->
     <!-- ======================================================== -->
     <section id="view-family" class="hidden space-y-6">
 
@@ -454,6 +578,41 @@
         <div class="flex justify-end gap-2 pt-2">
           <button type="button" onclick="closeAddMemberModal()" class="px-4 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300">रद्द करा</button>
           <button type="submit" class="px-4 py-2 rounded-lg text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white">सदस्य जोडा</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Add Medicine Modal (Phase 2) -->
+  <div id="addMedicineModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+        <h3 class="text-base font-bold text-white">नवीन औषधाची वेळ जोडा</h3>
+        <button onclick="closeAddMedicineModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <form onsubmit="event.preventDefault(); saveNewMedicine();" class="space-y-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">औषध / गोळीचे नाव (Medicine Name) *</label>
+          <input type="text" id="newMedName" required placeholder="उदा. बीपीची गोळी (Telma 40)" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">वेळ (Time)</label>
+            <input type="text" id="newMedTime" required placeholder="उदा. 09:00 AM" value="09:00 AM" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">कधी घ्यायची?</label>
+            <select id="newMedInstruction" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              <option value="नाश्त्यानंतर">नाश्त्यानंतर</option>
+              <option value="जेवणाआधी">जेवणाआधी</option>
+              <option value="जेवणानंतर">जेवणानंतर</option>
+              <option value="झोपताना">झोपताना</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeAddMedicineModal()" class="px-4 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300">रद्द करा</button>
+          <button type="submit" class="px-4 py-2 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white">औषध सेव्ह करा</button>
         </div>
       </form>
     </div>
