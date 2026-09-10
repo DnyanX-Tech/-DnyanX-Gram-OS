@@ -116,19 +116,24 @@ function saveState() {
 function switchTab(tabId) {
   const businessView = document.getElementById("view-business");
   const aathvanView = document.getElementById("view-aathvan");
+  const haqqView = document.getElementById("view-haqq");
   const familyView = document.getElementById("view-family");
+
   const tabBusiness = document.getElementById("tab-business");
   const tabAathvan = document.getElementById("tab-aathvan");
+  const tabHaqq = document.getElementById("tab-haqq");
   const tabFamily = document.getElementById("tab-family");
 
   // Hide all
   businessView.classList.add("hidden");
   if (aathvanView) aathvanView.classList.add("hidden");
+  if (haqqView) haqqView.classList.add("hidden");
   familyView.classList.add("hidden");
 
   // Reset tab classes
   tabBusiness.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition";
   if (tabAathvan) tabAathvan.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-emerald-900/40 transition";
+  if (tabHaqq) tabHaqq.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-lime-400 border border-lime-900/40 transition";
   tabFamily.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition";
 
   if (tabId === "business") {
@@ -138,6 +143,10 @@ function switchTab(tabId) {
     if (aathvanView) aathvanView.classList.remove("hidden");
     if (tabAathvan) tabAathvan.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 transition";
     renderMedicineList();
+  } else if (tabId === "haqq") {
+    if (haqqView) haqqView.classList.remove("hidden");
+    if (tabHaqq) tabHaqq.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-lime-600 text-slate-950 font-black shadow-lg shadow-lime-600/30 transition";
+    renderHaqqSchemes();
   } else if (tabId === "family") {
     familyView.classList.remove("hidden");
     tabFamily.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 transition";
@@ -804,12 +813,211 @@ function speakMarathi(text) {
   }
 }
 
+// ==========================================
+// MODULE 4: हक्क (Haqq - Phase 3 Schemes Engine)
+// ==========================================
+
+const DEFAULT_HAQQ_SCHEMES = [
+  {
+    id: "sch-1",
+    name: "नमो शेतकरी महासन्मान निधी + PM-KISAN",
+    category: "direct",
+    categoryLabel: "थेट बँक मदत",
+    benefit: "₹ १२,००० प्रति वर्ष (थेट DBT खात्यात)",
+    badgeColor: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+    eligibility: "सर्व जमीनधारक शेतकरी (अल्प व अत्यल्प भूधारक विशेष प्राधान्य)",
+    docs: "आधार कार्ड, ७/१२ व ८-अ उतारा, बँक पासबुक (NPCI लिंक)",
+    officialPortal: "mahadbt.maharashtra.gov.in",
+    matchPercentage: 98
+  },
+  {
+    id: "sch-2",
+    name: "मागेल त्याला ठिबक / तुषार सिंचन योजना",
+    category: "water",
+    categoryLabel: "पाणी व सिंचन",
+    benefit: "८०% पर्यंत थेट सरकारी अनुदान (Subsidy)",
+    badgeColor: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
+    eligibility: "विहीर / बोअरवेल / कालवा पाणी स्त्रोत असलेले सर्व शेतकरी",
+    docs: "७/१२, ८-अ, वीज बिल, कोटेशन पावती, पाणी उपलब्धता दाखला",
+    officialPortal: "krishi.maharashtra.gov.in",
+    matchPercentage: 94
+  },
+  {
+    id: "sch-3",
+    name: "महाकृषी कृषी यांत्रिकीकरण योजना (ट्रॅक्टर व अवजारे)",
+    category: "subsidy",
+    categoryLabel: "कृषी अवजारे",
+    benefit: "₹ १,२५,००० पर्यंत ट्रॅक्टर सबसिडी (५०% ते ८०% अनुदान)",
+    badgeColor: "bg-amber-500/20 text-amber-300 border-amber-500/30",
+    eligibility: "स्वतःच्या नावावर जमीन असणारे शेतकरी व महिला शेतकरी",
+    docs: "७/१२, आधार, अवजाराचे टेस्ट रिपोर्ट कोटेशन, जात प्रमाणपत्र (लागू असल्यास)",
+    officialPortal: "mahadbt.maharashtra.gov.in",
+    matchPercentage: 89
+  },
+  {
+    id: "sch-4",
+    name: "पंतप्रधान पीक विमा योजना (१ रुपयात पीक विमा)",
+    category: "insurance",
+    categoryLabel: "पीक संरक्षण",
+    benefit: "गारपीट, दुष्काळ किंवा अवकाळी नुकसानीवर १००% विमा भरपाई",
+    badgeColor: "bg-rose-500/20 text-rose-300 border-rose-500/30",
+    eligibility: "खरीप व रब्बी हंगामातील सर्व बागायतदार व जिरायतदार",
+    docs: "७/१२ वर पीक पाहणी नोंद (ई-पीक पाहणी), आधार कार्ड",
+    officialPortal: "pmfby.gov.in",
+    matchPercentage: 99
+  },
+  {
+    id: "sch-5",
+    name: "मागेल त्याला सौर कृषी पंप (KUSUM / महावितरण)",
+    category: "water",
+    categoryLabel: "सौर ऊर्जा पंप",
+    benefit: "९०% ते ९५% सरकारी अनुदानावर ३ HP / ५ HP सोलर पंप",
+    badgeColor: "bg-lime-500/20 text-lime-300 border-lime-500/30",
+    eligibility: "पारंपारिक वीज जोडणी नसलेले शेतकरी व शेतात पाण्याचा स्त्रोत",
+    docs: "७/१२, ८-अ, विहीर/शेततळे नोंद, आधार, बँक पासबुक",
+    officialPortal: "mahadiscom.in/solar",
+    matchPercentage: 92
+  }
+];
+
+if (!appState.haqqSchemes) {
+  appState.haqqSchemes = DEFAULT_HAQQ_SCHEMES;
+}
+
+function renderHaqqSchemes(filteredList = null) {
+  const container = document.getElementById("haqqSchemesContainer");
+  const badge = document.getElementById("haqqSchemeCountBadge");
+  if (!container) return;
+
+  const list = filteredList || appState.haqqSchemes || DEFAULT_HAQQ_SCHEMES;
+  container.innerHTML = "";
+  if (badge) badge.textContent = `${list.length} योजना`;
+
+  if (list.length === 0) {
+    container.innerHTML = `
+      <div class="col-span-full py-12 text-center bg-slate-900 border border-slate-800 rounded-3xl p-6">
+        <i data-lucide="search-x" class="w-10 h-10 text-slate-500 mx-auto mb-2"></i>
+        <p class="text-base font-bold text-white">या शोधासाठी कोणतीही योजना सापडली नाही</p>
+        <p class="text-xs text-slate-400 mt-1">कृपया दुसरा शब्द टाईप करून पहा किंवा व्हॉईस सर्च वापरा.</p>
+      </div>
+    `;
+    lucide.createIcons();
+    return;
+  }
+
+  list.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "bg-slate-900 border border-slate-800 hover:border-lime-500/40 rounded-3xl p-5 shadow-xl transition flex flex-col justify-between space-y-4";
+    card.innerHTML = `
+      <div>
+        <div class="flex items-center justify-between gap-2">
+          <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${item.badgeColor}">${item.categoryLabel}</span>
+          <span class="text-xs font-mono font-bold text-lime-400 bg-lime-950/60 px-2 py-0.5 rounded-md border border-lime-800/40">✓ ${item.matchPercentage}% पात्र</span>
+        </div>
+
+        <h4 class="text-base font-black text-white mt-3 leading-snug">${item.name}</h4>
+        
+        <div class="mt-3 p-3 rounded-xl bg-slate-950 border border-slate-800/80">
+          <span class="text-[10px] uppercase font-bold text-slate-400 block">सरकारी फायदा (Subsidy):</span>
+          <p class="text-sm font-black text-lime-300 mt-0.5">${item.benefit}</p>
+        </div>
+
+        <div class="mt-3 space-y-1.5 text-xs text-slate-300">
+          <p><strong class="text-slate-400">पात्रता:</strong> ${item.eligibility}</p>
+          <p><strong class="text-slate-400">कागदपत्रे:</strong> ${item.docs}</p>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-slate-800 flex flex-wrap gap-2">
+        <button onclick="applyForScheme('${item.id}', '${item.name}')" class="flex-1 bg-lime-600 hover:bg-lime-500 active:scale-95 text-slate-950 font-black py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-lime-600/30 transition">
+          <i data-lucide="file-check" class="w-4 h-4"></i>
+          <span>अर्ज करा (Apply)</span>
+        </button>
+
+        <button onclick="shareSchemeOnWhatsApp('${item.id}')" title="व्हॉट्सॲपवर पाठवा" class="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 px-3 py-2.5 rounded-xl text-xs flex items-center justify-center">
+          <i data-lucide="share-2" class="w-4 h-4"></i>
+        </button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  lucide.createIcons();
+}
+
+function filterHaqqSchemes() {
+  const query = (document.getElementById("haqqSearchInput")?.value || "").toLowerCase();
+  const category = document.getElementById("haqqCategorySelect")?.value || "all";
+  const allSchemes = appState.haqqSchemes || DEFAULT_HAQQ_SCHEMES;
+
+  const filtered = allSchemes.filter(s => {
+    const matchesQuery = s.name.toLowerCase().includes(query) || 
+      s.benefit.toLowerCase().includes(query) || 
+      s.eligibility.toLowerCase().includes(query);
+    const matchesCategory = category === "all" || s.category === category;
+    return matchesQuery && matchesCategory;
+  });
+
+  renderHaqqSchemes(filtered);
+}
+
+function startHaqqVoiceSearch() {
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    alert("तुमच्या ब्राउझरमध्ये व्हॉईस सपोर्ट उपलब्ध नाही. कृपया सर्च बॉक्समध्ये टाईप करा.");
+    return;
+  }
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SpeechRecognition();
+  recognition.lang = 'mr-IN';
+  recognition.start();
+
+  const searchInput = document.getElementById("haqqSearchInput");
+  if (searchInput) searchInput.placeholder = "मी ऐकत आहे... बोला (उदा. ट्रॅक्टर, ठिबक, विहीर)...";
+
+  recognition.onresult = (event) => {
+    const spoke = event.results[0][0].transcript;
+    if (searchInput) {
+      searchInput.value = spoke;
+      searchInput.placeholder = "उदा. ट्रॅक्टर अनुदान, ठिबक सिंचन...";
+    }
+    filterHaqqSchemes();
+  };
+
+  recognition.onerror = () => {
+    if (searchInput) searchInput.placeholder = "उदा. ट्रॅक्टर अनुदान, ठिबक सिंचन...";
+  };
+}
+
+function shareSchemeOnWhatsApp(schemeId) {
+  const allSchemes = appState.haqqSchemes || DEFAULT_HAQQ_SCHEMES;
+  const s = allSchemes.find(x => x.id === schemeId);
+  if (!s) return;
+
+  const msg = `🌾 *शेतकरी सरकारी योजना माहिती (DnyanX हक्क)* 🌾%0A%0A` +
+    `योजनेचे नाव: *${s.name}*%0A` +
+    `मिळणारा फायदा: *${s.benefit}*%0A` +
+    `पात्रता: ${s.eligibility}%0A` +
+    `आवश्यक कागदपत्रे: ${s.docs}%0A%0A` +
+    `अधिकृत पोर्टल: ${s.officialPortal}%0A%0A` +
+    `_DnyanX परिवार Gram-OS द्वारे शेतकऱ्यांसाठी मोफत पाठवले._`;
+
+  const waUrl = `https://wa.me/?text=${msg}`;
+  window.open(waUrl, "_blank");
+}
+
+function applyForScheme(schemeId, schemeName) {
+  alert(`🎉 अर्ज नोंदणी यशस्वी!\n\nयोजना: ${schemeName}\nशेतकरी: बाळासाहेब पाटील\nमोबाईल: +91 98220 88888\n\nतुमचा संदर्भ अर्ज क्रमांक: MH-AGRI-${Date.now().toString().slice(-6)}\nसीएससी (CSC) किंवा तालुका कृषी कार्यालयाशी संपर्क साधा.`);
+}
+
 // Initial Initialization
 window.addEventListener("DOMContentLoaded", () => {
   renderFamilyMembers();
   renderPoItems();
   renderStockList();
   renderMedicineList();
+  renderHaqqSchemes();
   lucide.createIcons();
 });
+
 
