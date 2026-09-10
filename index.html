@@ -377,6 +377,94 @@
           </button>
         </div>
 
+        <!-- 5. AI Crop Doctor Pillar Card -->
+        <div class="bg-slate-900 border border-lime-500/30 hover:border-lime-500/60 rounded-3xl p-5 shadow-xl transition flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-3xl">🔬</span>
+              <span class="text-[11px] font-bold bg-lime-500/20 text-lime-300 px-2.5 py-0.5 rounded-full border border-lime-500/30">AI शेती</span>
+            </div>
+            <h3 class="text-lg font-black text-white mt-3">AI पीक डॉक्टर व हवामान</h3>
+            <p class="text-xs text-slate-400">कॅमेरा रोगनिदान, औषध व खत सल्ला</p>
+
+            <div class="mt-4 space-y-2 text-xs bg-slate-950 p-3 rounded-2xl border border-slate-800">
+              <div class="flex justify-between"><span class="text-slate-400">हवामान:</span> <strong class="text-emerald-400">२९°C | फवारणी योग्य</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">कॅमेरा स्कॅनर:</span> <strong class="text-lime-300">AI Vision सज्ज</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">कांदा बाजारभाव:</span> <strong class="text-white">₹ ३,१००/क्विं.</strong></div>
+            </div>
+          </div>
+
+          <button onclick="switchTab('cropdoctor')" class="w-full bg-lime-600 hover:bg-lime-500 text-slate-950 font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition">
+            <span>पीक डॉक्टर उघडा ➔</span>
+          </button>
+        </div>
+
+        <!-- 6. Secret Vault Pillar Card -->
+        <div class="bg-slate-900 border border-amber-500/30 hover:border-amber-500/60 rounded-3xl p-5 shadow-xl transition flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-3xl">🔐</span>
+              <span class="text-[11px] font-bold bg-amber-500/20 text-amber-300 px-2.5 py-0.5 rounded-full border border-amber-500/30">गुप्त तिजोरी</span>
+            </div>
+            <h3 class="text-lg font-black text-white mt-3">गुपित कागदपत्रे व ७/१२</h3>
+            <p class="text-xs text-slate-400">AES-256 कूटबद्ध सुरक्षित साठा</p>
+
+            <div class="mt-4 space-y-2 text-xs bg-slate-950 p-3 rounded-2xl border border-slate-800">
+              <div class="flex justify-between"><span class="text-slate-400">सुरक्षित नोंदी:</span> <strong id="ovSecretCount" class="text-amber-400">३ दस्तऐवज</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">सुरक्षा स्तर:</span> <strong class="text-emerald-400">PIN लॉक सक्रिय</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">बॅकअप स्थिती:</span> <strong class="text-slate-200">क्लाउड सिंक</strong></div>
+            </div>
+          </div>
+
+          <button onclick="switchTab('secret')" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition">
+            <span>तिजोरी उघडा ➔</span>
+          </button>
+        </div>
+
+        <!-- 7. Family Finance Pillar Card -->
+        <div class="bg-slate-900 border border-teal-500/30 hover:border-teal-500/60 rounded-3xl p-5 shadow-xl transition flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-3xl">💰</span>
+              <span class="text-[11px] font-bold bg-teal-500/20 text-teal-300 px-2.5 py-0.5 rounded-full border border-teal-500/30">हिशोब व बचत</span>
+            </div>
+            <h3 class="text-lg font-black text-white mt-3">कुटुंब ताळेबंद व पत</h3>
+            <p class="text-xs text-slate-400">शेती खर्च, दूध बिल व उधारी</p>
+
+            <div class="mt-4 space-y-2 text-xs bg-slate-950 p-3 rounded-2xl border border-slate-800">
+              <div class="flex justify-between"><span class="text-slate-400">एकूण जमा:</span> <strong class="text-emerald-400">₹ १,२२,०००</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">चालू खर्च:</span> <strong class="text-rose-400">₹ ४१,५००</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">निव्वळ बचत:</span> <strong class="text-teal-300">₹ ८०,५००</strong></div>
+            </div>
+          </div>
+
+          <button onclick="switchTab('finance')" class="w-full bg-teal-600 hover:bg-teal-500 text-white font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition">
+            <span>हिशोब वही उघडा ➔</span>
+          </button>
+        </div>
+
+        <!-- 8. Citizen Services Pillar Card -->
+        <div class="bg-slate-900 border border-orange-500/30 hover:border-orange-500/60 rounded-3xl p-5 shadow-xl transition flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-3xl">🏛️</span>
+              <span class="text-[11px] font-bold bg-orange-500/20 text-orange-300 px-2.5 py-0.5 rounded-full border border-orange-500/30">नागरिक सेवा</span>
+            </div>
+            <h3 class="text-lg font-black text-white mt-3">ई-ग्राम नागरिक सेवा</h3>
+            <p class="text-xs text-slate-400">दाखला अर्ज व WhatsApp पावती</p>
+
+            <div class="mt-4 space-y-2 text-xs bg-slate-950 p-3 rounded-2xl border border-slate-800">
+              <div class="flex justify-between"><span class="text-slate-400">दाखला अर्ज:</span> <strong class="text-orange-400">रहिवासी / नळ जोडणी</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">व्हॉट्सॲप डिस्पॅच:</span> <strong class="text-emerald-400">१-क्लिक सुविधा</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">प्रलंबित अर्ज:</span> <strong class="text-white">१ प्रक्रिया सुरू</strong></div>
+            </div>
+          </div>
+
+          <button onclick="switchTab('citizen')" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition">
+            <span>ई-ग्राम सेवा उघडा ➔</span>
+          </button>
+        </div>
+
       </div>
 
       <!-- Quick Pending Tasks Strip in Overview -->
@@ -835,12 +923,13 @@
           💡 <strong>सुरक्षा सूचना:</strong> कुटुंबातील इतर सदस्य किंवा पालकांना हा मानसिक आरोग्य डेटा दिसणार नाही.
         </div>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-          <input type="password" id="mannPinInput" maxlength="4" placeholder="••••" class="w-32 bg-slate-950 border border-pink-500/40 rounded-xl px-4 py-2.5 text-center text-lg font-mono tracking-widest text-white focus:outline-none focus:border-pink-400">
-          <button onclick="unlockMannWithPin()" class="w-full sm:w-auto bg-pink-600 hover:bg-pink-500 active:scale-95 text-white font-bold px-6 py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition">
-            <span>पिन पडताळा (Unlock)</span>
+          <input type="password" id="mannPinInput" maxlength="4" placeholder="1234" value="1234" class="w-32 bg-slate-950 border border-pink-500/40 rounded-xl px-4 py-2.5 text-center text-lg font-mono tracking-widest text-white focus:outline-none focus:border-pink-400">
+          <button onclick="unlockMannWithPin()" class="w-full sm:w-auto bg-pink-600 hover:bg-pink-500 active:scale-95 text-white font-bold px-6 py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition shadow-lg shadow-pink-600/30">
+            <i data-lucide="unlock" class="w-4 h-4"></i>
+            <span>१-क्लिक अनलॉक करा (Open)</span>
           </button>
         </div>
-        <p class="text-[10px] text-slate-500">चाचणी पिन (Demo PIN): <strong>1234</strong></p>
+        <p class="text-[10px] text-slate-400">डीफॉल्ट पिन '1234' आधीच भरला आहे, फक्त 'अनलॉक करा' वर क्लिक करा.</p>
       </div>
 
       <!-- Main Mann Content (Hidden until unlocked) -->
