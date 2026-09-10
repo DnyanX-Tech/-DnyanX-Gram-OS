@@ -1578,6 +1578,118 @@ function saveNewFinanceItem() {
   alert("💰 नवीन हिशोब यशस्वीरित्या ताळेबंदात जोडला गेला!");
 }
 
+// ==========================================
+// PWA (PROGRESSIVE WEB APP) INSTALLATION ENGINE
+// ==========================================
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const pwaBtn = document.getElementById('pwaInstallBtn');
+  if (pwaBtn) {
+    pwaBtn.classList.remove('hidden');
+    pwaBtn.classList.add('flex');
+  }
+});
+
+function triggerPwaInstall() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        alert("🎉 अभिनंदन! DnyanX परिवार ॲप तुमच्या मोबाईल/स्क्रीनवर इन्स्टॉल झाले आहे.");
+      }
+      deferredPrompt = null;
+    });
+  } else {
+    alert("📱 ॲप इन्स्टॉल करण्यासाठी:\n\nChrome/Browser मेन्यूमध्ये जाऊन 'Add to Home screen' किंवा 'Install App' निवडा.");
+  }
+}
+
+// Register Service Worker for Offline & Mobile Caching
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('PWA ServiceWorker Active:', reg.scope))
+      .catch(err => console.log('PWA ServiceWorker Notice:', err));
+  });
+}
+
+// ==========================================
+// LANGUAGE LOCALIZATION (मराठी / ENGLISH)
+// ==========================================
+let currentLang = 'mr'; // 'mr' or 'en'
+
+const TRANSLATIONS = {
+  mr: {
+    toggleBtn: "मराठी / EN",
+    overviewTab: "🏠 मुख्य परिवार डॅशबोर्ड",
+    businessTab: "🏪 व्यापार OS",
+    aathvanTab: "🌸 आठवण (वृद्ध)",
+    haqqTab: "🌾 हक्क (शेती)",
+    mannTab: "💚 मन (तरुण)",
+    sharedTab: "📋 घरातील कामे",
+    secretTab: "🔐 गुपित तिजोरी व दस्तऐवज",
+    financeTab: "💰 कुटुंब हिशोब व बचत",
+    familyTab: "⚙️ परिवार प्रोफाइल",
+    installBtn: "ॲप इन्स्टॉल करा (Install)"
+  },
+  en: {
+    toggleBtn: "English / MR",
+    overviewTab: "🏠 Master Family Hub",
+    businessTab: "🏪 Business OS",
+    aathvanTab: "🌸 Aathvan (Elders)",
+    haqqTab: "🌾 Haqq (Farmer AI)",
+    mannTab: "💚 Mann (Youth AI)",
+    sharedTab: "📋 Shared Tasks",
+    secretTab: "🔐 Secret Vault & Docs",
+    financeTab: "💰 Family Finance & Ledger",
+    familyTab: "⚙️ Family Setup",
+    installBtn: "Install App"
+  }
+};
+
+function toggleAppLanguage() {
+  currentLang = currentLang === 'mr' ? 'en' : 'mr';
+  const t = TRANSLATIONS[currentLang];
+
+  const btnText = document.getElementById("langBtnText");
+  if (btnText) btnText.textContent = t.toggleBtn;
+
+  const tabOv = document.getElementById("tab-overview");
+  if (tabOv) tabOv.querySelector("span").textContent = t.overviewTab;
+
+  const tabBiz = document.getElementById("tab-business");
+  if (tabBiz) tabBiz.querySelector("span").textContent = t.businessTab;
+
+  const tabAath = document.getElementById("tab-aathvan");
+  if (tabAath) tabAath.querySelector("span").textContent = t.aathvanTab;
+
+  const tabHaq = document.getElementById("tab-haqq");
+  if (tabHaq) tabHaq.querySelector("span").textContent = t.haqqTab;
+
+  const tabMan = document.getElementById("tab-mann");
+  if (tabMan) tabMan.querySelector("span").textContent = t.mannTab;
+
+  const tabSha = document.getElementById("tab-shared");
+  if (tabSha) tabSha.querySelector("span").textContent = t.sharedTab;
+
+  const tabSec = document.getElementById("tab-secret");
+  if (tabSec) tabSec.querySelector("span").textContent = t.secretTab;
+
+  const tabFin = document.getElementById("tab-finance");
+  if (tabFin) tabFin.querySelector("span").textContent = t.financeTab;
+
+  const tabFam = document.getElementById("tab-family");
+  if (tabFam) tabFam.querySelector("span").textContent = t.familyTab;
+
+  const pwaBtn = document.getElementById("pwaInstallBtn");
+  if (pwaBtn) pwaBtn.querySelector("span").textContent = t.installBtn;
+
+  alert(currentLang === 'mr' ? "भाषा मराठी म्हणून निवडली गेली आहे. 🙏" : "Language switched to English successfully. 👍");
+}
+
 // Initial Initialization
 window.addEventListener("DOMContentLoaded", () => {
   renderFamilyMembers();

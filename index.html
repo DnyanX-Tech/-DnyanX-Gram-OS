@@ -34,6 +34,11 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4f46e5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="DnyanX परिवार">
   <style>
     body { font-family: 'Mukta', 'Outfit', sans-serif; }
     .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -65,14 +70,26 @@
         <span class="text-xs text-emerald-400 font-medium">Family Plan Active (₹499/महिना)</span>
       </div>
 
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Language Switcher Button (मराठी / English) -->
+        <button onclick="toggleAppLanguage()" id="langToggleBtn" class="flex items-center gap-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 px-2.5 py-1.5 rounded-xl text-xs font-bold text-indigo-300 transition active:scale-95">
+          <i data-lucide="languages" class="w-3.5 h-3.5"></i>
+          <span id="langBtnText">मराठी / EN</span>
+        </button>
+
+        <!-- Install PWA App Button (Mobile / Desktop) -->
+        <button id="pwaInstallBtn" onclick="triggerPwaInstall()" class="hidden sm:flex items-center gap-1.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow-md shadow-indigo-500/30 transition active:scale-95">
+          <i data-lucide="download" class="w-3.5 h-3.5"></i>
+          <span>ॲप इन्स्टॉल करा (Install)</span>
+        </button>
+
         <!-- Security Encryption Badge (Clickable for Vault Details) -->
         <button onclick="openVaultModal()" title="कूटबद्ध तिजोरी स्थिती पहा" class="hidden sm:flex items-center gap-1.5 bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-500/40 px-3 py-1.5 rounded-full text-emerald-300 text-xs font-mono transition active:scale-95 shadow-sm">
           <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
           <span>AES-256 Vault 🔒</span>
         </button>
 
-        <span class="text-xs text-slate-400 hidden sm:inline">सध्याचा सदस्य:</span>
+        <span class="text-xs text-slate-400 hidden lg:inline">सध्याचा सदस्य:</span>
         <div id="activeMemberPill" class="flex items-center gap-2 bg-amber-500/20 border border-amber-500/30 px-3 py-1.5 rounded-xl text-amber-300 text-sm font-semibold">
           <span>👨‍💼 वडील (व्यापारी)</span>
         </div>

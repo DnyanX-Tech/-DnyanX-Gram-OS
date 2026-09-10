@@ -1,0 +1,24 @@
+﻿{
+  "name": "DnyanX परिवार | भारताचा पहिला Family OS",
+  "short_name": "DnyanX परिवार",
+  "description": "भारताचा पहिला स्मार्ट कुटुंब ऑपरेटिंग सिस्टीम - व्यापार, शेती, आरोग्य, मन आणि गुपित तिजोरी",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#4f46e5",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "https://api.iconify.design/lucide:home.svg?color=%236366f1",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://api.iconify.design/lucide:home.svg?color=%236366f1",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
