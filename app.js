@@ -114,35 +114,47 @@ function saveState() {
 // Navigation & Tab Switching
 // ------------------------------------------
 function switchTab(tabId) {
+  const overviewView = document.getElementById("view-overview");
   const businessView = document.getElementById("view-business");
   const aathvanView = document.getElementById("view-aathvan");
   const haqqView = document.getElementById("view-haqq");
   const mannView = document.getElementById("view-mann");
+  const sharedView = document.getElementById("view-shared");
   const familyView = document.getElementById("view-family");
 
+  const tabOverview = document.getElementById("tab-overview");
   const tabBusiness = document.getElementById("tab-business");
   const tabAathvan = document.getElementById("tab-aathvan");
   const tabHaqq = document.getElementById("tab-haqq");
   const tabMann = document.getElementById("tab-mann");
+  const tabShared = document.getElementById("tab-shared");
   const tabFamily = document.getElementById("tab-family");
 
-  // Hide all
-  businessView.classList.add("hidden");
+  // Hide all views safely
+  if (overviewView) overviewView.classList.add("hidden");
+  if (businessView) businessView.classList.add("hidden");
   if (aathvanView) aathvanView.classList.add("hidden");
   if (haqqView) haqqView.classList.add("hidden");
   if (mannView) mannView.classList.add("hidden");
-  familyView.classList.add("hidden");
+  if (sharedView) sharedView.classList.add("hidden");
+  if (familyView) familyView.classList.add("hidden");
 
-  // Reset tab classes
-  tabBusiness.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition";
+  // Reset tab classes to default inactive style
+  if (tabOverview) tabOverview.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition";
+  if (tabBusiness) tabBusiness.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-amber-400 border border-slate-800 transition";
   if (tabAathvan) tabAathvan.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-emerald-900/40 transition";
   if (tabHaqq) tabHaqq.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-lime-400 border border-lime-900/40 transition";
   if (tabMann) tabMann.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-pink-400 border border-pink-900/40 transition";
-  tabFamily.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition";
+  if (tabShared) tabShared.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-cyan-400 border border-slate-800 transition";
+  if (tabFamily) tabFamily.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition";
 
-  if (tabId === "business") {
-    businessView.classList.remove("hidden");
-    tabBusiness.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 transition";
+  if (tabId === "overview") {
+    if (overviewView) overviewView.classList.remove("hidden");
+    if (tabOverview) tabOverview.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white shadow-lg shadow-purple-600/30 transition";
+    renderOverviewStats();
+  } else if (tabId === "business") {
+    if (businessView) businessView.classList.remove("hidden");
+    if (tabBusiness) tabBusiness.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 transition";
   } else if (tabId === "aathvan") {
     if (aathvanView) aathvanView.classList.remove("hidden");
     if (tabAathvan) tabAathvan.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 transition";
@@ -154,9 +166,13 @@ function switchTab(tabId) {
   } else if (tabId === "mann") {
     if (mannView) mannView.classList.remove("hidden");
     if (tabMann) tabMann.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-pink-600 text-white font-black shadow-lg shadow-pink-600/30 transition";
+  } else if (tabId === "shared") {
+    if (sharedView) sharedView.classList.remove("hidden");
+    if (tabShared) tabShared.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-cyan-600 text-white font-black shadow-lg shadow-cyan-600/30 transition";
+    renderFamilyTodos();
   } else if (tabId === "family") {
-    familyView.classList.remove("hidden");
-    tabFamily.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 transition";
+    if (familyView) familyView.classList.remove("hidden");
+    if (tabFamily) tabFamily.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 transition";
   }
   lucide.createIcons();
 }
@@ -1143,6 +1159,120 @@ function appendMannReply(text) {
   chatLog.scrollTop = chatLog.scrollHeight;
 }
 
+// ==========================================
+// MODULE 6: MASTER OVERVIEW & SHARED FAMILY HUB
+// ==========================================
+
+const DEFAULT_FAMILY_TODOS = [
+  { id: 1, title: "आजोबांचे बीपीचे औषध मेडिकलमधून आणणे", assignee: "वडील", priority: "high", done: false },
+  { id: 2, title: "शेतातील खताचे अनुदान टोकन काढणे", assignee: "काका", priority: "medium", done: false },
+  { id: 3, title: "महावितरण कृषी पंप वीज बिल ऑनलाइन भरणे", assignee: "मुलगी", priority: "high", done: false },
+  { id: 4, title: "दुकान सप्लायरला नवीन सिमेंट ऑर्डर देणे", assignee: "वडील", priority: "low", done: true }
+];
+
+if (!appState.familyTodos) {
+  appState.familyTodos = DEFAULT_FAMILY_TODOS;
+}
+
+function renderOverviewStats() {
+  const headName = document.getElementById("overviewFamilyHeadName");
+  if (headName && appState.familyInfo) {
+    headName.textContent = `${appState.familyInfo.name}!`;
+  }
+}
+
+function renderFamilyTodos() {
+  const container = document.getElementById("familyTodoListContainer");
+  const badge = document.getElementById("todoPendingCountBadge");
+  if (!container) return;
+
+  const todos = appState.familyTodos || DEFAULT_FAMILY_TODOS;
+  container.innerHTML = "";
+
+  const pending = todos.filter(t => !t.done).length;
+  if (badge) badge.textContent = `${pending} प्रलंबित`;
+
+  todos.forEach((item, index) => {
+    const priorityColors = {
+      high: "bg-rose-500/20 text-rose-300 border-rose-500/30",
+      medium: "bg-amber-500/20 text-amber-300 border-amber-500/30",
+      low: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
+    };
+
+    const card = document.createElement("div");
+    card.className = `p-3.5 rounded-2xl border transition flex items-center justify-between gap-3 ${
+      item.done ? 'bg-slate-950/40 border-slate-800/50 text-slate-400' : 'bg-slate-950 border-slate-800 text-white'
+    }`;
+
+    card.innerHTML = `
+      <div class="flex items-center gap-3">
+        <button onclick="toggleTodoStatus(${item.id})" class="w-6 h-6 rounded-lg border flex items-center justify-center transition ${
+          item.done ? 'bg-cyan-600 border-cyan-500 text-white' : 'border-slate-700 bg-slate-900 hover:border-cyan-500'
+        }">
+          ${item.done ? '<i data-lucide="check" class="w-3.5 h-3.5"></i>' : ''}
+        </button>
+        <div>
+          <h4 class="text-xs font-bold ${item.done ? 'line-through text-slate-500' : 'text-slate-100'}">${item.title}</h4>
+          <span class="text-[10px] text-slate-400">जबाबदारी: <strong class="text-cyan-300">${item.assignee}</strong></span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full border ${priorityColors[item.priority] || priorityColors.medium}">
+          ${item.priority}
+        </span>
+        <button onclick="deleteTodoItem(${item.id})" class="text-slate-500 hover:text-rose-400 text-sm font-bold px-1">×</button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  lucide.createIcons();
+}
+
+function toggleTodoStatus(id) {
+  const item = appState.familyTodos.find(t => t.id === id);
+  if (item) {
+    item.done = !item.done;
+    saveState();
+    renderFamilyTodos();
+  }
+}
+
+function deleteTodoItem(id) {
+  appState.familyTodos = appState.familyTodos.filter(t => t.id !== id);
+  saveState();
+  renderFamilyTodos();
+}
+
+function openAddTodoModal() {
+  document.getElementById("addTodoModal").classList.remove("hidden");
+}
+
+function closeAddTodoModal() {
+  document.getElementById("addTodoModal").classList.add("hidden");
+}
+
+function saveNewTodoItem() {
+  const title = document.getElementById("newTodoTitle").value;
+  const assignee = document.getElementById("newTodoAssignee").value;
+  const priority = document.getElementById("newTodoPriority").value;
+
+  appState.familyTodos.unshift({
+    id: Date.now(),
+    title: title,
+    assignee: assignee,
+    priority: priority,
+    done: false
+  });
+
+  saveState();
+  renderFamilyTodos();
+  closeAddTodoModal();
+  document.getElementById("newTodoTitle").value = "";
+  alert("✅ घरातील नवीन काम यशस्वीरित्या जोडले गेले!");
+}
+
 // Initial Initialization
 window.addEventListener("DOMContentLoaded", () => {
   renderFamilyMembers();
@@ -1150,8 +1280,12 @@ window.addEventListener("DOMContentLoaded", () => {
   renderStockList();
   renderMedicineList();
   renderHaqqSchemes();
+  renderFamilyTodos();
+  renderOverviewStats();
+  switchTab("overview"); // Default view is Unified Master Family Hub!
   lucide.createIcons();
 });
+
 
 
 

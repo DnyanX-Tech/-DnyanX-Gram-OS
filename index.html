@@ -85,42 +85,170 @@
 
     <!-- Top Navigation Tabs (Modules) -->
     <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-3">
-      <button onclick="switchTab('business')" id="tab-business" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 transition">
+      <!-- Master Overview (All-in-One Dashboard) -->
+      <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white shadow-lg shadow-purple-600/30 transition">
+        <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+        <span>🏠 मुख्य परिवार डॅशबोर्ड</span>
+        <span class="text-[10px] bg-white text-slate-950 font-black px-1.5 py-0.5 rounded-full uppercase">Master</span>
+      </button>
+
+      <button onclick="switchTab('business')" id="tab-business" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-amber-400 border border-slate-800 transition">
         <i data-lucide="briefcase" class="w-4 h-4"></i>
-        <span>व्यापार OS (Business)</span>
+        <span>🏪 व्यापार OS</span>
       </button>
 
       <!-- Module 3: Aathvan (Phase 2 LIVE) -->
       <button onclick="switchTab('aathvan')" id="tab-aathvan" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-emerald-900/40 transition">
         <i data-lucide="heart-pulse" class="w-4 h-4"></i>
-        <span>🌸 आठवण (वृद्ध सोबती)</span>
-        <span class="text-[10px] bg-emerald-500 text-slate-950 font-black px-1.5 py-0.5 rounded-full uppercase">Live</span>
+        <span>🌸 आठवण (वृद्ध)</span>
       </button>
 
       <!-- Module 4: Haqq (Phase 3 LIVE) -->
       <button onclick="switchTab('haqq')" id="tab-haqq" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-lime-400 border border-lime-900/40 transition">
         <i data-lucide="sprout" class="w-4 h-4"></i>
-        <span>🌾 हक्क (शेतकरी योजना)</span>
-        <span class="text-[10px] bg-lime-500 text-slate-950 font-black px-1.5 py-0.5 rounded-full uppercase">Live</span>
+        <span>🌾 हक्क (शेती)</span>
       </button>
 
       <!-- Module 5: Mann (Phase 4 LIVE) -->
       <button onclick="switchTab('mann')" id="tab-mann" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-pink-400 border border-pink-900/40 transition">
         <i data-lucide="smile" class="w-4 h-4"></i>
-        <span>💚 मन (मानसिक आधार)</span>
-        <span class="text-[10px] bg-pink-500 text-slate-950 font-black px-1.5 py-0.5 rounded-full uppercase">Live</span>
+        <span>💚 मन (तरुण)</span>
+      </button>
+
+      <!-- Shared Family Features (To-Do & Notes) -->
+      <button onclick="switchTab('shared')" id="tab-shared" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-cyan-400 border border-slate-800 transition">
+        <i data-lucide="check-square" class="w-4 h-4"></i>
+        <span>📋 घरातील कामे (To-Do)</span>
       </button>
 
       <button onclick="switchTab('family')" id="tab-family" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition">
         <i data-lucide="users-2" class="w-4 h-4"></i>
-        <span>परिवार Setup (Family Profile)</span>
+        <span>⚙️ परिवार प्रोफाइल</span>
       </button>
     </div>
 
     <!-- ======================================================== -->
+    <!-- VIEW 0: MASTER FAMILY DASHBOARD (ALL-IN-ONE OVERVIEW) -->
+    <!-- ======================================================== -->
+    <section id="view-overview" class="space-y-6">
+
+      <!-- Master Family Hero Banner -->
+      <div class="bg-gradient-to-r from-indigo-950 via-purple-950 to-slate-900 border border-indigo-800/40 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <span class="bg-indigo-500/20 text-indigo-300 text-xs font-bold px-3 py-1 rounded-full border border-indigo-500/30 uppercase tracking-wider">Unified Family Hub</span>
+            <h2 class="text-3xl font-black text-white mt-2 tracking-tight">नमस्कार, <span class="text-indigo-400" id="overviewFamilyHeadName">पाटील परिवार!</span> 🙏</h2>
+            <p class="text-sm text-slate-300 mt-1 max-w-xl">तुमच्या कुटुंबातील व्यापार, आजोबांचे आरोग्य, शेतीच्या योजना आणि मुलांचे मन — सर्व एकाच नजरेत सुरक्षित.</p>
+          </div>
+
+          <div class="flex flex-wrap gap-3">
+            <div class="bg-slate-950/80 border border-indigo-500/30 p-4 rounded-2xl text-right">
+              <span class="text-[11px] text-slate-400 font-semibold block">कुटुंब उत्पन्न व अनुदान क्षमता</span>
+              <span class="text-2xl font-black text-emerald-400">₹ २,००,४५०</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 Pillars Live Status Grid (One Glancetop-level view) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+
+        <!-- 1. Father (Trader) Pillar Card -->
+        <div class="bg-slate-900 border border-amber-500/30 hover:border-amber-500/60 rounded-3xl p-5 shadow-xl transition flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-3xl">👨‍💼</span>
+              <span class="text-[11px] font-bold bg-amber-500/20 text-amber-300 px-2.5 py-0.5 rounded-full border border-amber-500/30">व्यापार OS</span>
+            </div>
+            <h3 class="text-lg font-black text-white mt-3">रामदास पाटील (वडील)</h3>
+            <p class="text-xs text-slate-400">हार्डवेअर व मटेरियल दुकान</p>
+
+            <div class="mt-4 space-y-2 text-xs bg-slate-950 p-3 rounded-2xl border border-slate-800">
+              <div class="flex justify-between"><span class="text-slate-400">आजची विक्री:</span> <strong class="text-white">₹ १८,४५०</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">नवीन ऑर्डर्स:</span> <strong class="text-indigo-400">१ PO तयार</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">कर्मचारी हजेरी:</span> <strong class="text-emerald-400">२ हजर ✅</strong></div>
+            </div>
+          </div>
+
+          <button onclick="switchTab('business')" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition">
+            <span>दुकान व्यवस्थापन उघडा ➔</span>
+          </button>
+        </div>
+
+        <!-- 2. Grandfather (Aathvan) Pillar Card -->
+        <div class="bg-slate-900 border border-emerald-500/30 hover:border-emerald-500/60 rounded-3xl p-5 shadow-xl transition flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-3xl">👴</span>
+              <span class="text-[11px] font-bold bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/30">🌸 आठवण</span>
+            </div>
+            <h3 class="text-lg font-black text-white mt-3">आनंदा पाटील (आजोबा)</h3>
+            <p class="text-xs text-slate-400">वय ७८ — आरोग्य व औषध सोबती</p>
+
+            <div class="mt-4 space-y-2 text-xs bg-slate-950 p-3 rounded-2xl border border-slate-800">
+              <div class="flex justify-between"><span class="text-slate-400">सकाळची गोळी:</span> <strong class="text-emerald-400">घेतली आहे ✅</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">दुपारची गोळी:</span> <strong class="text-amber-400">01:30 PM बाकी</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">पाणी पिणे:</span> <strong class="text-cyan-400">४ ग्लास पिऊन झाले</strong></div>
+            </div>
+          </div>
+
+          <button onclick="switchTab('aathvan')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition">
+            <span>औषध व सोबती उघडा ➔</span>
+          </button>
+        </div>
+
+        <!-- 3. Farmer (Haqq) Pillar Card -->
+        <div class="bg-slate-900 border border-lime-500/30 hover:border-lime-500/60 rounded-3xl p-5 shadow-xl transition flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-3xl">🌾</span>
+              <span class="text-[11px] font-bold bg-lime-500/20 text-lime-300 px-2.5 py-0.5 rounded-full border border-lime-500/30">🌾 हक्क</span>
+            </div>
+            <h3 class="text-lg font-black text-white mt-3">बाळासाहेब पाटील (काका)</h3>
+            <p class="text-xs text-slate-400">३.५ एकर शेती — शासकीय योजना</p>
+
+            <div class="mt-4 space-y-2 text-xs bg-slate-950 p-3 rounded-2xl border border-slate-800">
+              <div class="flex justify-between"><span class="text-slate-400">उपलब्ध योजना:</span> <strong class="text-lime-400">५ पात्र योजना</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">पीक विमा:</span> <strong class="text-emerald-400">१ रुपयात उपलब्ध</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">अनुदान मर्यादा:</span> <strong class="text-white">₹ १.८२ लाख</strong></div>
+            </div>
+          </div>
+
+          <button onclick="switchTab('haqq')" class="w-full bg-lime-600 hover:bg-lime-500 text-slate-950 font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition">
+            <span>शेतकरी योजना पहा ➔</span>
+          </button>
+        </div>
+
+        <!-- 4. Daughter (Mann) Pillar Card -->
+        <div class="bg-slate-900 border border-pink-500/30 hover:border-pink-500/60 rounded-3xl p-5 shadow-xl transition flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-3xl">👧</span>
+              <span class="text-[11px] font-bold bg-pink-500/20 text-pink-300 px-2.5 py-0.5 rounded-full border border-pink-500/30">💚 मन</span>
+            </div>
+            <h3 class="text-lg font-black text-white mt-3">स्नेहा पाटील (मुलगी)</h3>
+            <p class="text-xs text-slate-400">कॉलेज विद्यार्थिनी — मानसिक स्वास्थ्य</p>
+
+            <div class="mt-4 space-y-2 text-xs bg-slate-950 p-3 rounded-2xl border border-slate-800">
+              <div class="flex justify-between"><span class="text-slate-400">आजचा मूड:</span> <strong class="text-pink-400">शांत 😌</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">श्वास व्यायाम:</span> <strong class="text-cyan-400">४-७-८ तंत्र सक्रिय</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">गोपनीयता:</span> <strong class="text-emerald-400">१००% एन्क्रिप्टेड</strong></div>
+            </div>
+          </div>
+
+          <button onclick="switchTab('mann')" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition">
+            <span>मन सोबती उघडा ➔</span>
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ======================================================== -->
     <!-- VIEW 1: BUSINESS OS (MODULE 2) -->
     <!-- ======================================================== -->
-    <section id="view-business" class="space-y-6">
+    <section id="view-business" class="hidden space-y-6">
       
       <!-- Trader Quick Stats -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -710,6 +838,106 @@
     </section>
 
     <!-- ======================================================== -->
+    <!-- VIEW 6: SHARED FAMILY FEATURES (TO-DO & CALENDAR) -->
+    <!-- ======================================================== -->
+    <section id="view-shared" class="hidden space-y-6">
+
+      <!-- Shared Hub Banner -->
+      <div class="bg-gradient-to-r from-cyan-950/80 via-slate-900 to-indigo-950/80 border border-cyan-800/40 rounded-3xl p-6 shadow-2xl">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div class="w-14 h-14 rounded-2xl bg-cyan-500/20 border-2 border-cyan-400/50 flex items-center justify-center text-3xl">
+              📋
+            </div>
+            <div>
+              <h2 class="text-2xl font-black text-white">कुटुंब सामाईक कामे व दिनदर्शिका (Family To-Do)</h2>
+              <p class="text-xs text-cyan-300 mt-0.5">घरातील महत्त्वाची कामे, औषध खरेदी, बिले आणि स्मरणपत्रे एकत्र व्यवस्थापित करा.</p>
+            </div>
+          </div>
+          <button onclick="openAddTodoModal()" class="bg-cyan-600 hover:bg-cyan-500 active:scale-95 text-white font-bold py-2.5 px-4 rounded-xl text-xs flex items-center gap-2 shadow-lg shadow-cyan-600/30 transition">
+            <i data-lucide="plus" class="w-4 h-4"></i> नवीन काम जोडा
+          </button>
+        </div>
+      </div>
+
+      <!-- 2-Column: To-Do Tasks (Left) + Reminders & Calendar (Right) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left: Shared To-Do List (7 cols) -->
+        <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div class="flex items-center gap-2">
+              <i data-lucide="check-circle-2" class="w-5 h-5 text-cyan-400"></i>
+              <h3 class="font-bold text-white text-base">आजची घरातील कामे (Active Tasks)</h3>
+            </div>
+            <span class="text-xs font-mono bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full" id="todoPendingCountBadge">३ प्रलंबित</span>
+          </div>
+
+          <div class="space-y-2.5" id="familyTodoListContainer">
+            <!-- Dynamic Todo items will be rendered here -->
+          </div>
+        </div>
+
+        <!-- Right: Family Shared Calendar & Deadlines (5 cols) -->
+        <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div class="flex items-center gap-2">
+              <i data-lucide="calendar" class="w-5 h-5 text-amber-400"></i>
+              <h3 class="font-bold text-white text-base">महत्त्वाच्या तारखा (Family Deadlines)</h3>
+            </div>
+            <span class="text-[11px] text-slate-400">पुढील ७ दिवस</span>
+          </div>
+
+          <div class="space-y-3">
+            <div class="bg-slate-950 border border-slate-800 p-3.5 rounded-2xl flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex flex-col items-center justify-center font-bold text-amber-400">
+                  <span class="text-[10px] uppercase">सप्टें</span>
+                  <span class="text-sm leading-none font-mono">१५</span>
+                </div>
+                <div>
+                  <h4 class="text-xs font-bold text-white">शेतातील वीज बिल देय तारीख</h4>
+                  <p class="text-[11px] text-slate-400">महावितरण कृषी पंप कनेक्शन (₹ १,२४०)</p>
+                </div>
+              </div>
+              <span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded font-mono">५ दिवस</span>
+            </div>
+
+            <div class="bg-slate-950 border border-slate-800 p-3.5 rounded-2xl flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex flex-col items-center justify-center font-bold text-emerald-400">
+                  <span class="text-[10px] uppercase">सप्टें</span>
+                  <span class="text-sm leading-none font-mono">१८</span>
+                </div>
+                <div>
+                  <h4 class="text-xs font-bold text-white">आजोबांची बीपी तपासणी (Doctor)</h4>
+                  <p class="text-[11px] text-slate-400">डॉ. जोशी क्लिनिक, बारामती (१०:०० AM)</p>
+                </div>
+              </div>
+              <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-mono">८ दिवस</span>
+            </div>
+
+            <div class="bg-slate-950 border border-slate-800 p-3.5 rounded-2xl flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex flex-col items-center justify-center font-bold text-purple-400">
+                  <span class="text-[10px] uppercase">सप्टें</span>
+                  <span class="text-sm leading-none font-mono">२२</span>
+                </div>
+                <div>
+                  <h4 class="text-xs font-bold text-white">स्नेहाची कॉलेज सेमिस्टर फी</h4>
+                  <p class="text-[11px] text-slate-400">अभियांत्रिकी महाविद्यालय, पुणे</p>
+                </div>
+              </div>
+              <span class="text-[10px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded font-mono">१२ दिवस</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ======================================================== -->
     <!-- VIEW 3: FAMILY SETUP (MODULE 1) -->
     <!-- ======================================================== -->
     <section id="view-family" class="hidden space-y-6">
@@ -867,6 +1095,45 @@
         <div class="flex justify-end gap-2 pt-2">
           <button type="button" onclick="closeAddMedicineModal()" class="px-4 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300">रद्द करा</button>
           <button type="submit" class="px-4 py-2 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white">औषध सेव्ह करा</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. Add Todo Modal (Shared Family Task) -->
+  <div id="addTodoModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+        <h3 class="text-base font-bold text-white">घरातील नवीन काम जोडा (Add Family Task)</h3>
+        <button onclick="closeAddTodoModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <form onsubmit="event.preventDefault(); saveNewTodoItem();" class="space-y-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">कामाचे नाव (Task Description) *</label>
+          <input type="text" id="newTodoTitle" required placeholder="उदा. आजोबांचे औषध आणणे, महावितरण बिल भरणे" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">कोणाचे काम आहे? (Assigned To)</label>
+            <select id="newTodoAssignee" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              <option value="वडील">👨‍💼 वडील (रामदास)</option>
+              <option value="काका">🌾 काका (बाळासाहेब)</option>
+              <option value="मुलगी">👧 मुलगी (स्नेहा)</option>
+              <option value="सर्व">🏠 सर्व कुटुंब</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">प्राधान्य (Priority)</label>
+            <select id="newTodoPriority" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              <option value="high">🔴 तातडीचे (High)</option>
+              <option value="medium" selected>🟡 मध्यम (Medium)</option>
+              <option value="low">🟢 सामान्य (Low)</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeAddTodoModal()" class="px-4 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300">रद्द करा</button>
+          <button type="submit" class="px-4 py-2 rounded-lg text-xs font-bold bg-cyan-600 hover:bg-cyan-500 text-white">काम जोडा</button>
         </div>
       </form>
     </div>
