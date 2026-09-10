@@ -1,4 +1,4 @@
-﻿rules_version = '2';
+rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
@@ -15,6 +15,11 @@ service cloud.firestore {
 
     // 3. संपूर्ण कुटुंब डेटा व तिजोरी (Families & Ledger)
     match /families/{familyId} {
+      allow read, write: if true;
+    }
+
+    // 4. AI पीक डॉक्टर रोगनिदान रेकॉर्ड्स (Crop Diagnoses)
+    match /crop_diagnoses/{diagId} {
       allow read, write: if true;
     }
 

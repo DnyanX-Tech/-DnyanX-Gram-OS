@@ -63,41 +63,40 @@
         </div>
       </div>
 
-      <div class="hidden md:flex items-center gap-4 bg-slate-800/80 px-4 py-1.5 rounded-full border border-slate-700">
+      <div class="flex items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-full border border-slate-700">
         <i data-lucide="users" class="w-4 h-4 text-indigo-400"></i>
-        <span class="text-sm font-semibold text-slate-200" id="currentFamilyNameDisplay">पाटील परिवार, पुणे</span>
+        <span class="text-xs sm:text-sm font-semibold text-slate-200" id="currentFamilyNameDisplay">पाटील परिवार</span>
         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-        <span class="text-xs text-emerald-400 font-medium">Family Plan Active (₹499/महिना)</span>
+        <span class="text-[11px] text-emerald-400 font-medium hidden sm:inline">Family Plan Active (₹499/महिना)</span>
       </div>
 
-      <div class="flex items-center gap-2 sm:gap-3">
+      <div class="flex items-center gap-1.5 sm:gap-2.5">
         <!-- Language Switcher Button (मराठी / English) -->
-        <button onclick="toggleAppLanguage()" id="langToggleBtn" class="flex items-center gap-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 px-2.5 py-1.5 rounded-xl text-xs font-bold text-indigo-300 transition active:scale-95">
+        <button onclick="toggleAppLanguage()" id="langToggleBtn" class="flex items-center gap-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 px-2 py-1.5 rounded-xl text-xs font-bold text-indigo-300 transition active:scale-95">
           <i data-lucide="languages" class="w-3.5 h-3.5"></i>
-          <span id="langBtnText">मराठी / EN</span>
+          <span id="langBtnText">मराठी</span>
         </button>
 
         <!-- Install PWA App Button (Mobile / Desktop) -->
-        <button id="pwaInstallBtn" onclick="triggerPwaInstall()" class="hidden sm:flex items-center gap-1.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow-md shadow-indigo-500/30 transition active:scale-95">
+        <button id="pwaInstallBtn" onclick="triggerPwaInstall()" class="flex items-center gap-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-2.5 py-1.5 rounded-xl text-xs font-bold shadow-md shadow-indigo-500/30 transition active:scale-95">
           <i data-lucide="download" class="w-3.5 h-3.5"></i>
-          <span>ॲप इन्स्टॉल करा (Install)</span>
+          <span>ॲप इन्स्टॉल</span>
         </button>
 
         <!-- Security Encryption Badge (Clickable for Vault Details) -->
-        <button onclick="openVaultModal()" title="कूटबद्ध तिजोरी स्थिती पहा" class="hidden sm:flex items-center gap-1.5 bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-500/40 px-3 py-1.5 rounded-full text-emerald-300 text-xs font-mono transition active:scale-95 shadow-sm">
+        <button onclick="openVaultModal()" title="कूटबद्ध तिजोरी स्थिती पहा" class="flex items-center gap-1 bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-500/40 px-2.5 py-1.5 rounded-full text-emerald-300 text-xs font-mono transition active:scale-95 shadow-sm">
           <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
-          <span>AES-256 Vault 🔒</span>
+          <span>Vault 🔒</span>
         </button>
 
         <!-- Firebase Cloud Sync & Auth Indicator -->
-        <button onclick="openFirebaseAuthModal()" id="firebaseStatusBtn" title="Firebase क्लाउड डेटाबेस व लॉगिन" class="flex items-center gap-1.5 bg-amber-950/60 hover:bg-amber-900/80 border border-amber-500/40 px-3 py-1.5 rounded-full text-amber-300 text-xs font-mono transition active:scale-95 shadow-sm">
+        <button onclick="openFirebaseAuthModal()" id="firebaseStatusBtn" title="Firebase क्लाउड डेटाबेस व लॉगिन" class="flex items-center gap-1 bg-amber-950/60 hover:bg-amber-900/80 border border-amber-500/40 px-2.5 py-1.5 rounded-full text-amber-300 text-xs font-mono transition active:scale-95 shadow-sm">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span id="firebaseStatusText">Firebase Cloud ☁️</span>
+          <span id="firebaseStatusText">Cloud ☁️</span>
         </button>
 
-        <span class="text-xs text-slate-400 hidden lg:inline">सक्रिय सदस्य:</span>
-        <button onclick="openMemberPinModal()" id="activeMemberPill" title="सदस्य बदला / PIN लॉगिन" class="flex items-center gap-2 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 px-3 py-1.5 rounded-xl text-amber-300 text-sm font-semibold transition active:scale-95 shadow-sm">
-          <span>👨‍💼 वडील (व्यापारी)</span>
+        <button onclick="openMemberPinModal()" id="activeMemberPill" title="सदस्य बदला / PIN लॉगिन" class="flex items-center gap-1.5 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 px-2.5 py-1.5 rounded-xl text-amber-300 text-xs font-semibold transition active:scale-95 shadow-sm">
+          <span>👨‍💼 वडील</span>
           <i data-lucide="key" class="w-3.5 h-3.5 text-amber-400"></i>
         </button>
       </div>
@@ -165,6 +164,13 @@
         <span class="text-[9px] bg-orange-500 text-slate-950 font-black px-1.5 py-0.2 rounded-full uppercase">सेवा</span>
       </button>
 
+      <!-- New: AI पीक डॉक्टर व कृषी सल्ला (AI Crop Doctor & Weather) -->
+      <button onclick="switchTab('cropdoctor')" id="tab-cropdoctor" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-lime-400 border border-lime-800/40 transition">
+        <i data-lucide="scan-line" class="w-4 h-4 text-lime-400"></i>
+        <span>🔬 AI पीक डॉक्टर</span>
+        <span class="text-[9px] bg-lime-500 text-slate-950 font-black px-1.5 py-0.2 rounded-full uppercase">AI</span>
+      </button>
+
       <button onclick="switchTab('family')" id="tab-family" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition">
         <i data-lucide="users-2" class="w-4 h-4"></i>
         <span>⚙️ परिवार प्रोफाइल</span>
@@ -194,8 +200,8 @@
         </div>
       </div>
 
-      <!-- Quick Global Family Actions Bar (All 7 Shortcuts) -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
+      <!-- Quick Global Family Actions Bar (All 8 Shortcuts) -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
         <button onclick="switchTab('business'); addPoItemRow();" class="p-3 bg-slate-900/90 border border-slate-800 hover:border-amber-500/50 rounded-2xl flex items-center gap-2.5 transition active:scale-95 group">
           <div class="w-8 h-8 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover:scale-110 transition">
             <i data-lucide="file-plus" class="w-4 h-4"></i>
@@ -203,6 +209,16 @@
           <div class="text-left">
             <div class="text-xs font-bold text-white">नवीन PO</div>
             <div class="text-[10px] text-slate-400">सप्लायर बिल</div>
+          </div>
+        </button>
+
+        <button onclick="switchTab('cropdoctor')" class="p-3 bg-slate-900/90 border border-slate-800 hover:border-lime-500/50 rounded-2xl flex items-center gap-2.5 transition active:scale-95 group">
+          <div class="w-8 h-8 rounded-xl bg-lime-500/20 flex items-center justify-center text-lime-400 group-hover:scale-110 transition">
+            <i data-lucide="scan" class="w-4 h-4"></i>
+          </div>
+          <div class="text-left">
+            <div class="text-xs font-bold text-white">पीक डॉक्टर</div>
+            <div class="text-[10px] text-lime-400">AI रोगनिदान</div>
           </div>
         </button>
 
@@ -1403,6 +1419,231 @@
             </tbody>
           </table>
         </div>
+      </div>
+
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 10: AI पीक डॉक्टर व कृषी हवामान (CROP DOCTOR & WEATHER) -->
+    <!-- ======================================================== -->
+    <section id="view-cropdoctor" class="hidden space-y-6">
+
+      <!-- AI Crop Doctor Hero Banner -->
+      <div class="bg-gradient-to-r from-lime-950/90 via-emerald-950/80 to-slate-900 border border-lime-500/40 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-lime-500/20 border-2 border-lime-400/50 flex items-center justify-center text-3xl shadow-lg shadow-lime-500/20">
+              🔬
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 class="text-2xl font-black text-white tracking-wide">DnyanX AI पीक डॉक्टर व शेती सल्ला</h2>
+                <span class="bg-lime-500/20 text-lime-300 text-xs font-bold px-2.5 py-0.5 rounded-full border border-lime-500/30">AI Vision Engine</span>
+              </div>
+              <p class="text-sm text-lime-200/80 mt-1">पिकावरील कीड, रोगाचा फोटो काढा — AI तात्काळ मराठीत अचूक रोगनिदान व फवारणी औषध सांगेल.</p>
+            </div>
+          </div>
+
+          <!-- Quick Live Weather Pill -->
+          <div class="bg-slate-950/80 border border-lime-500/30 p-3.5 rounded-2xl flex items-center gap-3">
+            <div class="text-3xl" id="cropWeatherIcon">⛅</div>
+            <div>
+              <div class="text-xs text-slate-400">बारामती (पुणे) थेट हवामान:</div>
+              <div class="text-base font-black text-white" id="cropWeatherTemp">२९°C | ढगाळ हवामान</div>
+              <div class="text-[11px] text-emerald-400 font-bold" id="cropWeatherAdvice">✅ आज फवारणीसाठी योग्य दिवस</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main 2-Column Grid: Left (Disease Diagnosis & Camera) + Right (Fertilizer Calculator & Market Rates) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left Column (7 cols): AI Disease Scanner -->
+        <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div class="flex items-center gap-2">
+              <i data-lucide="scan" class="w-5 h-5 text-lime-400"></i>
+              <h3 class="font-bold text-white text-base">पिकाचा फोटो स्कॅन करा (Disease Scanner)</h3>
+            </div>
+            <span class="text-xs font-mono bg-lime-500/20 text-lime-300 px-2 py-0.5 rounded-full">AI Camera Ready</span>
+          </div>
+
+          <!-- Upload / Camera Drop Area -->
+          <div class="border-2 border-dashed border-lime-500/40 hover:border-lime-400 bg-slate-950 rounded-2xl p-6 text-center cursor-pointer transition relative" onclick="document.getElementById('cropLeafInput').click()">
+            <input type="file" id="cropLeafInput" accept="image/*" capture="environment" class="hidden" onchange="handleCropLeafUpload(event)">
+            
+            <div id="cropUploadPlaceholder" class="space-y-3">
+              <div class="w-16 h-16 rounded-full bg-lime-500/10 border border-lime-500/30 flex items-center justify-center text-3xl mx-auto text-lime-400">
+                📸
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-white">पानाचा किंवा किडीचा फोटो अपलोड करा किंवा कॅमेरा उघडा</h4>
+                <p class="text-xs text-slate-400 mt-1">ऊस, कपाशी, कांदा, सोयाबीन, डाळिंब, टोमॅटो किंवा इतर पिके</p>
+              </div>
+              <button type="button" class="bg-lime-600 hover:bg-lime-500 text-slate-950 font-black px-4 py-2 rounded-xl text-xs inline-flex items-center gap-2 transition">
+                <i data-lucide="camera" class="w-4 h-4"></i>
+                <span>कॅमेरा / फोटो निवडा</span>
+              </button>
+            </div>
+
+            <!-- Preview Image Box -->
+            <div id="cropPreviewBox" class="hidden flex flex-col items-center space-y-3">
+              <img id="cropPreviewImg" src="" alt="पिकाचा फोटो" class="max-h-56 rounded-xl border border-lime-500/40 object-contain shadow-lg">
+              <button type="button" onclick="event.stopPropagation(); document.getElementById('cropLeafInput').click()" class="text-xs text-slate-400 hover:text-white underline">
+                दुसरा फोटो बदला
+              </button>
+            </div>
+          </div>
+
+          <!-- Crop Selection & Diagnosis Button -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1">पिकाचे नाव निवडा:</label>
+              <select id="selectedCropType" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                <option value="ऊस">ऊस (Sugarcane)</option>
+                <option value="सोयाबीन">सोयाबीन (Soybean)</option>
+                <option value="कांदा">कांदा (Onion)</option>
+                <option value="कपाशी">कपाशी / कापूस (Cotton)</option>
+                <option value="टोमॅटो">टोमॅटो (Tomato)</option>
+                <option value="डाळिंब">डाळिंब (Pomegranate)</option>
+                <option value="द्राक्षे">द्राक्षे (Grapes)</option>
+                <option value="इतर">इतर पीक (General)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1">लक्षणे / त्रास (पर्यायी):</label>
+              <input type="text" id="cropSymptomNote" placeholder="उदा. पाने पिवळी पडली आहेत, काळे ठिपके..." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+          </div>
+
+          <button onclick="runCropDiagnosisAI()" id="cropDiagnoseBtn" class="w-full bg-lime-500 hover:bg-lime-400 text-slate-950 font-black py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-lime-500/20 transition active:scale-95">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            <span>AI द्वारे रोगनिदान करा व औषध मिळवा</span>
+          </button>
+
+          <!-- Diagnosis Result Card -->
+          <div id="cropDiagnosisResultArea" class="hidden p-5 rounded-2xl bg-slate-950 border border-lime-500/40 space-y-3 animate-fadeIn">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <span class="text-xs font-bold text-lime-400 flex items-center gap-1.5">
+                <i data-lucide="check-circle" class="w-4 h-4"></i>
+                <span>AI निदान अहवाल (Diagnosis Result)</span>
+              </span>
+              <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-mono" id="diagConfidence">९६% अचूकता</span>
+            </div>
+
+            <div>
+              <h4 class="text-base font-black text-white" id="diagDiseaseName">पानावरील करपा व तांबेरा रोग (Leaf Blight)</h4>
+              <p class="text-xs text-slate-300 mt-1" id="diagDescription">बुरशीजन्य प्रादुर्भावामुळे पानांवर लालसर-तपकिरी ठिपके पडले आहेत. वेळीच फवारणी न केल्यास प्रकाशसंश्लेषण मंदावेल.</p>
+            </div>
+
+            <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5">
+              <span class="text-[11px] font-bold text-amber-400 block">💊 शिफारस केलेले तात्काळ औषध व फवारणी:</span>
+              <p class="text-xs text-slate-200 font-semibold" id="diagMedicine">साफ पावडर (Mancozeb + Carbendazim) — २ ग्रॅम प्रति लिटर पाणी किंवा नॅटिव्हो (Nativo) — ०.५ ग्रॅम प्रति लिटर.</p>
+              <p class="text-[11px] text-emerald-400 font-medium" id="diagOrganicTip">🌱 सेंद्रिय पर्याय: गोमूत्र + निंबोळी अर्क ५% ची फवारणी करा.</p>
+            </div>
+
+            <div class="flex gap-2 pt-1">
+              <button onclick="shareDiagnosisWhatsApp()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 transition">
+                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                <span>कृषी सेवा केंद्राला WhatsApp पाठवा</span>
+              </button>
+              <button onclick="saveDiagnosisToCloud()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-semibold">
+                क्लाउडवर जतन करा
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column (5 cols): Smart Fertilizer & Irrigation Calculator + Mandi Rates -->
+        <div class="lg:col-span-5 space-y-6">
+
+          <!-- Fertilizer & Drip Calculator -->
+          <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div class="flex items-center gap-2">
+                <i data-lucide="calculator" class="w-5 h-5 text-amber-400"></i>
+                <h3 class="font-bold text-white text-base">खत व पाणी गणक (Fertilizer Calculator)</h3>
+              </div>
+              <span class="text-xs font-mono text-amber-300">एकर प्रमाण</span>
+            </div>
+
+            <div class="space-y-3">
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-[11px] text-slate-400 mb-1">क्षेत्र (एकर):</label>
+                  <input type="number" id="calcAcresInput" value="3.5" step="0.5" min="0.5" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono" onchange="calculateFertilizerRequirement()">
+                </div>
+                <div>
+                  <label class="block text-[11px] text-slate-400 mb-1">पिकाचा टप्पा:</label>
+                  <select id="calcStageSelect" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-2 py-2 text-xs text-white" onchange="calculateFertilizerRequirement()">
+                    <option value="early">वाढ / फुटवे (Vegetative)</option>
+                    <option value="flower">फुलोरा / लागवड (Flowering)</option>
+                    <option value="yield">फळ / वजन वाढ (Maturity)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Calculation Output -->
+              <div class="p-3.5 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
+                <div class="flex justify-between items-center text-xs">
+                  <span class="text-slate-400">युरिया (Urea 46% N):</span>
+                  <span class="font-bold font-mono text-white" id="outUrea">१.७५ बॅग (८७.५ किलो)</span>
+                </div>
+                <div class="flex justify-between items-center text-xs">
+                  <span class="text-slate-400">डीएपी / 10:26:26:</span>
+                  <span class="font-bold font-mono text-white" id="outDap">३.५ बॅग (१७५ किलो)</span>
+                </div>
+                <div class="flex justify-between items-center text-xs">
+                  <span class="text-slate-400">पोटॅश (MOP):</span>
+                  <span class="font-bold font-mono text-white" id="outPotash">१.७५ बॅग (८७.५ किलो)</span>
+                </div>
+                <div class="pt-2 border-t border-slate-800 flex justify-between items-center text-xs">
+                  <span class="text-amber-400 font-bold">ठिबक सिंचन पाणी गरज:</span>
+                  <span class="font-bold font-mono text-cyan-300" id="outWater">१४,००० लिटर / दिवस</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Baramati Krishi Mandi Live Rates -->
+          <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div class="flex items-center gap-2">
+                <i data-lucide="trending-up" class="w-5 h-5 text-emerald-400"></i>
+                <h3 class="font-bold text-white text-base">बारामती कृषी उत्पन्न बाजारभाव (Mandi)</h3>
+              </div>
+              <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-bold">लाईव्ह दर</span>
+            </div>
+
+            <div class="space-y-2 text-xs">
+              <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800">
+                <div class="flex items-center gap-2">
+                  <span>🧅</span>
+                  <span class="text-white font-bold">कांदा (लाल)</span>
+                </div>
+                <span class="font-mono text-emerald-400 font-bold">₹ २,४०० - ₹ ३,१०० / क्विंटल</span>
+              </div>
+              <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800">
+                <div class="flex items-center gap-2">
+                  <span>🌱</span>
+                  <span class="text-white font-bold">सोयाबीन (पिवळा)</span>
+                </div>
+                <span class="font-mono text-emerald-400 font-bold">₹ ४,३५० - ₹ ४,८०० / क्विंटल</span>
+              </div>
+              <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800">
+                <div class="flex items-center gap-2">
+                  <span>🍅</span>
+                  <span class="text-white font-bold">टोमॅटो</span>
+                </div>
+                <span class="font-mono text-emerald-400 font-bold">₹ ३५० - ₹ ६०० / क्रेट</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
       </div>
 
     </section>

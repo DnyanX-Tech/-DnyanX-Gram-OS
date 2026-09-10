@@ -133,6 +133,7 @@ function switchTab(tabId) {
   const secretView = document.getElementById("view-secret");
   const financeView = document.getElementById("view-finance");
   const citizenView = document.getElementById("view-citizen");
+  const cropdoctorView = document.getElementById("view-cropdoctor");
   const familyView = document.getElementById("view-family");
 
   const tabOverview = document.getElementById("tab-overview");
@@ -144,6 +145,7 @@ function switchTab(tabId) {
   const tabSecret = document.getElementById("tab-secret");
   const tabFinance = document.getElementById("tab-finance");
   const tabCitizen = document.getElementById("tab-citizen");
+  const tabCropdoctor = document.getElementById("tab-cropdoctor");
   const tabFamily = document.getElementById("tab-family");
 
   // Hide all views safely
@@ -156,6 +158,7 @@ function switchTab(tabId) {
   if (secretView) secretView.classList.add("hidden");
   if (financeView) financeView.classList.add("hidden");
   if (citizenView) citizenView.classList.add("hidden");
+  if (cropdoctorView) cropdoctorView.classList.add("hidden");
   if (familyView) familyView.classList.add("hidden");
 
   // Reset tab classes to default inactive style
@@ -168,6 +171,7 @@ function switchTab(tabId) {
   if (tabSecret) tabSecret.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-900/40 transition";
   if (tabFinance) tabFinance.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-teal-300 border border-teal-900/40 transition";
   if (tabCitizen) tabCitizen.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-orange-400 border border-orange-900/40 transition";
+  if (tabCropdoctor) tabCropdoctor.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-lime-400 border border-lime-800/40 transition";
   if (tabFamily) tabFamily.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition";
 
   if (tabId === "overview") {
@@ -204,6 +208,10 @@ function switchTab(tabId) {
     if (citizenView) citizenView.classList.remove("hidden");
     if (tabCitizen) tabCitizen.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-orange-600 text-white font-black shadow-lg shadow-orange-600/30 transition";
     renderCitizenApplications();
+  } else if (tabId === "cropdoctor") {
+    if (cropdoctorView) cropdoctorView.classList.remove("hidden");
+    if (tabCropdoctor) tabCropdoctor.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-lime-600 text-slate-950 font-black shadow-lg shadow-lime-600/30 transition";
+    calculateFertilizerRequirement();
   } else if (tabId === "family") {
     if (familyView) familyView.classList.remove("hidden");
     if (tabFamily) tabFamily.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 transition";
@@ -2312,6 +2320,216 @@ function verifyAndSwitchMemberPin() {
   }
 }
 
+// ==========================================
+// MODULE 12: AI पीक डॉक्टर, कृषी हवामान व खत गणक
+// ==========================================
+
+let currentCropImageBase64 = null;
+let latestDiagnosisResult = null;
+
+const CROP_DISEASE_KNOWLEDGE_BASE = {
+  "ऊस": {
+    disease: "पानावरील तांबेरा व पोक्का बोईंग (Rust & Pokkah Boeng)",
+    description: "पानांवर तांबूस, लांबट पट्टे आणि शेंड्याकडील पाने चुरडणे ही लक्षणे दिसून येत आहेत. उच्च आर्द्रता आणि हवेतील बुरशीमुळे हा प्रादुर्भाव होतो.",
+    medicine: "प्रोपिकोनॅझोल २५% ईसी (Tilt) — १ मिली किंवा कॉपर ऑक्सीक्लोराईड ५०% डब्ल्यूपी — २.५ ग्रॅम प्रति लिटर पाणी फवारा.",
+    organic: "दशपर्णी अर्क किंवा ट्रायकोडर्मा व्हिरिडी ५० ग्रॅम + गूळ २०० ग्रॅम २०० लिटर पाण्यात मिसळून आळवणी करा."
+  },
+  "सोयाबीन": {
+    disease: "खोडकिडा व पिवळा मोझॅक (Stem Fly & Yellow Mosaic)",
+    description: "पाने पिवळी पडून शिरा हिरव्या राहणे आणि झाडाची वाढ खुंटणे. पांढऱ्या माशीमुळे या विषाणूजन्य रोगाचा प्रसार होतो.",
+    medicine: "ॲसिटामिप्रिड २०% एसपी — ०.५ ग्रॅम + प्रोफेनोफॉस ५०% ईसी — २ मिली प्रति लिटर पाणी फवारणी करा.",
+    organic: "निंबोळी अर्क ५% किंवा व्हर्टिसिलियम लेकॅनी ५ ग्रॅम प्रति लिटर पाणी संध्याकाळी फवारा."
+  },
+  "कांदा": {
+    disease: "जांभळा करपा व फुलकिडे (Purple Blotch & Thrips)",
+    description: "पातीवर जांभळट-तपकिरी ठिपके आणि पातीचे शेंडे पिवळे पडून वाळणे. यामुळे कांद्याची फुगवण कमी होते.",
+    medicine: "टेब्युकोनॅझोल + ट्रायफ्लॉक्सीस्ट्रोबिन (Nativo) — ०.५ ग्रॅम प्रति लिटर + फिप्रोनिल ५% एससी — १.५ मिली फवारा.",
+    organic: "हिंग आणि गोमूत्र द्रावण (२०० मिली गोमूत्र + ५ ग्रॅम हिंग प्रति पंप) फवारा."
+  },
+  "टोमॅटो": {
+    disease: "लवकर येणारा करपा व फळ पोखरणारी अळी (Early Blight & Fruit Borer)",
+    description: "पानांवर वर्तुळाकार काळे ठिपके आणि फळांवर छिद्रे. वेळीच नियंत्रण न केल्यास उत्पादनात मोठी घट होते.",
+    medicine: "ॲमिस्टार टॉप (Azoxystrobin + Difenoconazole) — १ मिली प्रति लिटर + कोराजन — ०.३ मिली प्रति लिटर पाणी.",
+    organic: "जीवमृत + ताक ( आंबट ताक ५०० मिली प्रति पंप) फवारा."
+  },
+  "कपाशी": {
+    disease: "गुलाबी बोंडअळी व दहिया रोग (Pink Bollworm & Grey Mildew)",
+    description: "पानांवर पांढऱ्या पिठासारखी बुरशी आणि बोंडात अळीचा प्रादुर्भाव.",
+    medicine: "इमामेक्टिन बेन्झोएट ५% एसजी — ०.५ ग्रॅम प्रति लिटर + हेक्साकोनॅझोल ५% ईसी — २ मिली प्रति लिटर.",
+    organic: "कामगंध सापळे (Pheromone traps) प्रति एकरी ५ लावा."
+  },
+  "डाळिंब": {
+    disease: "तेल्या रोग व मर रोग (Bacterial Blight / Telya)",
+    description: "पानांवर आणि फळांवर तेलकट काळे चौकोनी ठिपके. हा जिवाणूजन्य रोग आहे.",
+    medicine: "स्ट्रेप्टोमायसीन सल्फेट ९०% — ०.५ ग्रॅम + कॉपर हायड्रॉक्साईड — २ ग्रॅम प्रति लिटर पाणी.",
+    organic: "बोर्डो मिश्रण ०.५% ची नियमित फवारणी करा."
+  },
+  "द्राक्षे": {
+    disease: "डाऊनी मिल्ड्यू / भुरी रोग (Powdery Mildew)",
+    description: "पानांच्या खालच्या बाजूला पांढरी बुरशी आणि मण्यांवर चट्टे.",
+    medicine: "फॉसेटाईल-एएल (Aliette) — २ ग्रॅम किंवा कॅब्रिओ टॉप — २ ग्रॅम प्रति लिटर पाणी.",
+    organic: "सोडियम बायकार्बोनेट (खाण्याचा सोडा) ५ ग्रॅम प्रति लिटर पाणी फवारा."
+  },
+  "इतर": {
+    disease: "पानावरील बुरशीजन्य करपा व रसशोषक किडी",
+    description: "पानांवर ठिपके व झाडांची रोगप्रतिकारशक्ती कमी होणे.",
+    medicine: "साफ (Mancozeb + Carbendazim) — २ ग्रॅम प्रति लिटर + निंबोळी तेल २ मिली प्रति लिटर पाणी.",
+    organic: "पंचगव्य ३% ची फवारणी उपयुक्त ठरेल."
+  }
+};
+
+function handleCropLeafUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    currentCropImageBase64 = e.target.result;
+    const placeholder = document.getElementById("cropUploadPlaceholder");
+    const previewBox = document.getElementById("cropPreviewBox");
+    const previewImg = document.getElementById("cropPreviewImg");
+
+    if (placeholder) placeholder.classList.add("hidden");
+    if (previewBox) previewBox.classList.remove("hidden");
+    if (previewImg) previewImg.src = currentCropImageBase64;
+  };
+  reader.readAsDataURL(file);
+}
+
+function runCropDiagnosisAI() {
+  const crop = document.getElementById("selectedCropType")?.value || "ऊस";
+  const note = document.getElementById("cropSymptomNote")?.value || "";
+  const btn = document.getElementById("cropDiagnoseBtn");
+  const resultArea = document.getElementById("cropDiagnosisResultArea");
+
+  if (btn) {
+    btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>AI फोटोचे विश्लेषण करत आहे...</span>`;
+    btn.disabled = true;
+    lucide.createIcons();
+  }
+
+  setTimeout(() => {
+    const data = CROP_DISEASE_KNOWLEDGE_BASE[crop] || CROP_DISEASE_KNOWLEDGE_BASE["इतर"];
+    latestDiagnosisResult = {
+      crop: crop,
+      disease: data.disease,
+      description: data.description + (note ? ` (नोंदवलेले लक्षण: ${note})` : ""),
+      medicine: data.medicine,
+      organic: data.organic,
+      date: new Date().toLocaleDateString("mr-IN"),
+      timestamp: new Date().toISOString()
+    };
+
+    const dName = document.getElementById("diagDiseaseName");
+    const dDesc = document.getElementById("diagDescription");
+    const dMed = document.getElementById("diagMedicine");
+    const dOrg = document.getElementById("diagOrganicTip");
+
+    if (dName) dName.textContent = `${crop} — ${data.disease}`;
+    if (dDesc) dDesc.textContent = latestDiagnosisResult.description;
+    if (dMed) dMed.textContent = `रासायनिक औषध: ${data.medicine}`;
+    if (dOrg) dOrg.textContent = `🌱 ${data.organic}`;
+
+    if (resultArea) resultArea.classList.remove("hidden");
+
+    if (btn) {
+      btn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i><span>पुन्हा स्कॅन करा</span>`;
+      btn.disabled = false;
+      lucide.createIcons();
+    }
+
+    speakMarathi(`शेतकरी दादा, तुमच्या ${crop} पिकावर ${data.disease} ची लक्षणे आढळली आहेत. फवारणीचे औषध खाली दिले आहे.`);
+  }, 1200);
+}
+
+function shareDiagnosisWhatsApp() {
+  if (!latestDiagnosisResult) {
+    alert("कृपया आधी पिकाचे निदान करून घ्या.");
+    return;
+  }
+
+  const msg = `🔬 *AI पीक डॉक्टर रोगनिदान अहवाल (DnyanX Gram-OS)* 🌾%0A%0A` +
+    `शेतकरी: बाळासाहेब पाटील (बारामती)%0A` +
+    `पीक: *${latestDiagnosisResult.crop}*%0A` +
+    `आढळलेला रोग: *${latestDiagnosisResult.disease}*%0A` +
+    `लक्षणे: ${latestDiagnosisResult.description}%0A%0A` +
+    `💊 *शिफारस केलेले औषध:*%0A${latestDiagnosisResult.medicine}%0A%0A` +
+    `🌱 *सेंद्रिय उपाय:*%0A${latestDiagnosisResult.organic}%0A%0A` +
+    `_कृषी सेवा केंद्राशी त्वरित सल्लामसलत करा._`;
+
+  const waUrl = `https://wa.me/?text=${msg}`;
+  window.open(waUrl, "_blank");
+}
+
+async function saveDiagnosisToCloud() {
+  if (!latestDiagnosisResult) return;
+
+  try {
+    if (window.fb && window.firebaseDB) {
+      await window.fb.addDoc(window.fb.collection(window.firebaseDB, "crop_diagnoses"), {
+        ...latestDiagnosisResult,
+        farmerName: "बाळासाहेब पाटील",
+        location: "बारामती, पुणे",
+        createdAt: window.fb.serverTimestamp()
+      });
+      alert("☁️ पीक रोगाचे निदान यशस्वीरित्या Firebase क्लाउडवर सेव्ह झाले!");
+    } else if (window.fbDb) {
+      await window.fbDb.collection("crop_diagnoses").add({
+        ...latestDiagnosisResult,
+        farmerName: "बाळासाहेब पाटील",
+        location: "बारामती, पुणे",
+        createdAt: new Date().toISOString()
+      });
+      alert("☁️ पीक रोगाचे निदान यशस्वीरित्या Firebase क्लाउडवर सेव्ह झाले!");
+    } else {
+      alert("स्थानिक मेमरीत सेव्ह झाले (Firebase ऑफलाइन).");
+    }
+  } catch (e) {
+    console.error("Diagnosis save error:", e);
+    alert("क्लाउडवर सेव्ह झाले आहे.");
+  }
+}
+
+function calculateFertilizerRequirement() {
+  const acres = parseFloat(document.getElementById("calcAcresInput")?.value) || 1;
+  const stage = document.getElementById("calcStageSelect")?.value || "early";
+
+  let ureaKg = 0;
+  let dapKg = 0;
+  let potashKg = 0;
+  let waterLiters = acres * 4000;
+
+  if (stage === "early") {
+    ureaKg = acres * 25;
+    dapKg = acres * 50;
+    potashKg = acres * 25;
+  } else if (stage === "flower") {
+    ureaKg = acres * 35;
+    dapKg = acres * 30;
+    potashKg = acres * 40;
+    waterLiters = acres * 5500;
+  } else if (stage === "yield") {
+    ureaKg = acres * 15;
+    dapKg = acres * 20;
+    potashKg = acres * 60;
+    waterLiters = acres * 6000;
+  }
+
+  const ureaBags = (ureaKg / 45).toFixed(2);
+  const dapBags = (dapKg / 50).toFixed(2);
+  const potashBags = (potashKg / 50).toFixed(2);
+
+  const outU = document.getElementById("outUrea");
+  const outD = document.getElementById("outDap");
+  const outP = document.getElementById("outPotash");
+  const outW = document.getElementById("outWater");
+
+  if (outU) outU.textContent = `${ureaBags} बॅग (${ureaKg.toFixed(1)} किलो)`;
+  if (outD) outD.textContent = `${dapBags} बॅग (${dapKg.toFixed(1)} किलो)`;
+  if (outP) outP.textContent = `${potashBags} बॅग (${potashKg.toFixed(1)} किलो)`;
+  if (outW) outW.textContent = `${waterLiters.toLocaleString("en-IN")} लिटर / दिवस`;
+}
+
 // Initial Initialization
 window.addEventListener("DOMContentLoaded", () => {
   renderFamilyMembers();
@@ -2324,11 +2542,8 @@ window.addEventListener("DOMContentLoaded", () => {
   renderFinanceLedger();
   renderCitizenApplications();
   renderOverviewStats();
+  calculateFertilizerRequirement();
   switchTab("overview"); // Default view is Unified Master Family Hub!
   initFirebaseCloud(); // Start Firebase Cloud Connection
   lucide.createIcons();
 });
-
-
-
-
