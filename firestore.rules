@@ -1,0 +1,22 @@
+﻿rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 1. Purchase Orders (खरेदी आदेश)
+    match /purchase_orders/{poId} {
+      allow read, write: if true;
+    }
+
+    // 2. ई-ग्राम नागरिक सेवा अर्ज (Villagers / Citizens)
+    match /villagers/{citizenId} {
+      allow create, read: if true;
+      allow update, delete: if request.auth != null;
+    }
+
+    // 3. संपूर्ण कुटुंब डेटा व तिजोरी (Families & Ledger)
+    match /families/{familyId} {
+      allow read, write: if true;
+    }
+
+  }
+}
