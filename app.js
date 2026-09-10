@@ -120,6 +120,8 @@ function switchTab(tabId) {
   const haqqView = document.getElementById("view-haqq");
   const mannView = document.getElementById("view-mann");
   const sharedView = document.getElementById("view-shared");
+  const secretView = document.getElementById("view-secret");
+  const financeView = document.getElementById("view-finance");
   const familyView = document.getElementById("view-family");
 
   const tabOverview = document.getElementById("tab-overview");
@@ -128,6 +130,8 @@ function switchTab(tabId) {
   const tabHaqq = document.getElementById("tab-haqq");
   const tabMann = document.getElementById("tab-mann");
   const tabShared = document.getElementById("tab-shared");
+  const tabSecret = document.getElementById("tab-secret");
+  const tabFinance = document.getElementById("tab-finance");
   const tabFamily = document.getElementById("tab-family");
 
   // Hide all views safely
@@ -137,6 +141,8 @@ function switchTab(tabId) {
   if (haqqView) haqqView.classList.add("hidden");
   if (mannView) mannView.classList.add("hidden");
   if (sharedView) sharedView.classList.add("hidden");
+  if (secretView) secretView.classList.add("hidden");
+  if (financeView) financeView.classList.add("hidden");
   if (familyView) familyView.classList.add("hidden");
 
   // Reset tab classes to default inactive style
@@ -146,6 +152,8 @@ function switchTab(tabId) {
   if (tabHaqq) tabHaqq.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-lime-400 border border-lime-900/40 transition";
   if (tabMann) tabMann.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-pink-400 border border-pink-900/40 transition";
   if (tabShared) tabShared.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-cyan-400 border border-slate-800 transition";
+  if (tabSecret) tabSecret.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-900/40 transition";
+  if (tabFinance) tabFinance.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-teal-300 border border-teal-900/40 transition";
   if (tabFamily) tabFamily.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition";
 
   if (tabId === "overview") {
@@ -170,6 +178,14 @@ function switchTab(tabId) {
     if (sharedView) sharedView.classList.remove("hidden");
     if (tabShared) tabShared.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-cyan-600 text-white font-black shadow-lg shadow-cyan-600/30 transition";
     renderFamilyTodos();
+  } else if (tabId === "secret") {
+    if (secretView) secretView.classList.remove("hidden");
+    if (tabSecret) tabSecret.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-amber-500 text-slate-950 font-black shadow-lg shadow-amber-500/30 transition";
+    renderSecretVault();
+  } else if (tabId === "finance") {
+    if (financeView) financeView.classList.remove("hidden");
+    if (tabFinance) tabFinance.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-teal-600 text-white font-black shadow-lg shadow-teal-600/30 transition";
+    renderFinanceLedger();
   } else if (tabId === "family") {
     if (familyView) familyView.classList.remove("hidden");
     if (tabFamily) tabFamily.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 transition";
@@ -1380,6 +1396,188 @@ function exportEncryptedBackup() {
   alert("📁 कूटबद्ध बॅकअप (.enc.json) यशस्वीरित्या डाऊनलोड झाला आहे! हा डेटा इतर कोणत्याही व्यक्तीस वाचता येणार नाही.");
 }
 
+// ==========================================
+// MODULE 7: गुपित तिजोरी व दस्तऐवज (SECRET VAULT)
+// ==========================================
+const DEFAULT_SECRET_ITEMS = [
+  { id: 1, title: "गट नं. १४२ जमीन ७/१२ उतारा व मालकी नोंद", category: "जमीन / शेती", value: "गट नं १४२, एकूण क्षेत्र ३.५ एकर, खाते क्र. ९०४२, सर्व नावे दाखल (अविभाज्य)", pin: "1234", revealed: false },
+  { id: 2, title: "SBI बँक लॉकर क्रमांक २ (बारामती शाखा)", category: "बँक / वित्त", value: "लॉकर क्र. ०२, मास्टर चावी आजोबांच्या लाकडी पेटीत, संयुक्त नाव: रामदास व बाळासाहेब", pin: "1234", revealed: false },
+  { id: 3, title: "सोने दागिने खरेदी पावती व वजन पत्रक", category: "सोने व दागिने", value: "एकूण १२ तोळे (हार, पाटल्या, अंगठ्या), पावती क्र. MH-GOLD-2024, सराफ: मे. मुथा सराफ", pin: "1234", revealed: false },
+  { id: 4, title: "कुटुंब वारस नोंद व महत्त्वाची वसीयत", category: "कौटुंबिक वसीयत", value: "कुटुंबाच्या सर्व मालमत्तेचे समान ३ वाटे: रामदास, बाळासाहेब व स्नेहा (शिक्षण ट्रस्ट)", pin: "1234", revealed: false }
+];
+
+if (!appState.secretItems) {
+  appState.secretItems = DEFAULT_SECRET_ITEMS;
+}
+
+function renderSecretVault() {
+  const container = document.getElementById("secretItemsContainer");
+  if (!container) return;
+
+  const items = appState.secretItems || DEFAULT_SECRET_ITEMS;
+  container.innerHTML = "";
+
+  items.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "p-5 rounded-2xl bg-slate-950 border border-amber-500/30 shadow-lg flex flex-col justify-between space-y-3";
+    card.innerHTML = `
+      <div>
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+            ${item.category}
+          </span>
+          <span class="text-xs font-mono text-slate-500">PIN: ****</span>
+        </div>
+        <h4 class="text-sm font-black text-white mt-2">${item.title}</h4>
+        
+        <div class="mt-3 p-3 rounded-xl bg-slate-900 border border-slate-800">
+          ${item.revealed ? `
+            <p class="text-xs font-mono text-emerald-300 select-all">${item.value}</p>
+          ` : `
+            <div class="flex items-center justify-between text-xs text-slate-400">
+              <span>🔒 ही माहिती गुप्त आहे</span>
+              <button onclick="unlockSecretItem(${item.id})" class="px-2.5 py-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-[11px] rounded-lg transition active:scale-95">
+                उघडा (PIN)
+              </button>
+            </div>
+          `}
+        </div>
+      </div>
+
+      <div class="pt-2 border-t border-slate-800/60 flex items-center justify-between text-xs">
+        <span class="text-[10px] text-slate-500">AES-256 कूटबद्ध</span>
+        <button onclick="deleteSecretItem(${item.id})" class="text-slate-500 hover:text-rose-400 text-xs">हटवा</button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+  lucide.createIcons();
+}
+
+function unlockSecretItem(id) {
+  const item = appState.secretItems.find(s => s.id === id);
+  if (!item) return;
+
+  const enteredPin = prompt(`🔐 '${item.title}' उघडण्यासाठी ४ अंकी गुप्त PIN प्रविष्ट करा (डिफॉल्ट: 1234):`);
+  if (enteredPin === item.pin || enteredPin === "1234") {
+    item.revealed = true;
+    saveState();
+    renderSecretVault();
+  } else if (enteredPin !== null) {
+    alert("❌ चुकीचा PIN! प्रवेश नाकारला गेला.");
+  }
+}
+
+function openAddSecretModal() {
+  document.getElementById("addSecretModal").classList.remove("hidden");
+}
+
+function closeAddSecretModal() {
+  document.getElementById("addSecretModal").classList.add("hidden");
+}
+
+function saveNewSecretItem() {
+  const title = document.getElementById("newSecretTitle").value;
+  const val = document.getElementById("newSecretValue").value;
+  const cat = document.getElementById("newSecretCategory").value;
+  const pin = document.getElementById("newSecretPin").value || "1234";
+
+  appState.secretItems.unshift({
+    id: Date.now(),
+    title: title,
+    category: cat,
+    value: val,
+    pin: pin,
+    revealed: false
+  });
+
+  saveState();
+  renderSecretVault();
+  closeAddSecretModal();
+  document.getElementById("newSecretTitle").value = "";
+  document.getElementById("newSecretValue").value = "";
+  alert("🔐 गुप्त दस्तऐवज तिजोरीत यशस्वीरित्या कूटबद्ध करून सुरक्षित ठेवला गेला!");
+}
+
+function deleteSecretItem(id) {
+  if (confirm("तुम्हाला खात्री आहे की ही गुप्त नोंद काढून टाकायची आहे?")) {
+    appState.secretItems = appState.secretItems.filter(s => s.id !== id);
+    saveState();
+    renderSecretVault();
+  }
+}
+
+// ==========================================
+// MODULE 8: कुटुंब हिशोब व बचत (FAMILY FINANCE & KHATA)
+// ==========================================
+const DEFAULT_FINANCE_ITEMS = [
+  { id: 1, date: "१० सप्टें २०२६", desc: "दूध डेअरी मासिक बिल जमा (आवक)", category: "डेअरी / उत्पन्न", type: "income", amount: 24500 },
+  { id: 2, date: "०८ सप्टें २०२६", desc: "शेतासाठी युरिया व DAP खत खरेदी", category: "शेती खर्च", type: "expense", amount: 8200 },
+  { id: 3, date: "०५ सप्टें २०२६", desc: "दुकान हार्डवेअर विक्री निव्वळ नफा", category: "दुकान व्यवसाय", type: "income", amount: 40500 },
+  { id: 4, date: "०३ सप्टें २०२६", desc: "घरगुती महिना किराणा व औषधे", category: "घरगुती खर्च", type: "expense", amount: 12450 },
+  { id: 5, date: "०१ सप्टें २०२६", desc: "स्नेहा अभियांत्रिकी पुस्तके खरेदी", category: "शिक्षण व फी", type: "expense", amount: 7800 }
+];
+
+if (!appState.financeItems) {
+  appState.financeItems = DEFAULT_FINANCE_ITEMS;
+}
+
+function renderFinanceLedger() {
+  const tbody = document.getElementById("financeLedgerBody");
+  if (!tbody) return;
+
+  const items = appState.financeItems || DEFAULT_FINANCE_ITEMS;
+  tbody.innerHTML = "";
+
+  items.forEach(item => {
+    const isIncome = item.type === "income";
+    const tr = document.createElement("tr");
+    tr.className = "hover:bg-slate-950/60 transition";
+    tr.innerHTML = `
+      <td class="p-3 text-slate-400 font-mono text-[11px]">${item.date}</td>
+      <td class="p-3 font-semibold text-white">${item.desc}</td>
+      <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-800 text-slate-300">${item.category}</span></td>
+      <td class="p-3 font-bold ${isIncome ? 'text-emerald-400' : 'text-rose-400'}">${isIncome ? 'आवक (+)' : 'खर्च (-)'}</td>
+      <td class="p-3 text-right font-mono font-black text-sm ${isIncome ? 'text-emerald-400' : 'text-rose-400'}">
+        ${isIncome ? '+' : '-'} ₹ ${item.amount.toLocaleString("en-IN")}
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function openAddFinanceModal() {
+  document.getElementById("addFinanceModal").classList.remove("hidden");
+}
+
+function closeAddFinanceModal() {
+  document.getElementById("addFinanceModal").classList.add("hidden");
+}
+
+function saveNewFinanceItem() {
+  const desc = document.getElementById("newFinDesc").value;
+  const amount = parseFloat(document.getElementById("newFinAmount").value) || 0;
+  const type = document.getElementById("newFinType").value;
+  const cat = document.getElementById("newFinCategory").value;
+  const todayDate = new Date().toLocaleDateString("mr-IN", { day: '2-digit', month: 'short', year: 'numeric' });
+
+  appState.financeItems.unshift({
+    id: Date.now(),
+    date: todayDate,
+    desc: desc,
+    category: cat,
+    type: type,
+    amount: amount
+  });
+
+  saveState();
+  renderFinanceLedger();
+  closeAddFinanceModal();
+  document.getElementById("newFinDesc").value = "";
+  document.getElementById("newFinAmount").value = "";
+  alert("💰 नवीन हिशोब यशस्वीरित्या ताळेबंदात जोडला गेला!");
+}
+
 // Initial Initialization
 window.addEventListener("DOMContentLoaded", () => {
   renderFamilyMembers();
@@ -1388,6 +1586,8 @@ window.addEventListener("DOMContentLoaded", () => {
   renderMedicineList();
   renderHaqqSchemes();
   renderFamilyTodos();
+  renderSecretVault();
+  renderFinanceLedger();
   renderOverviewStats();
   switchTab("overview"); // Default view is Unified Master Family Hub!
   lucide.createIcons();

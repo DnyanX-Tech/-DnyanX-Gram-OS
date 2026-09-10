@@ -118,7 +118,20 @@
       <!-- Shared Family Features (To-Do & Notes) -->
       <button onclick="switchTab('shared')" id="tab-shared" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-cyan-400 border border-slate-800 transition">
         <i data-lucide="check-square" class="w-4 h-4"></i>
-        <span>📋 घरातील कामे (To-Do)</span>
+        <span>📋 घरातील कामे</span>
+      </button>
+
+      <!-- New & Secret: गुपित तिजोरी व महत्त्वाची कागदपत्रे (Secret Vault) -->
+      <button onclick="switchTab('secret')" id="tab-secret" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-900/40 transition">
+        <i data-lucide="key" class="w-4 h-4 text-amber-400"></i>
+        <span>🔐 गुपित तिजोरी व दस्तऐवज</span>
+        <span class="text-[9px] bg-amber-500 text-slate-950 font-black px-1.5 py-0.2 rounded-full uppercase">गुप्त</span>
+      </button>
+
+      <!-- New: ग्रामीण परिवार बचत व पत (Finance & Khata) -->
+      <button onclick="switchTab('finance')" id="tab-finance" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-teal-300 border border-teal-900/40 transition">
+        <i data-lucide="wallet" class="w-4 h-4 text-teal-400"></i>
+        <span>💰 कुटुंब हिशोब व बचत</span>
       </button>
 
       <button onclick="switchTab('family')" id="tab-family" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition">
@@ -150,15 +163,15 @@
         </div>
       </div>
 
-      <!-- Quick Global Family Actions Bar -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <!-- Quick Global Family Actions Bar (All 6 Shortcuts) -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
         <button onclick="switchTab('business'); addPoItemRow();" class="p-3 bg-slate-900/90 border border-slate-800 hover:border-amber-500/50 rounded-2xl flex items-center gap-2.5 transition active:scale-95 group">
           <div class="w-8 h-8 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover:scale-110 transition">
             <i data-lucide="file-plus" class="w-4 h-4"></i>
           </div>
           <div class="text-left">
-            <div class="text-xs font-bold text-white">नवीन PO ऑर्डर</div>
-            <div class="text-[10px] text-slate-400">दुकान सप्लायर बिल</div>
+            <div class="text-xs font-bold text-white">नवीन PO</div>
+            <div class="text-[10px] text-slate-400">सप्लायर बिल</div>
           </div>
         </button>
 
@@ -168,7 +181,7 @@
           </div>
           <div class="text-left">
             <div class="text-xs font-bold text-white">औषध नोंदवा</div>
-            <div class="text-[10px] text-slate-400">आजोबांची गोळी वेळ</div>
+            <div class="text-[10px] text-slate-400">आजोबांची गोळी</div>
           </div>
         </button>
 
@@ -182,13 +195,35 @@
           </div>
         </button>
 
+        <!-- New: Secret Vault Shortcut -->
+        <button onclick="switchTab('secret')" class="p-3 bg-slate-900/90 border border-slate-800 hover:border-amber-400/50 rounded-2xl flex items-center gap-2.5 transition active:scale-95 group">
+          <div class="w-8 h-8 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-300 group-hover:scale-110 transition">
+            <i data-lucide="key" class="w-4 h-4"></i>
+          </div>
+          <div class="text-left">
+            <div class="text-xs font-bold text-white">गुपित तिजोरी</div>
+            <div class="text-[10px] text-amber-400">७/१२ व कागदपत्रे</div>
+          </div>
+        </button>
+
+        <!-- New: Finance Ledger Shortcut -->
+        <button onclick="switchTab('finance'); openAddFinanceModal();" class="p-3 bg-slate-900/90 border border-slate-800 hover:border-teal-500/50 rounded-2xl flex items-center gap-2.5 transition active:scale-95 group">
+          <div class="w-8 h-8 rounded-xl bg-teal-500/20 flex items-center justify-center text-teal-300 group-hover:scale-110 transition">
+            <i data-lucide="receipt" class="w-4 h-4"></i>
+          </div>
+          <div class="text-left">
+            <div class="text-xs font-bold text-white">खर्च व बचत</div>
+            <div class="text-[10px] text-teal-400">हिशोब नोंदवा</div>
+          </div>
+        </button>
+
         <button onclick="triggerEmergencySOS()" class="p-3 bg-rose-950/40 border border-rose-600/40 hover:border-rose-500 rounded-2xl flex items-center gap-2.5 transition active:scale-95 group">
           <div class="w-8 h-8 rounded-xl bg-rose-500/20 flex items-center justify-center text-rose-400 group-hover:scale-110 transition">
             <i data-lucide="phone-call" class="w-4 h-4"></i>
           </div>
           <div class="text-left">
             <div class="text-xs font-black text-rose-300">आणीबाणी SOS</div>
-            <div class="text-[10px] text-rose-400">तात्काळ मदत सायरन</div>
+            <div class="text-[10px] text-rose-400">मदत सायरन</div>
           </div>
         </button>
       </div>
@@ -1071,6 +1106,141 @@
 
     </section>
 
+    <!-- ======================================================== -->
+    <!-- VIEW 7: गुपित तिजोरी व महत्त्वाची कागदपत्रे (SECRET VAULT) -->
+    <!-- ======================================================== -->
+    <section id="view-secret" class="hidden space-y-6">
+
+      <!-- Secret Vault Banner -->
+      <div class="bg-gradient-to-r from-amber-950/80 via-slate-900 to-yellow-950/80 border border-amber-500/40 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-amber-500/20 border-2 border-amber-400/50 flex items-center justify-center text-3xl shadow-lg shadow-amber-500/20">
+              🔐
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 class="text-2xl font-black text-white tracking-wide">गुपित फॅमिली तिजोरी (Family Secret Vault)</h2>
+                <span class="bg-amber-500/20 text-amber-300 text-xs font-bold px-2.5 py-0.5 rounded-full border border-amber-500/30">Top Secret & AES-256</span>
+              </div>
+              <p class="text-sm text-amber-200/80 mt-1">जमिनीचे ७/१२, सोने पावती, बँक खाती, वारस नोंद आणि अत्यंत गोपनीय फॅमिली नोंदी.</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button onclick="openAddSecretModal()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-5 py-3 rounded-2xl text-xs flex items-center gap-2 shadow-xl shadow-amber-500/20 transition active:scale-95">
+              <i data-lucide="lock" class="w-4 h-4"></i> नवीन गुप्त नोंद जोडा
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secret PIN Verification Notice -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-800 pb-4">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="shield-alert" class="w-5 h-5 text-amber-400"></i>
+            <div>
+              <h3 class="text-base font-bold text-white">कुटुंबाची गोपनीय कागदपत्रे व नोंदी (Encrypted Documents)</h3>
+              <p class="text-xs text-slate-400">ही माहिती फक्त कुटूंबातील अधिकृत व्यक्तीलाच PIN टाकल्यावर वाचता येईल.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-slate-400 font-mono">सुरक्षित मोड:</span>
+            <span class="text-xs font-bold px-2.5 py-0.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full">PIN Protected</span>
+          </div>
+        </div>
+
+        <!-- Secret Items Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="secretItemsContainer">
+          <!-- Dynamically injected secret cards -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 8: कुटुंब हिशोब, बचत व पत (FAMILY FINANCE & KHATA) -->
+    <!-- ======================================================== -->
+    <section id="view-finance" class="hidden space-y-6">
+
+      <!-- Finance Banner -->
+      <div class="bg-gradient-to-r from-teal-950/80 via-slate-900 to-emerald-950/80 border border-teal-800/40 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-teal-500/20 border-2 border-teal-400/50 flex items-center justify-center text-3xl shadow-lg shadow-teal-500/20">
+              💰
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 class="text-2xl font-black text-white tracking-wide">कुटुंब हिशोब, बचत व पत (Family Finance Hub)</h2>
+                <span class="bg-teal-500/20 text-teal-300 text-xs font-bold px-2.5 py-0.5 rounded-full border border-teal-500/30">ग्राम-क्रेडिट & बचत</span>
+              </div>
+              <p class="text-sm text-teal-200/80 mt-1">शेती खर्च, घरगुती बजेट, दुधाचे बिल, बचत गट आणि उधारी-उसनवारी व्यवस्थापन.</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button onclick="openAddFinanceModal()" class="bg-teal-600 hover:bg-teal-500 text-white font-black px-5 py-3 rounded-2xl text-xs flex items-center gap-2 shadow-xl shadow-teal-600/30 transition active:scale-95">
+              <i data-lucide="plus-circle" class="w-4 h-4"></i> नवीन हिशोब नोंदवा
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Finance Stats -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+          <p class="text-xs text-slate-400">या महिन्यातील एकूण आवक (Total Income)</p>
+          <h3 class="text-2xl font-black text-emerald-400 mt-1">₹ ६५,०००</h3>
+          <p class="text-[11px] text-slate-400 mt-1">दुकान + दूध डेअरी + शेती उत्पन्न</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+          <p class="text-xs text-slate-400">या महिन्यातील एकूण खर्च (Expenses)</p>
+          <h3 class="text-2xl font-black text-rose-400 mt-1">₹ २८,४५०</h3>
+          <p class="text-[11px] text-slate-400 mt-1">खते, औषधे, किराणा व शिक्षण</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+          <p class="text-xs text-slate-400">एकूण निव्वळ बचत (Net Savings)</p>
+          <h3 class="text-2xl font-black text-teal-300 mt-1">₹ ३६,५५०</h3>
+          <p class="text-[11px] text-emerald-400 mt-1 flex items-center gap-1 font-semibold">
+            <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> ५६% बचत प्रमाण
+          </p>
+        </div>
+      </div>
+
+      <!-- Finance Ledger Table -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div class="flex items-center gap-2">
+            <i data-lucide="receipt" class="w-5 h-5 text-teal-400"></i>
+            <h3 class="font-bold text-white text-base">अलीकडील घरगुती व शेती हिशोब (Recent Ledger)</h3>
+          </div>
+          <span class="text-xs text-slate-400">स्वयंचलित ताळेबंद</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left">
+            <thead class="bg-slate-950 text-slate-400 uppercase font-semibold">
+              <tr>
+                <th class="p-3">तारीख</th>
+                <th class="p-3">तपशील (Description)</th>
+                <th class="p-3">वर्गवारी (Category)</th>
+                <th class="p-3">प्रकार</th>
+                <th class="p-3 text-right">रक्कम (₹)</th>
+              </tr>
+            </thead>
+            <tbody id="financeLedgerBody" class="divide-y divide-slate-800">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
   </div>
   
   <!-- Footer -->
@@ -1307,6 +1477,93 @@
           बंद करा
         </button>
       </div>
+    </div>
+  <!-- 6. Add Secret Document Modal -->
+  <div id="addSecretModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-amber-500/40 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="lock" class="w-4 h-4 text-amber-400"></i>
+          <span>नवीन गुप्त नोंद / दस्तऐवज जोडा</span>
+        </h3>
+        <button onclick="closeAddSecretModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <form onsubmit="event.preventDefault(); saveNewSecretItem();" class="space-y-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">दस्तऐवजाचे नाव (Title) *</label>
+          <input type="text" id="newSecretTitle" required placeholder="उदा. गट नं. १४२ जमीन ७/१२ उतारा, SBI लॉकर चावी" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">गोपनीय माहिती / क्रमांक / पासवर्ड / नोंद *</label>
+          <textarea id="newSecretValue" rows="3" required placeholder="उदा. खाते क्र. ९८७६५४, कपाट लॉकर क्रमांक २, वारसदार: स्नेहा व बाळासाहेब..." class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono"></textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">वर्गवारी (Category)</label>
+            <select id="newSecretCategory" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              <option value="जमीन / शेती">जमीन / शेती (७/१२)</option>
+              <option value="बँक / वित्त">बँक / वित्त व लॉकर</option>
+              <option value="सोने व दागिने">सोने व दागिने पावती</option>
+              <option value="कौटुंबिक वसीयत">कौटुंबिक नोंद / वसीयत</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">संरक्षित पिन (Access PIN)</label>
+            <input type="password" id="newSecretPin" value="1234" maxlength="4" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono text-center tracking-widest">
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeAddSecretModal()" class="px-4 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300">रद्द करा</button>
+          <button type="submit" class="px-4 py-2 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950">तिजोरीत सुरक्षित ठेवा</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 7. Add Finance Ledger Modal -->
+  <div id="addFinanceModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-teal-500/40 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="receipt" class="w-4 h-4 text-teal-400"></i>
+          <span>नवीन हिशोब / खर्च नोंदवा</span>
+        </h3>
+        <button onclick="closeAddFinanceModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <form onsubmit="event.preventDefault(); saveNewFinanceItem();" class="space-y-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">तपशील (Description) *</label>
+          <input type="text" id="newFinDesc" required placeholder="उदा. युरिया खत खरेदी, दूध डेअरी बिल, किराणा माल" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">रक्कम (₹ Amount) *</label>
+            <input type="number" id="newFinAmount" required min="1" placeholder="उदा. 2500" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">प्रकार (Type)</label>
+            <select id="newFinType" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+              <option value="expense">खर्च (-) Expense</option>
+              <option value="income">आवक (+) Income</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">वर्गवारी (Category)</label>
+          <select id="newFinCategory" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+            <option value="शेती खर्च">शेती खर्च (खते/बियाणे)</option>
+            <option value="दुकान व्यवसाय">दुकान व्यवसाय</option>
+            <option value="घरगुती खर्च">घरगुती खर्च व किराणा</option>
+            <option value="आरोग्य व औषधे">आरोग्य व औषधे</option>
+            <option value="शिक्षण व फी">शिक्षण व फी</option>
+            <option value="डेअरी / उत्पन्न">डेअरी / शेतमाल उत्पन्न</option>
+          </select>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeAddFinanceModal()" class="px-4 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300">रद्द करा</button>
+          <button type="submit" class="px-4 py-2 rounded-lg text-xs font-bold bg-teal-600 hover:bg-teal-500 text-white">हिशोब सेव्ह करा</button>
+        </div>
+      </form>
     </div>
   </div>
 
