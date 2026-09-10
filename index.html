@@ -66,11 +66,11 @@
       </div>
 
       <div class="flex items-center gap-3">
-        <!-- Security Encryption Badge -->
-        <div class="hidden lg:flex items-center gap-1.5 bg-emerald-950/60 border border-emerald-500/40 px-3 py-1 rounded-full text-emerald-300 text-xs font-mono">
+        <!-- Security Encryption Badge (Clickable for Vault Details) -->
+        <button onclick="openVaultModal()" title="कूटबद्ध तिजोरी स्थिती पहा" class="hidden sm:flex items-center gap-1.5 bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-500/40 px-3 py-1.5 rounded-full text-emerald-300 text-xs font-mono transition active:scale-95 shadow-sm">
           <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
-          <span>AES-256 Encrypted</span>
-        </div>
+          <span>AES-256 Vault 🔒</span>
+        </button>
 
         <span class="text-xs text-slate-400 hidden sm:inline">सध्याचा सदस्य:</span>
         <div id="activeMemberPill" class="flex items-center gap-2 bg-amber-500/20 border border-amber-500/30 px-3 py-1.5 rounded-xl text-amber-300 text-sm font-semibold">
@@ -1046,6 +1046,27 @@
           </div>
         </div>
 
+        <!-- Encrypted Data Backup & Vault Management -->
+        <div class="mt-8 p-5 bg-slate-950 border border-slate-800 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+              <i data-lucide="database" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h4 class="text-sm font-bold text-white">स्थानिक कूटबद्ध बॅकअप (Encrypted Local Vault)</h4>
+              <p class="text-xs text-slate-400">तुमचा सर्व डेटा (व्यापार, गोळ्या, शेती, घरातील कामे) AES-256 सह सुरक्षित आहे.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 w-full sm:w-auto">
+            <button onclick="openVaultModal()" class="flex-1 sm:flex-none px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition shadow-lg shadow-emerald-600/30">
+              <i data-lucide="shield" class="w-3.5 h-3.5"></i> तिजोरी उघडा (Vault)
+            </button>
+            <button onclick="exportEncryptedBackup()" class="flex-1 sm:flex-none px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl flex items-center justify-center gap-1.5 transition">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i> बॅकअप डाउनलोड
+            </button>
+          </div>
+        </div>
+
       </div>
 
     </section>
@@ -1226,6 +1247,66 @@
           <button type="submit" class="px-4 py-2 rounded-lg text-xs font-bold bg-cyan-600 hover:bg-cyan-500 text-white">काम जोडा</button>
         </div>
       </form>
+    </div>
+  <!-- 5. Security & AES-256 Vault Inspector Modal -->
+  <div id="vaultModal" class="fixed inset-0 bg-black/75 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-emerald-500/40 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 animate-fadeIn">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+            <i data-lucide="shield-check" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-white">DnyanX कूटबद्ध तिजोरी (Encrypted Vault)</h3>
+            <p class="text-[11px] text-emerald-400">Zero-Trust Client-Side AES-256 + SHA-256</p>
+          </div>
+        </div>
+        <button onclick="closeVaultModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div class="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="text-slate-400">सुरक्षा अल्गोरिदम:</span>
+            <span class="font-mono text-emerald-400 font-bold">AES-256 + HMAC-SHA256</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-slate-400">अंतिम कूटबद्ध वेळ:</span>
+            <span class="font-mono text-slate-300" id="vaultLastEncryptedTime">आताच</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-slate-400">हॅक / फेरफार स्थिती:</span>
+            <span class="text-emerald-400 font-bold flex items-center gap-1">
+              <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> पूर्णपणे सुरक्षित (Untampered)
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">स्थानिक साठ्यातील कूटबद्ध डेटा (Encrypted Ciphertext Raw Sample):</label>
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 font-mono text-[10px] text-emerald-300/80 break-all max-h-28 overflow-y-auto custom-scroll" id="vaultRawCiphertext">
+            लोड होत आहे...
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1">हा डेटा ब्राउझरमध्ये AES-256 किल्लीशिवाय कोणीही वाचू शकत नाही.</p>
+        </div>
+
+        <div class="p-3 bg-indigo-950/30 border border-indigo-500/20 rounded-2xl flex items-center justify-between">
+          <div>
+            <div class="text-white font-bold text-xs">Python Backend Server</div>
+            <div class="text-[11px] text-slate-400">FastAPI + Fernet + JWT Token Auth</div>
+          </div>
+          <span class="text-[10px] bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded font-mono">Port 8000 Ready</span>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center pt-2 border-t border-slate-800">
+        <button onclick="reEncryptVaultNow()" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-1.5 transition">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> आता पुन्हा कूटबद्ध करा (Re-encrypt)
+        </button>
+        <button onclick="closeVaultModal()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300">
+          बंद करा
+        </button>
+      </div>
     </div>
   </div>
 

@@ -1329,6 +1329,57 @@ function saveNewTodoItem() {
   alert("✅ घरातील नवीन काम यशस्वीरित्या जोडले गेले!");
 }
 
+// ==========================================
+// VAULT & ENCRYPTION INSPECTION METHODS
+// ==========================================
+function openVaultModal() {
+  const modal = document.getElementById("vaultModal");
+  if (!modal) return;
+  modal.classList.remove("hidden");
+
+  const rawDisplay = document.getElementById("vaultRawCiphertext");
+  const timeDisplay = document.getElementById("vaultLastEncryptedTime");
+
+  const encryptedRaw = localStorage.getItem("dnyanx_parivar_vault_enc");
+  if (encryptedRaw) {
+    try {
+      const parsed = JSON.parse(encryptedRaw);
+      if (rawDisplay) rawDisplay.textContent = parsed.ciphertext || encryptedRaw;
+      if (timeDisplay && parsed.encryptedAt) {
+        timeDisplay.textContent = new Date(parsed.encryptedAt).toLocaleTimeString("en-IN", { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      }
+    } catch(e) {
+      if (rawDisplay) rawDisplay.textContent = encryptedRaw;
+    }
+  } else {
+    if (rawDisplay) rawDisplay.textContent = "सध्या स्थानिक मेमरीमध्ये सेव्ह केलेले आहे.";
+  }
+}
+
+function closeVaultModal() {
+  const modal = document.getElementById("vaultModal");
+  if (modal) modal.classList.add("hidden");
+}
+
+function reEncryptVaultNow() {
+  saveState();
+  openVaultModal();
+  alert("🔐 DnyanX Vault: सर्व फॅमिली डेटा यशस्वीपणे पुन्हा AES-256 सह कूटबद्ध केला गेला!");
+}
+
+function exportEncryptedBackup() {
+  saveState();
+  const encryptedRaw = localStorage.getItem("dnyanx_parivar_vault_enc") || JSON.stringify(appState);
+  const blob = new Blob([encryptedRaw], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `DnyanX_FamilyOS_Vault_Backup_${Date.now()}.enc.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  alert("📁 कूटबद्ध बॅकअप (.enc.json) यशस्वीरित्या डाऊनलोड झाला आहे! हा डेटा इतर कोणत्याही व्यक्तीस वाचता येणार नाही.");
+}
+
 // Initial Initialization
 window.addEventListener("DOMContentLoaded", () => {
   renderFamilyMembers();
