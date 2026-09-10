@@ -1,5 +1,5 @@
 // DnyanX Parivar Service Worker - Offline & Fast Cache PWA
-const CACHE_NAME = 'dnyanx-parivar-v3';
+const CACHE_NAME = 'dnyanx-parivar-v6';
 const ASSETS = [
   '/',
   '/index.html',

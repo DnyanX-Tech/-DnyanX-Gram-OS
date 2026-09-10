@@ -44,8 +44,18 @@
     .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scroll::-webkit-scrollbar-thumb { background-color: #374151; border-radius: 9999px; }
     
-    /* Touch optimization: ensure buttons and icons respond instantly to touch */
-    button, [role="button"], a {
+    /* Ensure .hidden ALWAYS hides elements and frees pointer events */
+    .hidden {
+      display: none !important;
+    }
+
+    /* Modals display flex when active (not hidden) */
+    [id$="Modal"]:not(.hidden) {
+      display: flex !important;
+    }
+    
+    /* Touch optimization: ensure buttons and all touchable elements respond immediately */
+    button, [role="button"], a, .mood-btn, .tab-btn {
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
       cursor: pointer;
@@ -378,7 +388,7 @@
             <div class="mt-4 space-y-2 text-xs bg-slate-950 p-3 rounded-2xl border border-slate-800">
               <div class="flex justify-between"><span class="text-slate-400">आरोग्य स्थिती:</span> <strong class="text-pink-400">सक्रिय विद्यार्थी</strong></div>
               <div class="flex justify-between"><span class="text-slate-400">श्वास सराव:</span> <strong class="text-cyan-400">४-७-८ तंत्र उपलब्ध</strong></div>
-              <div class="flex justify-between"><span class="text-slate-400">वैयक्तिक मूड:</span> <strong id="ovMoodStat" class="text-emerald-400 flex items-center gap-1">🔒 स्नेहाच्या पिनने सुरक्षित</strong></div>
+              <div class="flex justify-between"><span class="text-slate-400">वैयक्तिक मूड:</span> <strong id="ovMoodStat" class="text-emerald-400 flex items-center gap-1">शांत 😌</strong></div>
             </div>
           </div>
 
@@ -920,30 +930,8 @@
     <!-- ======================================================== -->
     <section id="view-mann" class="hidden space-y-6">
 
-      <!-- Sneha's Private PIN Protection Gate -->
-      <div id="mannLockGate" class="bg-slate-900 border border-pink-500/30 rounded-3xl p-8 shadow-2xl text-center space-y-4 max-w-lg mx-auto">
-        <div class="w-16 h-16 rounded-full bg-pink-500/20 border-2 border-pink-400/50 flex items-center justify-center text-3xl mx-auto text-pink-300 shadow-lg shadow-pink-500/20">
-          🔒
-        </div>
-        <div>
-          <h3 class="text-xl font-black text-white">स्नेहाचे वैयक्तिक 'मन' दालन</h3>
-          <p class="text-xs text-slate-400 mt-1">गोपनीयता जपण्यासाठी हा भाग फक्त स्नेहाच्या वैयक्तिक ४-अंकी PIN नेच उघडता येतो.</p>
-        </div>
-        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-[11px] text-pink-300">
-          💡 <strong>सुरक्षा सूचना:</strong> कुटुंबातील इतर सदस्य किंवा पालकांना हा मानसिक आरोग्य डेटा दिसणार नाही.
-        </div>
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-          <input type="password" id="mannPinInput" maxlength="4" placeholder="1234" value="1234" class="w-32 bg-slate-950 border border-pink-500/40 rounded-xl px-4 py-2.5 text-center text-lg font-mono tracking-widest text-white focus:outline-none focus:border-pink-400">
-          <button onclick="unlockMannWithPin()" class="w-full sm:w-auto bg-pink-600 hover:bg-pink-500 active:scale-95 text-white font-bold px-6 py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition shadow-lg shadow-pink-600/30">
-            <i data-lucide="unlock" class="w-4 h-4"></i>
-            <span>१-क्लिक अनलॉक करा (Open)</span>
-          </button>
-        </div>
-        <p class="text-[10px] text-slate-400">डीफॉल्ट पिन '1234' आधीच भरला आहे, फक्त 'अनलॉक करा' वर क्लिक करा.</p>
-      </div>
-
-      <!-- Main Mann Content (Hidden until unlocked) -->
-      <div id="mannContentArea" class="hidden space-y-6">
+      <!-- Main Mann Content (Directly Open & Accessible) -->
+      <div id="mannContentArea" class="space-y-6">
 
         <!-- Youth Banner / Confidential Overview -->
         <div class="bg-gradient-to-r from-pink-950/80 via-slate-900 to-purple-950/80 border border-pink-800/40 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
@@ -961,10 +949,10 @@
               </div>
             </div>
 
-            <div class="flex items-center gap-3">
-              <button onclick="lockMannArea()" class="px-3 py-1.5 bg-slate-950/80 border border-pink-500/40 hover:bg-pink-950/50 rounded-xl text-xs font-bold text-pink-300 flex items-center gap-1.5 transition">
-                <i data-lucide="lock" class="w-3.5 h-3.5"></i> पुन्हा लॉक करा
-              </button>
+            <div class="flex items-center gap-2">
+              <span class="text-xs bg-pink-500/20 text-pink-300 px-3 py-1.5 rounded-xl border border-pink-500/40 font-bold flex items-center gap-1.5">
+                <i data-lucide="unlock" class="w-3.5 h-3.5 text-pink-400"></i> सर्व घटकांसाठी खुले (Unlocked)
+              </span>
             </div>
           </div>
         </div>
@@ -1781,7 +1769,7 @@
   </footer>
 
   <!-- Modals -->
-  <div id="addStockModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+  <div id="addStockModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
         <h3 class="text-base font-bold text-white">नवीन वस्तू स्टॉकमध्ये जोडा</h3>
@@ -1814,7 +1802,7 @@
     </div>
   </div>
 
-  <div id="addMemberModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+  <div id="addMemberModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
         <h3 class="text-base font-bold text-white">कुटुंबात नवीन सदस्य जोडा</h3>
@@ -1853,7 +1841,7 @@
   </div>
 
   <!-- 3. Add Medicine Modal (Phase 2) -->
-  <div id="addMedicineModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+  <div id="addMedicineModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
         <h3 class="text-base font-bold text-white">नवीन औषधाची वेळ जोडा</h3>
@@ -1888,7 +1876,7 @@
   </div>
 
   <!-- 4. Add Todo Modal (Shared Family Task) -->
-  <div id="addTodoModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+  <div id="addTodoModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
         <h3 class="text-base font-bold text-white">घरातील नवीन काम जोडा (Add Family Task)</h3>
@@ -1927,7 +1915,7 @@
   </div>
 
   <!-- 5. Security & AES-256 Vault Inspector Modal -->
-  <div id="vaultModal" class="fixed inset-0 bg-black/75 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+  <div id="vaultModal" class="fixed inset-0 bg-black/75 backdrop-blur-md z-50 hidden items-center justify-center p-4">
     <div class="bg-slate-900 border border-emerald-500/40 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 animate-fadeIn">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <div class="flex items-center gap-2.5">
@@ -1990,7 +1978,7 @@
       </div>
     </div>
   <!-- 6. Add Secret Document Modal -->
-  <div id="addSecretModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+  <div id="addSecretModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
     <div class="bg-slate-900 border border-amber-500/40 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <h3 class="text-base font-bold text-white flex items-center gap-2">
@@ -2032,7 +2020,7 @@
   </div>
 
   <!-- 7. Add Finance Ledger Modal -->
-  <div id="addFinanceModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+  <div id="addFinanceModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
     <div class="bg-slate-900 border border-teal-500/40 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <h3 class="text-base font-bold text-white flex items-center gap-2">
@@ -2079,7 +2067,7 @@
   </div>
 
   <!-- 8. Apply Citizen Service Modal -->
-  <div id="applyCitizenModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+  <div id="applyCitizenModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
     <div class="bg-slate-900 border border-orange-500/40 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <h3 class="text-base font-bold text-white flex items-center gap-2">
@@ -2126,7 +2114,7 @@
   </div>
 
   <!-- 9. Firebase Cloud Login & Sync Modal -->
-  <div id="firebaseAuthModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+  <div id="firebaseAuthModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden items-center justify-center p-4">
     <div class="bg-slate-900 border border-amber-500/40 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 animate-fadeIn">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <div class="flex items-center gap-2.5">
@@ -2193,7 +2181,7 @@
   </div>
 
   <!-- 10. Family Member PIN-based Login & Profile Switcher Modal -->
-  <div id="memberPinModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+  <div id="memberPinModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden items-center justify-center p-4">
     <div class="bg-slate-900 border border-indigo-500/40 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 animate-fadeIn">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <div class="flex items-center gap-2.5">
@@ -2268,7 +2256,7 @@
   <script src="firebase-config.js"></script>
 
   <!-- Security & Encryption Engine -->
-  <script src="crypto.js"></script>
-  <script src="app.js"></script>
+  <script src="crypto.js?v=3.5"></script>
+  <script src="app.js?v=3.5"></script>
 </body>
 </html>

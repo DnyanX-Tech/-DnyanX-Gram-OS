@@ -1233,23 +1233,21 @@ function sendMannText() {
 }
 
 // ------------------------------------------
-// Sneha's Mann Module PIN Authentication
+// Sneha's Mann Module (Now Directly Unlocked & Open)
 // ------------------------------------------
 function unlockMannWithPin() {
-  const pin = document.getElementById("mannPinInput").value;
-  if (pin === "1234") {
-    document.getElementById("mannLockGate").classList.add("hidden");
-    document.getElementById("mannContentArea").classList.remove("hidden");
-    document.getElementById("mannPinInput").value = "";
-    lucide.createIcons();
-  } else {
-    alert("❌ चुकीचा PIN! हा मानसिक आरोग्य भाग फक्त स्नेहासाठी संरक्षित आहे (चाचणी पिन: 1234).");
-  }
+  const pinGate = document.getElementById("mannLockGate");
+  const mannArea = document.getElementById("mannContentArea");
+  if (pinGate) pinGate.classList.add("hidden");
+  if (mannArea) mannArea.classList.remove("hidden");
+  lucide.createIcons();
 }
 
 function lockMannArea() {
-  document.getElementById("mannLockGate").classList.remove("hidden");
-  document.getElementById("mannContentArea").classList.add("hidden");
+  const pinGate = document.getElementById("mannLockGate");
+  const mannArea = document.getElementById("mannContentArea");
+  if (pinGate) pinGate.classList.remove("hidden");
+  if (mannArea) mannArea.classList.add("hidden");
   lucide.createIcons();
 }
 
@@ -1852,11 +1850,14 @@ function triggerPwaInstall() {
   }
 }
 
-// Register Service Worker for Offline & Mobile Caching
+// Register Service Worker for Offline & Mobile Caching with auto-update
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
-      .then(reg => console.log('PWA ServiceWorker Active:', reg.scope))
+      .then(reg => {
+        console.log('PWA ServiceWorker Active:', reg.scope);
+        reg.update();
+      })
       .catch(err => console.log('PWA ServiceWorker Notice:', err));
   });
 }
@@ -2544,24 +2545,7 @@ function calculateFertilizerRequirement() {
   if (outW) outW.textContent = `${waterLiters.toLocaleString("en-IN")} लिटर / दिवस`;
 }
 
-// Initial Initialization
-window.addEventListener("DOMContentLoaded", () => {
-  renderFamilyMembers();
-  renderPoItems();
-  renderStockList();
-  renderMedicineList();
-  renderHaqqSchemes();
-  renderFamilyTodos();
-  renderSecretVault();
-  renderFinanceLedger();
-  renderCitizenApplications();
-  renderOverviewStats();
-  calculateFertilizerRequirement();
-  switchTab("overview"); // Default view is Unified Master Family Hub!
-  lucide.createIcons();
-});
-
-// Bind all interactive onclick functions explicitly to window scope
+// Bind all interactive onclick functions explicitly to window scope immediately
 const GLOBAL_HANDLERS = {
   switchTab,
   toggleAppLanguage,
@@ -2639,3 +2623,28 @@ Object.entries(GLOBAL_HANDLERS).forEach(([name, fn]) => {
     window[name] = fn;
   }
 });
+
+// Initial Initialization
+function initApp() {
+  renderFamilyMembers();
+  renderPoItems();
+  renderStockList();
+  renderMedicineList();
+  renderHaqqSchemes();
+  renderFamilyTodos();
+  renderSecretVault();
+  renderFinanceLedger();
+  renderCitizenApplications();
+  renderOverviewStats();
+  calculateFertilizerRequirement();
+  switchTab("overview");
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+}
+
+if (document.readyState === "loading") {
+  window.addEventListener("DOMContentLoaded", initApp);
+} else {
+  initApp();
+}
